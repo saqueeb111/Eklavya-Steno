@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Typing & Steno Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        body { background-color: #f8fafc; }
+        
+        /* CSS-Only Tabs Logic */
+        .tab-radio { display: none; }
+        .tab-content { display: none; }
+        #tab-typing:checked ~ #typing-content { display: block; }
+        #tab-steno:checked ~ #steno-content { display: block; }
+        #tab-dictation:checked ~ #dictation-content { display: block; }
+        
+        #tab-typing:checked ~ .tab-nav label[for="tab-typing"],
+        #tab-steno:checked ~ .tab-nav label[for="tab-steno"],
+        #tab-dictation:checked ~ .tab-nav label[for="tab-dictation"] {
+            color: #2563eb; 
+            border-bottom: 3px solid #2563eb;
+            background-color: #ffffff;
+        }
+
+        /* Steno Markup Colors */
+        .color-match { color: #16a34a; }
+        .color-num { color: #0d9488; font-weight: 600; background: #ccfbf1; padding: 2px 6px; border-radius: 6px; }
+        .color-cap { color: #9333ea; font-weight: 600; background: #f3e8ff; padding: 2px 6px; border-radius: 6px; }
+        .color-punct { color: #ea580c; font-weight: 600; background: #ffedd5; padding: 2px 6px; border-radius: 6px; }
+        .color-spell { color: #2563eb; font-weight: 600; background: #dbeafe; padding: 2px 6px; border-radius: 6px; }
+        .color-sub { color: #dc2626; font-weight: 600; background: #fee2e2; padding: 2px 6px; border-radius: 6px; }
+        .color-omit { color: #dc2626; font-weight: 600; text-decoration: underline; background: #fee2e2; padding: 2px 6px; border-radius: 6px; }
+        .color-add { color: #dc2626; font-weight: 600; text-decoration: line-through; background: #fee2e2; padding: 2px 6px; border-radius: 6px; }
+        
+        /* Smooth Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Toggle Switch */
+        .toggle-checkbox:checked { right: 0; border-color: #10b981; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #10b981; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased font-sans pb-12">
+
+    <header class="bg-blue-700 shadow-md">
+        <div class="max-w-6xl mx-auto px-6 py-5">
+            <h1 class="text-2xl font-extrabold text-white tracking-tight">SkillTest Pro <span class="font-light text-blue-200">| Typing & Stenography</span></h1>
+        </div>
+    </header>
+    
+    <main class="max-w-6xl mx-auto mt-8 px-4">
+        
+        <div id="error-box" class="hidden bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-md shadow-sm">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-sm font-medium text-red-800">Browser Security Block Detected</h3>
+                    <p id="error-text" class="text-sm text-red-700 mt-1">No errors yet.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100 relative">
+            
+            <input type="radio" name="main-tabs" id="tab-typing" class="tab-radio" checked>
+            <input type="radio" name="main-tabs" id="tab-steno" class="tab-radio">
+            <input type="radio" name="main-tabs" id="tab-dictation" class="tab-radio">
+
+            <div class="tab-nav flex flex-col md:flex-row bg-slate-50 border-b border-slate-200">
+                <label for="tab-typing" class="flex-1 py-4 px-2 text-center font-bold text-slate-500 hover:text-slate-800 cursor-pointer transition-colors border-b-2 border-transparent">
+                    Live Typing Practice
+                </label>
+                <label for="tab-steno" class="flex-1 py-4 px-2 text-center font-bold text-slate-500 hover:text-slate-800 cursor-pointer transition-colors border-b-2 border-transparent md:border-l md:border-slate-200">
+                    Stenography Analyzer
+                </label>
+                <label for="tab-dictation" class="flex-1 py-4 px-2 text-center font-bold text-slate-500 hover:text-slate-800 cursor-pointer transition-colors border-b-2 border-transparent md:border-l md:border-slate-200">
+                    Dictation Library
+                </label>
+            </div>
+
+            <div id="typing-content" class="tab-content p-6 md:p-8">
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 mb-8 shadow-sm">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-2">Text Source:</label>
+                            <select id="source-select" onchange="toggleSource()" class="w-full bg-white border border-slate-300 text-slate-700 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 shadow-sm transition-shadow">
+                                <option value="default">Default Built-in Text</option>
+                                <option value="wiki">Wikipedia (Random 500 Words)</option>
+                                <option value="custom">Paste Custom Text</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-2">Typing Style:</label>
+                            <select id="style-select" onchange="updateColors()" class="w-full bg-white border border-slate-300 text-slate-700 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 shadow-sm transition-shadow">
+                                <option value="normal">Normal (No Feedback)</option>
+                                <option value="live">Live Colors (Green/Red)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <textarea id="custom-input-area" placeholder="Paste your custom practice material here..." class="mt-4 w-full h-32 p-4 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none hidden resize-y shadow-inner"></textarea>
+                    
+                    <button type="button" onclick="loadTypingTest()" class="mt-6 w-full md:w-auto px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow-md transition duration-200 ease-in-out transform hover:-translate-y-0.5">
+                        Apply Settings & Load Test
+                    </button>
+                </div>
+
+                <div class="flex justify-between items-center mb-4 px-2">
+                    <span id="status-message" class="text-lg font-semibold text-slate-600 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-slate-400 animate-pulse"></span> Awaiting input...
+                    </span>
+                    <span id="timer-display" class="text-3xl font-mono font-bold text-slate-800 bg-slate-100 px-4 py-1 rounded-lg border border-slate-200 shadow-sm">10:00</span>
+                </div>
+
+                <div id="original-text" class="bg-slate-50 p-6 rounded-xl mb-6 text-lg leading-loose border border-slate-200 shadow-inner h-64 overflow-y-auto text-slate-600">
+                    Click the blue "Apply Settings & Load Test" button above to load your text.
+                </div>
+                
+                <textarea id="typing-area" placeholder="Click here and start typing to begin the timer..." disabled oninput="handleTypingInput(this)" class="w-full h-48 p-6 text-lg font-medium text-slate-800 bg-white border-2 border-slate-300 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 focus:outline-none transition-all shadow-sm resize-y"></textarea>
+                
+                <button type="button" id="finish-btn" onclick="endTypingTest()" class="mt-6 w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-4 rounded-xl shadow-lg transition duration-200 hidden">
+                    Finish Test Early & Calculate Math
+                </button>
+                
+                <div id="typing-results" class="hidden mt-8 p-8 bg-blue-50 border border-blue-100 rounded-2xl shadow-sm text-center">
+                    <h2 class="text-2xl font-extrabold text-blue-900 mb-6">Performance Dashboard</h2>
+                    <div class="flex flex-wrap justify-center gap-6 mb-8">
+                        <div class="bg-white px-8 py-6 rounded-xl shadow-md border border-slate-100 w-48">
+                            <p class="text-sm text-slate-500 font-bold uppercase tracking-wider mb-1">Speed</p>
+                            <p class="text-4xl font-extrabold text-blue-600"><span id="wpm-result">0</span> <span class="text-lg text-slate-400 font-medium">WPM</span></p>
+                        </div>
+                        <div class="bg-white px-8 py-6 rounded-xl shadow-md border border-slate-100 w-48">
+                            <p class="text-sm text-slate-500 font-bold uppercase tracking-wider mb-1">Accuracy</p>
+                            <p class="text-4xl font-extrabold text-emerald-500"><span id="acc-result">0</span><span class="text-2xl">%</span></p>
+                        </div>
+                    </div>
+                    <button type="button" onclick="downloadTypingLog()" class="px-6 py-2 bg-white border-2 border-slate-300 hover:bg-slate-50 text-slate-700 font-bold rounded-lg shadow-sm transition">
+                        Download Mistakes Log (.txt)
+                    </button>
+                </div>
+            </div>
+
+            <div id="steno-content" class="tab-content p-6 md:p-8">
+                <div class="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-8 flex items-start gap-4 shadow-sm">
+                    <svg class="w-6 h-6 text-amber-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <div>
+                        <h3 class="font-bold text-amber-900">Strict SSC Rules Applied</h3>
+                        <p class="text-sm text-amber-800 mt-1">Calculates Full and Half mistakes. Ignores formatting symbols, forgives casing errors for capitalized emphasis, ignores hyphen/comma discrepancies, and perfectly matches numeric vs alphabetical numbers.</p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Original Answer Key</label>
+                        <textarea id="steno-orig" placeholder="Paste the correct transcription here..." class="w-full h-64 p-4 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-inner resize-y"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Your Transcription</label>
+                        <textarea id="steno-typed" placeholder="Paste your typed version here..." class="w-full h-64 p-4 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-inner resize-y"></textarea>
+                    </div>
+                </div>
+                
+                <button type="button" onclick="analyzeSteno()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white text-lg font-bold rounded-xl shadow-md transition duration-200 transform hover:-translate-y-0.5">
+                    Run Transcription Analysis
+                </button>
+
+                <div id="steno-results-area" class="hidden mt-10">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-center">
+                            <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Total Words</p>
+                            <p class="text-2xl font-extrabold text-slate-800 mt-1" id="steno-total-words">0</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-center">
+                            <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Accuracy</p>
+                            <p class="text-2xl font-extrabold text-emerald-600 mt-1"><span id="steno-accuracy">0</span>%</p>
+                        </div>
+                        <div class="bg-red-50 p-4 rounded-xl border border-red-100 shadow-sm text-center">
+                            <p class="text-xs text-red-500 font-bold uppercase tracking-wider">Full Mistakes</p>
+                            <p class="text-2xl font-extrabold text-red-600 mt-1" id="steno-full">0</p>
+                        </div>
+                        <div class="bg-orange-50 p-4 rounded-xl border border-orange-100 shadow-sm text-center">
+                            <p class="text-xs text-orange-500 font-bold uppercase tracking-wider">Half Mistakes</p>
+                            <p class="text-2xl font-extrabold text-orange-600 mt-1" id="steno-half">0</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border-2 border-slate-200 rounded-xl overflow-hidden shadow-sm mb-8" id="printable-passage-area">
+                        <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
+                            <h3 class="font-bold text-slate-700">Visual Mistake Markup</h3>
+                            <button type="button" onclick="printVisualPassage()" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white text-sm font-bold rounded-lg shadow transition flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                                Save PDF
+                            </button>
+                        </div>
+                        <div class="px-6 py-4 border-b border-slate-100 bg-white legend">
+                            <div class="flex flex-wrap gap-4 text-xs">
+                                <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-green-500"></span> Correct</span>
+                                <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-purple-500"></span> Capitalization</span>
+                                <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-orange-500"></span> Punctuation</span>
+                                <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-blue-500"></span> Singular/Plural</span>
+                                <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-red-600"></span> Wrong/Missing/Extra</span>
+                            </div>
+                        </div>
+                        <div id="steno-visual-passage" class="p-6 text-lg leading-loose text-slate-700 bg-white min-h-[150px]"></div>
+                    </div>
+
+                    <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
+                        <table class="w-full text-left text-sm text-slate-600">
+                            <thead class="bg-slate-800 text-white">
+                                <tr>
+                                    <th class="px-6 py-4 font-semibold">Original Answer Key</th>
+                                    <th class="px-6 py-4 font-semibold">Your Typed Text</th>
+                                    <th class="px-6 py-4 font-semibold">SSC Penalty</th>
+                                    <th class="px-6 py-4 font-semibold">Mistake Type</th>
+                                </tr>
+                            </thead>
+                            <tbody id="steno-table-body" class="divide-y divide-slate-200 bg-white"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="dictation-content" class="tab-content p-6 md:p-8 bg-slate-50 min-h-[500px]">
+                
+                <div class="flex justify-end mb-6">
+                    <div class="flex items-center gap-3 bg-white px-4 py-2 rounded-lg border border-slate-200 shadow-sm">
+                        <span class="text-sm font-bold text-slate-600">Preview Admin Mode</span>
+                        <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                            <input type="checkbox" id="admin-toggle" onchange="toggleAdminView()" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer border-slate-300"/>
+                            <label for="admin-toggle" class="toggle-label block overflow-hidden h-5 rounded-full bg-slate-300 cursor-pointer"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="admin-upload-panel" class="hidden bg-white p-6 rounded-xl border border-emerald-200 shadow-md mb-8">
+                    <h2 class="text-xl font-extrabold text-emerald-800 mb-4 flex items-center gap-2">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                        Upload to Firebase Cloud
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-bold text-slate-700 mb-2">Dictation Title</label>
+                            <input type="text" id="upload-title" placeholder="e.g. SSC Grade C Practice Exam" class="w-full bg-slate-50 border border-slate-300 text-slate-700 rounded-lg p-2.5 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-2">Base Speed (WPM)</label>
+                            <input type="number" id="upload-speed" placeholder="80" value="80" class="w-full bg-slate-50 border border-slate-300 text-slate-700 rounded-lg p-2.5 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Audio File (.mp3)</label>
+                        <input type="file" id="upload-file" accept="audio/*" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer border border-slate-300 rounded-lg p-1 bg-white">
+                    </div>
+                    
+                    <button type="button" id="upload-submit-btn" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg transition duration-200">
+                        Upload & Save to Library
+                    </button>
+                    <p id="upload-status" class="mt-3 text-center text-sm font-bold text-slate-600 hidden">Uploading...</p>
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-extrabold text-slate-800">Available Dictations</h2>
+                        <button type="button" id="refresh-dictations-btn" class="text-sm font-bold text-blue-600 hover:underline">Refresh List</button>
+                    </div>
+                    
+                    <div id="dictations-list" class="grid grid-cols-1 gap-4">
+                        <p class="text-slate-500 text-center py-8">Loading dictations from database...</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // UI Logic
+        window.onerror = function(message, source, lineno, colno, error) {
+            document.getElementById('error-box').style.display = 'block';
+            document.getElementById('error-text').innerText = message + " (Line: " + lineno + ")";
+            return true;
+        };
+
+        function toggleAdminView() {
+            var isChecked = document.getElementById('admin-toggle').checked;
+            document.getElementById('admin-upload-panel').style.display = isChecked ? 'block' : 'none';
+        }
+
+        // Smart Speed Calculator: targetWpm / baseWpm
+        function changeSpeed(audioElementId, targetWpm, baseWpm) {
+            var audioPlayer = document.getElementById(audioElementId);
+            if (audioPlayer) {
+                var rate = parseFloat(targetWpm) / parseFloat(baseWpm);
+                audioPlayer.playbackRate = rate;
+            }
+        }
+
+        // Shared Math
+        function cleanStenoWord(w) { if (!w) return ""; return w.split('/').join(''); }
+        function stripPunct(w) {
+            if (!w) return "";
+            var chars = ['.', ',', '!', '?', ';', ':', '"', "'", '(', ')', '-'];
+            var result = w;
+            for (var i = 0; i < chars.length; i++) { result = result.split(chars[i]).join(''); }
+            return result;
+        }
+
+        function wordToNumberStr(w) {
+            var words = { "zero":"0", "one":"1", "two":"2", "three":"3", "four":"4", "five":"5", "six":"6", "seven":"7", "eight":"8", "nine":"9", "ten":"10", "eleven":"11", "twelve":"12", "thirteen":"13", "fourteen":"14", "fifteen":"15", "sixteen":"16", "seventeen":"17", "eighteen":"18", "nineteen":"19", "twenty":"20", "thirty":"30", "forty":"40", "fifty":"50", "sixty":"60", "seventy":"70", "eighty":"80", "ninety":"90", "hundred":"100", "thousand":"1000" };
+            if (words[w]) return words[w];
+            var tens = ["twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
+            var units = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
+            for (var i=0; i<tens.length; i++) {
+                for (var j=0; j<units.length; j++) {
+                    if (w === tens[i] + units[j]) return ((i+2).toString() + (j+1).toString());
+                }
+            }
+            return w;
+        }
+
+        function checkWordMatch(orig, typed) {
+            var nOrig = cleanStenoWord(orig); var nType = cleanStenoWord(typed);
+            if (nOrig === nType) return { cost: 0, penalty: 0, type: 'Match' };
+
+            var sOrig = stripPunct(nOrig).toLowerCase(); var sType = stripPunct(nType).toLowerCase();
+            if (wordToNumberStr(sOrig) === wordToNumberStr(sType)) return { cost: 0, penalty: 0, type: 'Match' };
+
+            var isOrigAlpha = false;
+            for (var i = 0; i < nOrig.length; i++) {
+                var charCode = nOrig.charCodeAt(i);
+                if ((charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122)) { isOrigAlpha = true; break; }
+            }
+            if (isOrigAlpha && nOrig === nOrig.toUpperCase()) {
+                if (nOrig.toLowerCase() === nType.toLowerCase()) return { cost: 0, penalty: 0, type: 'Match (Emphasis Ignored)' };
+            }
+            if (nOrig.toLowerCase() === nType.toLowerCase()) return { cost: 0.1, penalty: 0.5, type: 'Capitalization' };
+            if (stripPunct(nOrig) === stripPunct(nType) || stripPunct(nOrig).toLowerCase() === stripPunct(nType).toLowerCase()) return { cost: 0.2, penalty: 0.5, type: 'Punctuation' };
+            if (sOrig + 's' === sType || sType + 's' === sOrig || sOrig + 'es' === sType || sType + 'es' === sOrig) return { cost: 0.3, penalty: 0.5, type: 'Spelling (Singular/Plural)' };
+            return { cost: 1, penalty: 1, type: 'Substitution' };
+        }
+
+        // Steno Analyzer
+        function analyzeSteno() {
+            var origRaw = document.getElementById('steno-orig').value.trim();
+            var typedRaw = document.getElementById('steno-typed').value.trim();
+            if (!origRaw || !typedRaw) { alert("Please paste both the Original and Your Transcription."); return; }
+
+            var origWords = origRaw.split(' ').filter(function(w) { return w.length > 0; });
+            var typedWords = typedRaw.split(' ').filter(function(w) { return w.length > 0; });
+
+            var dp = []; var trace = [];
+            for (var i = 0; i <= origWords.length; i++) {
+                dp[i] = []; trace[i] = [];
+                for (var j = 0; j <= typedWords.length; j++) { dp[i][j] = 0; trace[i][j] = null; }
+            }
+            for (var i = 0; i <= origWords.length; i++) dp[i][0] = i;
+            for (var j = 0; j <= typedWords.length; j++) dp[0][j] = j;
+
+            for (var i = 1; i <= origWords.length; i++) {
+                for (var j = 1; j <= typedWords.length; j++) {
+                    var matchData = checkWordMatch(origWords[i-1], typedWords[j-1]);
+                    var subCost = dp[i-1][j-1] + matchData.cost;
+                    var delCost = dp[i-1][j] + 1; var insCost = dp[i][j-1] + 1; 
+                    var minCost = Math.min(subCost, delCost, insCost);
+                    dp[i][j] = minCost;
+                    if (minCost === subCost) trace[i][j] = 'sub';
+                    else if (minCost === delCost) trace[i][j] = 'del';
+                    else trace[i][j] = 'ins';
+                }
+            }
+
+            var currI = origWords.length; var currJ = typedWords.length;
+            var alignment = []; var fullMistakes = 0; var halfMistakes = 0;
+
+            while (currI > 0 || currJ > 0) {
+                if (currI > 0 && currJ > 0 && trace[currI][currJ] === 'sub') {
+                    var matchData = checkWordMatch(origWords[currI-1], typedWords[currJ-1]);
+                    alignment.unshift({ orig: origWords[currI-1], typed: typedWords[currJ-1], penalty: matchData.penalty, type: matchData.type });
+                    currI--; currJ--;
+                } else if (currI > 0 && (currJ === 0 || trace[currI][currJ] === 'del')) {
+                    alignment.unshift({ orig: origWords[currI-1], typed: '---', penalty: 1, type: 'Omission (Missing Word)' });
+                    currI--;
+                } else {
+                    alignment.unshift({ orig: '---', typed: typedWords[currJ-1], penalty: 1, type: 'Addition (Extra Word)' });
+                    currJ--;
+                }
+            }
+
+            var tbody = document.getElementById('steno-table-body'); tbody.innerHTML = ''; var visualHTML = "";
+
+            for (var k = 0; k < alignment.length; k++) {
+                var row = alignment[k];
+                var tr = document.createElement('tr'); tr.className = "border-b border-slate-100 last:border-0 hover:bg-slate-50";
+                
+                var rowColorClass = "";
+                if (row.penalty === 1) { fullMistakes++; rowColorClass = 'bg-red-50'; }
+                else if (row.penalty === 0.5) { halfMistakes++; rowColorClass = 'bg-orange-50'; }
+                else { rowColorClass = 'bg-white'; }
+                
+                tr.className += " " + rowColorClass;
+                var penText = row.penalty === 0 ? "0" : (row.penalty === 0.5 ? "1/2 Mistake" : "1 Full Mistake");
+                var typeText = row.penalty === 0 ? "✅ " + row.type : "❌ " + row.type;
+                tr.innerHTML = "<td class='px-6 py-4'>" + row.orig + "</td><td class='px-6 py-4'>" + row.typed + "</td><td class='px-6 py-4 font-bold'>" + penText + "</td><td class='px-6 py-4'>" + typeText + "</td>";
+                tbody.appendChild(tr);
+
+                if (row.penalty === 0) {
+                    visualHTML += "<span class='color-match'>" + row.typed + "</span> ";
+                } else if (row.type === 'Capitalization') {
+                    visualHTML += "<span class='color-cap'>[" + row.typed + " &rarr; " + row.orig + "]</span> ";
+                } else if (row.type === 'Punctuation') {
+                    visualHTML += "<span class='color-punct'>[" + row.typed + " &rarr; " + row.orig + "]</span> ";
+                } else if (row.type === 'Spelling (Singular/Plural)') {
+                    visualHTML += "<span class='color-spell'>[" + row.typed + " &rarr; " + row.orig + "]</span> ";
+                } else if (row.type === 'Omission (Missing Word)') {
+                    visualHTML += "<span class='color-omit'>[Missing: " + row.orig + "]</span> ";
+                } else if (row.type === 'Addition (Extra Word)') {
+                    visualHTML += "<span class='color-add'>[Extra: " + row.typed + "]</span> ";
+                } else {
+                    visualHTML += "<span class='color-sub'>[" + row.typed + " &rarr; " + row.orig + "]</span> ";
+                }
+            }
+
+            document.getElementById('steno-visual-passage').innerHTML = visualHTML;
+
+            var totalWords = origWords.length;
+            var totalMistakesCounted = fullMistakes + (halfMistakes / 2);
+            var errorPercentage = totalWords > 0 ? (totalMistakesCounted / totalWords) * 100 : 0;
+            var accuracy = Math.max(0, 100 - errorPercentage);
+
+            document.getElementById('steno-total-words').innerText = totalWords;
+            document.getElementById('steno-full').innerText = fullMistakes;
+            document.getElementById('steno-half').innerText = halfMistakes;
+            document.getElementById('steno-error-rate').innerText = errorPercentage.toFixed(2);
+            document.getElementById('steno-accuracy').innerText = accuracy.toFixed(2);
+            document.getElementById('steno-results-area').style.display = 'block';
+        }
+
+        function printVisualPassage() {
+            var content = document.getElementById("steno-visual-passage").innerHTML;
+            var printWin = window.open('', '', 'width=800,height=800');
+            printWin.document.write('<html><head><title>Steno Markup Passage</title>');
+            printWin.document.write('<style>body { font-family: sans-serif; line-height: 2; font-size: 16px; padding: 20px; color: #333; } .legend { display: flex; flex-wrap: wrap; gap: 15px; font-size: 13px; font-weight: bold; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px dashed #ccc; } .color-match { color: #16a34a; } .color-num { color: #0d9488; font-weight: bold; background: #ccfbf1; padding: 2px 4px; border-radius: 4px; } .color-cap { color: #9333ea; font-weight: bold; background: #f3e8ff; padding: 2px 4px; border-radius: 4px; } .color-punct { color: #ea580c; font-weight: bold; background: #ffedd5; padding: 2px 4px; border-radius: 4px; } .color-spell { color: #2563eb; font-weight: bold; background: #dbeafe; padding: 2px 4px; border-radius: 4px; } .color-sub { color: #dc2626; font-weight: bold; background: #fee2e2; padding: 2px 4px; border-radius: 4px; } .color-omit { color: #dc2626; font-weight: bold; text-decoration: underline; background: #fee2e2; padding: 2px 4px; border-radius: 4px; } .color-add { color: #dc2626; font-weight: bold; text-decoration: line-through; background: #fee2e2; padding: 2px 4px; border-radius: 4px; }</style>');
+            printWin.document.write('</head><body>');
+            printWin.document.write('<h2 style="color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">SSC Stenography Review</h2>');
+            printWin.document.write('<div>' + content + '</div>');
+            printWin.document.write('</body></html>');
+            printWin.document.close(); printWin.focus();
+            setTimeout(function() { printWin.print(); }, 500);
+        }
+
+        // Typing Practice System
+        var TIME_LIMIT = 10 * 60; 
+        var originalTextStr = ""; var originalWordsArr = []; var timerIntervalId; var timeRemainingSeconds = TIME_LIMIT; 
+        var isTestStarted = false; var isTestEnded = false; var logDataArray = [];
+
+        function toggleSource() {
+            var src = document.getElementById("source-select").value;
+            document.getElementById("custom-input-area").style.display = (src === "custom") ? "block" : "none";
+        }
+
+        async function loadTypingTest() {
+            clearInterval(timerIntervalId); timeRemainingSeconds = TIME_LIMIT; document.getElementById("timer-display").innerText = "10:00";
+            isTestStarted = false; isTestEnded = false; document.getElementById("typing-area").value = ""; 
+            document.getElementById("typing-area").disabled = true; document.getElementById("finish-btn").style.display = "none"; 
+            document.getElementById("typing-results").style.display = "none";
+            
+            var origTextDiv = document.getElementById("original-text"); origTextDiv.innerHTML = "Processing text...";
+
+            var src = document.getElementById("source-select").value;
+            if (src === "wiki") {
+                document.getElementById("status-message").innerHTML = '<span class="w-2 h-2 rounded-full bg-blue-500 animate-bounce"></span> Fetching Wikipedia...';
+                var col = []; var attempts = 0; 
+                try {
+                    while (col.length < 500 && attempts < 10) {
+                        attempts++;
+                        var res = await fetch("https://en.wikipedia.org/w/api.php?action=query&format=json&generator=random&grnnamespace=0&prop=extracts&exchars=4000&exlimit=1&explaintext=1&origin=*");
+                        var data = await res.json();
+                        if (data && data.query && data.query.pages) {
+                            var pageId = Object.keys(data.query.pages)[0];
+                            var rawExt = data.query.pages[pageId].extract || "";
+                            var clean = rawExt.split('\n').join(' ').split('==').join('').trim();
+                            var parts = clean.split(' ').filter(function(w) { return w.length > 0; });
+                            for (var i=0; i<parts.length; i++) col.push(parts[i]);
+                        }
+                    }
+                    originalTextStr = col.slice(0, 500).join(' ');
+                } catch (error) { originalTextStr = "Error connecting to Wikipedia. Please select Paste Custom Text or Default Built-in Text."; }
+            } else if (src === "custom") {
+                originalTextStr = document.getElementById("custom-input-area").value.trim().split('\n').join(' ');
+                if (!originalTextStr) { origTextDiv.innerHTML = "<strong>Error: Please paste some text above first.</strong>"; return; }
+            } else {
+                originalTextStr = "This is the default built-in practice text. It loads instantly without needing an internet connection. You can practice your typing speed and accuracy here, or use the menu above to paste your own custom materials for practice. ".repeat(15).trim();
+            }
+            
+            originalWordsArr = originalTextStr.split(' ').filter(function(word) { return word.length > 0; });
+            var spanHtml = "";
+            for(var i = 0; i < originalWordsArr.length; i++) spanHtml += "<span id='word-" + i + "' class='typing-word'>" + originalWordsArr[i] + "</span> ";
+            origTextDiv.innerHTML = spanHtml;
+            
+            document.getElementById("status-message").innerHTML = '<span class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_#22c55e]"></span> Ready! Start typing below.';
+            document.getElementById("typing-area").disabled = false; document.getElementById("typing-area").focus();
+        }
+
+        function updateColors() {
+            if (!isTestStarted && document.getElementById("typing-area").value.trim() === "") return;
+            var style = document.getElementById("style-select").value;
+            if (style === "normal") {
+                for (var i = 0; i < originalWordsArr.length; i++) {
+                    var span = document.getElementById("word-" + i);
+                    if (span) { span.style.color = "#475569"; span.style.backgroundColor = "transparent"; }
+                }
+                return;
+            }
+            
+            var rawTyped = document.getElementById("typing-area").value;
+            var typedArr = rawTyped === "" ? [] : rawTyped.split(' ');
+
+            for (var i = 0; i < originalWordsArr.length; i++) {
+                var span = document.getElementById("word-" + i);
+                if (!span) continue;
+                if (i < typedArr.length - 1) {
+                    var m = checkWordMatch(originalWordsArr[i], typedArr[i]);
+                    span.style.color = (m.penalty === 0) ? "#16a34a" : "#dc2626";
+                    span.style.backgroundColor = "transparent";
+                } else if (i === typedArr.length - 1) {
+                    var normOrig = cleanStenoWord(originalWordsArr[i]).toLowerCase();
+                    var normType = cleanStenoWord(typedArr[i]).toLowerCase();
+                    var isPartialMatch = normOrig.startsWith(normType);
+                    span.style.color = isPartialMatch ? "#0f172a" : "#ffffff";
+                    span.style.backgroundColor = isPartialMatch ? "#e2e8f0" : "#ef4444";
+                } else { span.style.color = "#475569"; span.style.backgroundColor = "transparent"; }
+            }
+        }
+
+        function handleTypingInput(area) {
+            if (!isTestStarted && !isTestEnded) {
+                isTestStarted = true; document.getElementById("status-message").innerHTML = '<span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse shadow-[0_0_8px_#3b82f6]"></span> Test in progress...'; document.getElementById("finish-btn").style.display = "block";
+                timerIntervalId = setInterval(function() {
+                    timeRemainingSeconds--;
+                    var m = Math.floor(timeRemainingSeconds / 60); var s = timeRemainingSeconds % 60;
+                    document.getElementById("timer-display").innerText = m + ":" + (s < 10 ? '0' : '') + s;
+                    if (timeRemainingSeconds <= 0) endTypingTest();
+                }, 1000);
+            }
+            if (area.value.includes('  ')) area.value = area.value.split('  ').join(' ');
+            updateColors();
+        }
+
+        function endTypingTest() {
+            if (isTestEnded) return;
+            isTestEnded = true; clearInterval(timerIntervalId);
+            document.getElementById("typing-area").disabled = true; document.getElementById("finish-btn").style.display = "none";
+            document.getElementById("status-message").innerHTML = '<span class="w-2 h-2 rounded-full bg-slate-400"></span> Test Complete!';
+
+            var typedText = document.getElementById("typing-area").value.trim();
+            var minutesElapsed = (TIME_LIMIT - timeRemainingSeconds) / 60;
+            var wpm = minutesElapsed > 0 ? (typedText.length / 5) / minutesElapsed : 0;
+
+            var typedArr = typedText === "" ? [] : typedText.split(' ');
+            var errors = 0; logDataArray = [];
+            
+            for (var i = 0; i < typedArr.length; i++) {
+                var matchData = checkWordMatch(originalWordsArr[i] || "", typedArr[i]);
+                if (matchData.penalty > 0) errors++;
+                var origStr = (originalWordsArr[i] || ""); var typedStr = typedArr[i]; 
+                logDataArray.push(origStr + " | " + typedStr + " | " + (matchData.penalty === 0 ? "✅ Match" : "❌ Mismatch"));
+            }
+            
+            var accuracy = typedArr.length > 0 ? ((typedArr.length - errors) / typedArr.length) * 100 : 0;
+            document.getElementById("wpm-result").innerText = wpm.toFixed(2);
+            document.getElementById("acc-result").innerText = accuracy.toFixed(2);
+            document.getElementById("typing-results").style.display = "block";
+        }
+
+        function downloadTypingLog() {
+            var logContent = "TYPING PRACTICE HISTORY\n=======================================================\nSpeed: " + document.getElementById("wpm-result").innerText + " WPM\nAccuracy: " + document.getElementById("acc-result").innerText + "%\n-------------------------------------------------------\nMISTAKES LOG\n\n";
+            for (var i = 0; i < logDataArray.length; i++) { if (logDataArray[i].includes("❌")) logContent += logDataArray[i] + "\n"; }
+            var link = document.createElement('a'); link.href = URL.createObjectURL(new Blob([logContent], { type: 'text/plain' }));
+            link.download = "typing_history_" + new Date().getTime() + ".txt"; link.click();
+        }
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
+
+        // Your specific Firebase Keys
+        const firebaseConfig = {
+            apiKey: "AIzaSyAoUj1rFjDljbqXkchLbcZUg817u-JsNYc",
+            authDomain: "eklavya-steno.firebaseapp.com",
+            projectId: "eklavya-steno",
+            storageBucket: "eklavya-steno.firebasestorage.app",
+            messagingSenderId: "191750926496",
+            appId: "1:191750926496:web:ac1f8b357e3545babf19c5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        // Fetch & Render Dictations on Load
+        async function fetchDictations() {
+            const listContainer = document.getElementById('dictations-list');
+            listContainer.innerHTML = '<p class="text-slate-500 text-center py-8 flex justify-center items-center gap-2"><span class="w-4 h-4 rounded-full bg-blue-400 animate-ping"></span> Loading dictations from cloud...</p>';
+            
+            try {
+                const q = query(collection(db, "dictations"), orderBy("timestamp", "desc"));
+                const querySnapshot = await getDocs(q);
+                
+                if (querySnapshot.empty) {
+                    listContainer.innerHTML = '<p class="text-slate-500 text-center py-8">No dictations found. Upload one using the Admin panel!</p>';
+                    return;
+                }
+
+                let htmlContent = '';
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const docId = doc.id;
+                    const base = data.baseSpeed || 80;
+                    
+                    // Generate dynamic speed options
+                    let speedsHTML = '';
+                    let standardSpeeds = [60, 70, 80, 90, 100, 110, 120];
+                    standardSpeeds.forEach(speed => {
+                        let isSelected = speed === parseInt(base) ? 'selected' : '';
+                        let text = speed === parseInt(base) ? `${speed} WPM (Original)` : `${speed} WPM`;
+                        speedsHTML += `<option value="${speed}" ${isSelected}>${text}</option>`;
+                    });
+
+                    htmlContent += `
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-center gap-6 hover:shadow-md transition">
+                            <div class="bg-blue-50 text-blue-600 w-16 h-16 flex items-center justify-center rounded-lg flex-shrink-0 font-extrabold text-xl">
+                                ${base}
+                            </div>
+                            <div class="flex-grow text-center md:text-left w-full md:w-auto">
+                                <h3 class="font-bold text-lg text-slate-800">${data.title}</h3>
+                                <p class="text-sm text-slate-500 mt-1 mb-3">Recorded at Base Speed: ${base} WPM</p>
+                                
+                                <div class="flex items-center justify-center md:justify-start gap-2 bg-slate-50 py-2 px-3 rounded-lg border border-slate-200 w-full md:w-fit">
+                                    <label class="text-sm font-bold text-slate-700 whitespace-nowrap">Practice Speed:</label>
+                                    <select onchange="changeSpeed('audio-${docId}', this.value, ${base})" class="bg-white border border-slate-300 text-slate-700 text-sm rounded-md focus:ring-blue-500 outline-none p-1">
+                                        ${speedsHTML}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="w-full md:w-auto mt-4 md:mt-0">
+                                <audio id="audio-${docId}" controls class="w-full md:w-64 h-10 outline-none">
+                                    <source src="${data.audioUrl}" type="audio/mpeg">
+                                </audio>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                listContainer.innerHTML = htmlContent;
+
+            } catch (error) {
+                console.error("Error fetching dictations: ", error);
+                listContainer.innerHTML = `<p class="text-red-500 text-center py-8">Error loading dictations. Check browser console.</p>`;
+            }
+        }
+
+        // Handle Upload Button Click
+        document.getElementById('upload-submit-btn').addEventListener('click', async () => {
+            const title = document.getElementById('upload-title').value.trim();
+            const speed = document.getElementById('upload-speed').value.trim();
+            const fileInput = document.getElementById('upload-file');
+            const statusText = document.getElementById('upload-status');
+            const btn = document.getElementById('upload-submit-btn');
+
+            if (!title || !speed || fileInput.files.length === 0) {
+                alert("Please fill out the title, speed, and select an audio file.");
+                return;
+            }
+
+            const file = fileInput.files[0];
+            btn.disabled = true;
+            btn.classList.add('opacity-50');
+            statusText.style.display = 'block';
+            statusText.innerText = "Uploading audio to Google Cloud... please wait.";
+            statusText.className = "mt-3 text-center text-sm font-bold text-blue-600 animate-pulse";
+
+            try {
+                // 1. Upload to Storage
+                const storageReference = ref(storage, 'dictations/' + Date.now() + '_' + file.name);
+                await uploadBytes(storageReference, file);
+                
+                // 2. Get Download URL
+                const downloadURL = await getDownloadURL(storageReference);
+
+                // 3. Save to Database
+                statusText.innerText = "Saving to database...";
+                await addDoc(collection(db, "dictations"), {
+                    title: title,
+                    baseSpeed: Number(speed),
+                    audioUrl: downloadURL,
+                    timestamp: serverTimestamp()
+                });
+
+                // Reset Form
+                document.getElementById('upload-title').value = '';
+                document.getElementById('upload-file').value = '';
+                
+                statusText.innerText = "Upload Complete!";
+                statusText.className = "mt-3 text-center text-sm font-bold text-green-600";
+                
+                setTimeout(() => { statusText.style.display = 'none'; }, 3000);
+                
+                // Refresh the feed to show the new item
+                fetchDictations();
+
+            } catch (error) {
+                console.error("Upload failed:", error);
+                statusText.innerText = "Error uploading. Check console.";
+                statusText.className = "mt-3 text-center text-sm font-bold text-red-600";
+            } finally {
+                btn.disabled = false;
+                btn.classList.remove('opacity-50');
+            }
+        });
+
+        // Wire up the refresh button
+        document.getElementById('refresh-dictations-btn').addEventListener('click', fetchDictations);
+
+        // Fetch items on first load
+        fetchDictations();
+    </script>
+</body>
+</html>
