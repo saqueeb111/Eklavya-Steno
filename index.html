@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro Typing & Steno Platform</title>
+    <title>Eklavya Steno Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #f8fafc; }
@@ -47,7 +47,7 @@
     </div>
 
     <header class="bg-blue-700 shadow-md flex justify-between items-center px-6 py-5 max-w-6xl mx-auto w-full">
-        <h1 class="text-2xl font-extrabold text-white tracking-tight">SkillTest Pro <span class="font-light text-blue-200 hidden md:inline">| Typing & Stenography</span></h1>
+        <h1 class="text-2xl font-extrabold text-white tracking-tight">Eklavya Steno <span class="font-light text-blue-200 hidden md:inline">| Typing & Stenography</span></h1>
         <div id="user-status-bar" class="text-sm text-white font-medium">
             <span id="logged-out-view"><button onclick="openAuthModal()" class="bg-blue-800 hover:bg-blue-900 px-4 py-2 rounded-lg shadow transition">Sign In / Register</button></span>
             <span id="logged-in-view" class="hidden flex items-center gap-4">
@@ -66,9 +66,9 @@
             <input type="radio" name="main-tabs" id="tab-dashboard" class="tab-radio">
 
             <div class="tab-nav flex flex-wrap bg-slate-50 border-b border-slate-200">
-                <label for="tab-typing" class="flex-1 py-4 px-2 text-center font-bold text-slate-500 hover:text-slate-800 cursor-pointer transition-colors border-b-2 border-transparent">Practice</label>
-                <label for="tab-steno" class="flex-1 py-4 px-2 text-center font-bold text-slate-500 hover:text-slate-800 cursor-pointer transition-colors border-b-2 border-transparent border-l border-slate-200">Analyzer</label>
-                <label for="tab-dictation" class="flex-1 py-4 px-2 text-center font-bold text-slate-500 hover:text-slate-800 cursor-pointer transition-colors border-b-2 border-transparent border-l border-slate-200">Library</label>
+                <label for="tab-typing" class="flex-1 py-4 px-2 text-center font-bold text-slate-500 hover:text-slate-800 cursor-pointer transition-colors border-b-2 border-transparent">Typing Test</label>
+                <label for="tab-steno" class="flex-1 py-4 px-2 text-center font-bold text-slate-500 hover:text-slate-800 cursor-pointer transition-colors border-b-2 border-transparent border-l border-slate-200">Transcription Checker</label>
+                <label for="tab-dictation" class="flex-1 py-4 px-2 text-center font-bold text-slate-500 hover:text-slate-800 cursor-pointer transition-colors border-b-2 border-transparent border-l border-slate-200">Dictation</label>
                 <label for="tab-dashboard" id="nav-dashboard" class="hidden flex-1 py-4 px-2 text-center font-bold text-emerald-600 hover:text-emerald-800 cursor-pointer transition-colors border-b-2 border-transparent border-l border-slate-200">My Dashboard</label>
             </div>
 
@@ -192,7 +192,7 @@
                         <button onclick="fetchUserHistory()" class="text-sm text-blue-600 hover:underline">Refresh</button>
                     </div>
                     <div id="history-list" class="divide-y divide-slate-100">
-                        <p class="text-center py-8 text-slate-500">Take a test in the Analyzer tab to see your history here.</p>
+                        <p class="text-center py-8 text-slate-500">Take a test in the Transcription Checker tab to see your history here.</p>
                     </div>
                 </div>
             </div>
@@ -282,7 +282,7 @@
             for (var k=0; k<alg.length; k++) {
                 var r = alg[k]; 
                 
-                // 1. Build The Visual Passage with Proper Colors
+                // Visual Passage
                 if (r.p === 0) {
                     if(r.ty === 'Match (Number Format Ignored)') vH += `<span class='color-num'>[${r.t}=${r.o}]</span> `;
                     else vH += `<span class='color-match'>${r.t}</span> `;
@@ -300,7 +300,7 @@
                     vH += `<span class='color-sub'>[${r.t}&rarr;${r.o}]</span> `;
                 }
 
-                // 2. Build the Mistakes-Only Table
+                // Mistakes-Only Table
                 if (r.p > 0) {
                     var tRow = document.createElement('tr'); 
                     if(r.p===1){ fM++; tRow.className="border-b bg-red-50"; } else { hM++; tRow.className="border-b bg-orange-50"; }
@@ -337,9 +337,9 @@
         // Typing Practice Code
         var TIME_LIMIT = 10 * 60; var originalTextStr = ""; var originalWordsArr = []; var timerIntervalId; var timeRemainingSeconds = TIME_LIMIT; var isTestStarted = false; var isTestEnded = false; var logDataArray = [];
         function toggleSource() { document.getElementById("custom-input-area").style.display = (document.getElementById("source-select").value === "custom") ? "block" : "none"; }
-        async function loadTypingTest() { /* standard load logic */ }
-        function handleTypingInput(area) { /* standard typing logic */ }
-        function endTypingTest() { /* standard end logic */ }
+        async function loadTypingTest() { /* omitted for brevity */ }
+        function handleTypingInput(area) { /* omitted for brevity */ }
+        function endTypingTest() { /* omitted for brevity */ }
     </script>
 
     <script type="module">
@@ -482,11 +482,10 @@
             const hl = document.getElementById('history-list');
             hl.innerHTML = '<p class="p-4 text-center">Loading history...</p>';
             try {
-                // Fetch only this user's records, sort locally to prevent Firebase index errors
                 const q = query(collection(db, "userHistory"), where("userId", "==", currentUser.uid));
                 const snap = await getDocs(q);
                 
-                if(snap.empty) { hl.innerHTML = '<p class="p-4 text-center text-slate-500">No tests taken yet. Head to the Analyzer to practice!</p>'; return; }
+                if(snap.empty) { hl.innerHTML = '<p class="p-4 text-center text-slate-500">No tests taken yet. Head to the Transcription Checker to practice!</p>'; return; }
                 
                 let records = [];
                 snap.forEach(doc => records.push(doc.data()));
