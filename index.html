@@ -244,7 +244,8 @@
                                     <option value="GD Bisht">GD Bisht</option>
                                     <option value="General Matter">General Matter</option>
                                     <option value="Legal Matter">Legal Matter</option>
-                                    <option value="Important Words">Important Words</option> <option value="Most Important Matters">Most Important Matters</option>
+                                    <option value="Important Words">Important Words</option>
+                                    <option value="Most Important Matters">Most Important Matters</option>
                                 </select>
                             </div>
                             <div class="md:col-span-1"><label class="block text-sm font-bold text-slate-700 mb-2">Title</label><input type="text" id="upload-title" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 outline-none"></div>
@@ -269,7 +270,8 @@
                                     <option value="GD Bisht">GD Bisht</option>
                                     <option value="General Matter">General Matter</option>
                                     <option value="Legal Matter">Legal Matter</option>
-                                    <option value="Important Words">Important Words</option> <option value="Most Important Matters">Most Important Matters</option>
+                                    <option value="Important Words">Important Words</option> 
+                                    <option value="Most Important Matters">Most Important Matters</option>
                                 </select>
                             </div>
                         </div>
@@ -333,26 +335,19 @@
     <script>
         window.onerror = function(message, source, lineno) { console.error(message); return true; };
         
-        // View Routing Logic
         function switchView(viewId) {
-            if(!window.currentUser && viewId !== 'home') {
-                openAuthModal();
-                return;
-            }
+            if(!window.currentUser && viewId !== 'home') { openAuthModal(); return; }
             document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active-view'));
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            
             document.getElementById('view-' + viewId).classList.add('active-view');
             const link = document.querySelector(`button[onclick="switchView('${viewId}')"]`);
             if(link) link.classList.add('active');
-            
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function openAuthModal() { document.getElementById('auth-modal').classList.remove('hidden'); }
         function closeAuthModal() { document.getElementById('auth-modal').classList.add('hidden'); document.getElementById('auth-error').style.display='none'; document.getElementById('auth-success').style.display='none';}
         
-        // --- STENO ANALYZER LOGIC ---
         function cleanStenoWord(w) { return !w ? "" : w.split('/').join(''); }
         function stripPunct(w) { if(!w) return ""; var c=['.',',','!','?',';',':','"','\'','(',')','-']; var r=w; for(var i=0;i<c.length;i++) r=r.split(c[i]).join(''); return r; }
         function wordToNumberStr(w) { var o={"zero":"0","one":"1","two":"2","three":"3","four":"4","five":"5","six":"6","seven":"7","eight":"8","nine":"9","ten":"10"}; return o[w] ? o[w] : w; }
@@ -536,28 +531,19 @@
 
         window.signInWithGoogle = function() { signInWithPopup(auth, googleProvider).catch(err => alert("Google Sign-In Failed: " + err.message)); };
 
-        // Handle Forgot Password
         window.handleForgotPassword = function() {
             const email = document.getElementById('auth-email').value.trim();
             const errBox = document.getElementById('auth-error');
             const succBox = document.getElementById('auth-success');
             errBox.style.display = 'none'; succBox.style.display = 'none';
-            
-            if(!email) {
-                errBox.innerText = "Please enter your email address in the box above first.";
-                errBox.style.display = 'block'; return;
-            }
-            sendPasswordResetEmail(auth, email).then(() => {
-                succBox.innerText = "Password reset email sent! Check your inbox.";
-                succBox.style.display = 'block';
-            }).catch(err => {
-                errBox.innerText = "Error: " + err.message;
-                errBox.style.display = 'block';
-            });
+            if(!email) { errBox.innerText = "Please enter your email address in the box above first."; errBox.style.display = 'block'; return; }
+            sendPasswordResetEmail(auth, email).then(() => { succBox.innerText = "Password reset email sent! Check your inbox."; succBox.style.display = 'block'; }).catch(err => { errBox.innerText = "Error: " + err.message; errBox.style.display = 'block'; });
         };
 
         onAuthStateChanged(auth, (user) => {
             currentUser = user;
+            window.currentUser = user; // THE FIX: Shares login state globally
+            
             if (user) {
                 document.getElementById('logged-out-cta').style.display = 'none';
                 document.getElementById('logged-in-cta').style.display = 'block';
@@ -575,10 +561,7 @@
                 document.getElementById('typing-admin-panel').style.display = isAdmin ? 'block' : 'none';
                 document.getElementById('notes-admin-panel').style.display = isAdmin ? 'block' : 'none';
                 
-                window.fetchUserHistory();
-                window.fetchDictations();
-                window.fetchTypingTexts();
-                window.fetchNotes();
+                window.fetchUserHistory(); window.fetchDictations(); window.fetchTypingTexts(); window.fetchNotes();
             } else {
                 document.getElementById('logged-out-cta').style.display = 'block';
                 document.getElementById('logged-in-cta').style.display = 'none';
@@ -671,7 +654,6 @@
                 window.typingData = [];
                 snap.forEach(doc => { let d = doc.data(); d.id = doc.id; window.typingData.push(d); });
                 const select = document.getElementById('source-select');
-                // Remove old official options
                 document.querySelectorAll('.off-opt').forEach(e => e.remove());
                 
                 window.typingData.forEach(d => {
