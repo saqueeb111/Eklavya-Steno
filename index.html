@@ -182,14 +182,7 @@
                 </section>
 
                 <section id="view-steno" class="app-view p-6 md:p-10">
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-                        <h2 class="text-3xl font-extrabold text-slate-800 dark:text-white">Steno Transcription Analyzer</h2>
-                        
-                        <div class="flex items-center gap-2 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 px-4 py-2 rounded-lg shadow-sm">
-                            <input type="checkbox" id="sprint-mode-toggle" class="w-5 h-5 text-emerald-600 rounded cursor-pointer">
-                            <label for="sprint-mode-toggle" class="font-bold text-sm text-emerald-800 dark:text-emerald-400 cursor-pointer">Sprint Mode (Grade only what I typed)</label>
-                        </div>
-                    </div>
+                    <h2 class="text-3xl font-extrabold text-slate-800 dark:text-white mb-6">Steno Transcription Analyzer</h2>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                         <div>
@@ -201,12 +194,22 @@
                             <textarea id="steno-typed" placeholder="Paste your typed version here..." class="w-full h-64 p-5 border-2 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 transition shadow-sm resize-y"></textarea>
                         </div>
                     </div>
-                    <button type="button" onclick="analyzeSteno()" class="w-full py-5 bg-emerald-600 hover:bg-emerald-700 text-white text-xl font-extrabold rounded-xl shadow-lg transition duration-200 transform hover:-translate-y-1 tracking-wide">Run Analysis & Save to Profile</button>
-                    <p id="save-status" class="text-center mt-4 text-sm font-bold text-emerald-600 hidden"></p>
+                    
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-4">
+                        <div class="flex items-center gap-3 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 px-5 py-4 rounded-xl shadow-sm sm:w-auto shrink-0 transition hover:bg-emerald-100 dark:hover:bg-emerald-900/40">
+                            <input type="checkbox" id="partial-analyzer-toggle" class="w-6 h-6 text-emerald-600 rounded cursor-pointer">
+                            <label for="partial-analyzer-toggle" class="font-extrabold text-emerald-800 dark:text-emerald-400 cursor-pointer select-none">Partial Analyser</label>
+                        </div>
+                        
+                        <button type="button" onclick="analyzeSteno()" class="flex-grow w-full py-4 sm:py-0 h-[60px] bg-emerald-600 hover:bg-emerald-700 text-white text-xl font-extrabold rounded-xl shadow-lg transition duration-200 transform hover:-translate-y-1 tracking-wide">
+                            Run Analysis & Save to Profile
+                        </button>
+                    </div>
+                    <p id="save-status" class="text-center mt-2 text-sm font-bold text-emerald-600 hidden"></p>
 
                     <div id="steno-results-area" class="hidden mt-10">
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 text-center">
-                            <div class="bg-slate-50 dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm"><span class="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">Words Typed</span><br><span id="steno-total-words" class="text-4xl font-extrabold text-slate-800 dark:text-white">0</span></div>
+                            <div class="bg-slate-50 dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm"><span class="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">Words Evaluated</span><br><span id="steno-total-words" class="text-4xl font-extrabold text-slate-800 dark:text-white">0</span></div>
                             <div class="bg-emerald-50 dark:bg-emerald-900/20 p-5 rounded-xl border border-emerald-200 dark:border-emerald-800 shadow-sm"><span class="text-xs text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider">Accuracy</span><br><span class="text-4xl font-extrabold text-emerald-600"><span id="steno-accuracy">0</span>%</span></div>
                             <div class="bg-red-50 dark:bg-red-900/20 p-5 rounded-xl border border-red-200 dark:border-red-800 shadow-sm"><span class="text-xs text-red-500 dark:text-red-400 font-bold uppercase tracking-wider">Full Mistakes</span><br><span id="steno-full" class="text-4xl font-extrabold text-red-600">0</span></div>
                             <div class="bg-orange-50 dark:bg-orange-900/20 p-5 rounded-xl border border-orange-200 dark:border-orange-800 shadow-sm"><span class="text-xs text-orange-600 dark:text-orange-400 font-bold uppercase tracking-wider">Half Mistakes</span><br><span id="steno-half" class="text-4xl font-extrabold text-orange-600">0</span></div>
@@ -372,7 +375,7 @@
         function openAuthModal() { document.getElementById('auth-modal').classList.remove('hidden'); }
         function closeAuthModal() { document.getElementById('auth-modal').classList.add('hidden'); document.getElementById('auth-error').style.display='none'; document.getElementById('auth-success').style.display='none';}
         
-        // --- STENO ANALYZER LOGIC FOR SSC (WITH SPRINT MODE) ---
+        // --- STENO ANALYZER LOGIC FOR SSC (WITH PARTIAL ANALYSER) ---
         function cleanStenoWord(w) { return !w ? "" : w.split('/').join(''); }
         function stripPunct(w) { if(!w) return ""; var c=['.',',','!','?',';',':','"','\'','(',')','-']; var r=w; for(var i=0;i<c.length;i++) r=r.split(c[i]).join(''); return r; }
         function wordToNumberStr(w) { var o={"zero":"0","one":"1","two":"2","three":"3","four":"4","five":"5","six":"6","seven":"7","eight":"8","nine":"9","ten":"10"}; return o[w] ? o[w] : w; }
@@ -405,11 +408,11 @@
                 }
             }
             
-            var isSprint = document.getElementById('sprint-mode-toggle') ? document.getElementById('sprint-mode-toggle').checked : false;
+            var isPartial = document.getElementById('partial-analyzer-toggle') ? document.getElementById('partial-analyzer-toggle').checked : false;
             var cI = oW.length; var cJ = tW.length; var alg = []; var fM = 0; var hM = 0; window.lastMistakeArray = [];
             
-            // SPRINT MODE LOGIC: Find exactly where the user stopped typing in the original text
-            if (isSprint && tW.length > 0) {
+            // PARTIAL ANALYSER LOGIC: Find exactly where the user stopped typing in the original text
+            if (isPartial && tW.length > 0) {
                 let minC = Infinity; let bestI = tW.length;
                 let startSearch = Math.max(0, tW.length - 150); let endSearch = Math.min(oW.length, tW.length + 150);
                 for(let i = startSearch; i <= endSearch; i++) { if(dp[i][tW.length] < minC) { minC = dp[i][tW.length]; bestI = i; } }
@@ -432,7 +435,7 @@
             
             for (var k=0; k<alg.length; k++) {
                 var r = alg[k]; 
-                if(r.ty !== 'Addition') evaluatedWordsCount++; // Count original words evaluated
+                if(r.ty !== 'Addition') evaluatedWordsCount++;
 
                 if (r.p === 0) { if(r.ty.includes('Number')) vH += `<span class='color-num'>[${r.t}=${r.o}]</span> `; else vH += `<span class='color-match'>${r.t}</span> `; } 
                 else if (r.ty === 'Capitalization') { vH += `<span class='color-cap'>[${r.t}&rarr;${r.o}]</span> `; } 
