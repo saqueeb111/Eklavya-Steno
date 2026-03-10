@@ -7,56 +7,23 @@
     <link rel="icon" type="image/jpeg" href="logo.jpg">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: { extend: {} }
-        }
+        tailwind.config = { darkMode: 'class', theme: { extend: {} } }
     </script>
     <style>
         body { font-family: 'Inter', sans-serif; transition: background-color 0.3s, color 0.3s; }
-        
-        /* Steno Colors */
-        .color-match { color: #16a34a; } 
-        .dark .color-match { color: #4ade80; } 
-        
-        .color-num { color: #0d9488; font-weight: bold; background: #ccfbf1; padding: 2px 4px; border-radius: 4px; } 
-        .dark .color-num { color: #2dd4bf; background: #134e4a; }
-        
-        .color-cap { color: #9333ea; font-weight: bold; background: #f3e8ff; padding: 2px 4px; border-radius: 4px; } 
-        .dark .color-cap { color: #c084fc; background: #581c87; }
-        
-        .color-punct { color: #ea580c; font-weight: bold; background: #ffedd5; padding: 2px 4px; border-radius: 4px; } 
-        .dark .color-punct { color: #fb923c; background: #7c2d12; }
-        
-        .color-spell { color: #2563eb; font-weight: bold; background: #dbeafe; padding: 2px 4px; border-radius: 4px; } 
-        .dark .color-spell { color: #60a5fa; background: #1e3a8a; }
-        
-        .color-sub { color: #dc2626; font-weight: bold; background: #fee2e2; padding: 2px 4px; border-radius: 4px; } 
-        .dark .color-sub { color: #f87171; background: #7f1d1d; }
-        
-        .color-omit { color: #dc2626; font-weight: bold; text-decoration: underline; background: #fee2e2; padding: 2px 4px; border-radius: 4px; } 
-        .dark .color-omit { color: #f87171; background: #7f1d1d; }
-        
-        .color-add { color: #dc2626; font-weight: bold; text-decoration: line-through; background: #fee2e2; padding: 2px 4px; border-radius: 4px; }
-        .dark .color-add { color: #f87171; background: #7f1d1d; }
-        
-        ::-webkit-scrollbar { width: 8px; } 
-        ::-webkit-scrollbar-track { background: transparent; } 
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; } 
-        .dark ::-webkit-scrollbar-thumb { background: #475569; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        
-        /* View Transitions */
-        .app-view { display: none; animation: fadeIn 0.4s ease-out; }
-        .app-view.active-view { display: block; }
+        .color-match { color: #16a34a; } .dark .color-match { color: #4ade80; } 
+        .color-num { color: #0d9488; font-weight: bold; background: #ccfbf1; padding: 2px 4px; border-radius: 4px; } .dark .color-num { color: #2dd4bf; background: #134e4a; }
+        .color-cap { color: #9333ea; font-weight: bold; background: #f3e8ff; padding: 2px 4px; border-radius: 4px; } .dark .color-cap { color: #c084fc; background: #581c87; }
+        .color-punct { color: #ea580c; font-weight: bold; background: #ffedd5; padding: 2px 4px; border-radius: 4px; } .dark .color-punct { color: #fb923c; background: #7c2d12; }
+        .color-spell { color: #2563eb; font-weight: bold; background: #dbeafe; padding: 2px 4px; border-radius: 4px; } .dark .color-spell { color: #60a5fa; background: #1e3a8a; }
+        .color-sub { color: #dc2626; font-weight: bold; background: #fee2e2; padding: 2px 4px; border-radius: 4px; } .dark .color-sub { color: #f87171; background: #7f1d1d; }
+        .color-omit { color: #dc2626; font-weight: bold; text-decoration: underline; background: #fee2e2; padding: 2px 4px; border-radius: 4px; } .dark .color-omit { color: #f87171; background: #7f1d1d; }
+        .color-add { color: #dc2626; font-weight: bold; text-decoration: line-through; background: #fee2e2; padding: 2px 4px; border-radius: 4px; } .dark .color-add { color: #f87171; background: #7f1d1d; }
+        ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; } .dark ::-webkit-scrollbar-thumb { background: #475569; } ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .app-view { display: none; animation: fadeIn 0.4s ease-out; } .app-view.active-view { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .nav-link.active { color: #10b981; border-bottom: 2px solid #10b981; }
-        .nav-link-admin.active { color: #9333ea; border-bottom: 2px solid #9333ea; }
-        
-        /* Typing highlight */
-        .typing-active-word { background-color: #e2e8f0; color: black; border-radius: 4px; padding: 0 2px; }
-        .dark .typing-active-word { background-color: #475569; color: white; }
+        .nav-link.active { color: #10b981; border-bottom: 2px solid #10b981; } .nav-link-admin.active { color: #9333ea; border-bottom: 2px solid #9333ea; }
+        .typing-active-word { background-color: #e2e8f0; color: black; border-radius: 4px; padding: 0 2px; } .dark .typing-active-word { background-color: #475569; color: white; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 antialiased min-h-screen flex flex-col transition-colors duration-300">
@@ -66,25 +33,14 @@
             <button onclick="closeAuthModal()" class="absolute top-4 right-5 text-slate-400 hover:text-red-500 font-bold text-2xl transition">&times;</button>
             <h2 class="text-3xl font-extrabold text-slate-800 dark:text-white mb-2">Account Access</h2>
             <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Log in to unlock Stenogram tools.</p>
-            
             <button onclick="window.signInWithGoogle()" class="w-full mb-5 flex items-center justify-center gap-3 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-600 text-slate-700 dark:text-white font-bold py-3.5 rounded-xl shadow-sm transition duration-200">
                 <svg class="w-5 h-5" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
                 Sign in with Google
             </button>
-
             <div class="flex items-center mb-5"><div class="flex-grow border-t border-slate-200 dark:border-slate-600"></div><span class="mx-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Or Email</span><div class="flex-grow border-t border-slate-200 dark:border-slate-600"></div></div>
-
-            <div class="mb-4 text-left">
-                <input type="email" id="auth-email" placeholder="Email Address" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white rounded-xl p-3.5 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition">
-            </div>
-            <div class="mb-2 text-left">
-                <input type="password" id="auth-password" placeholder="Password (Min 6 chars)" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white rounded-xl p-3.5 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition">
-            </div>
-            
-            <div class="text-right mb-6">
-                <button type="button" onclick="handleForgotPassword()" class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 font-semibold transition">Forgot Password?</button>
-            </div>
-            
+            <div class="mb-4 text-left"><input type="email" id="auth-email" placeholder="Email Address" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white rounded-xl p-3.5 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition"></div>
+            <div class="mb-2 text-left"><input type="password" id="auth-password" placeholder="Password (Min 6 chars)" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white rounded-xl p-3.5 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition"></div>
+            <div class="text-right mb-6"><button type="button" onclick="handleForgotPassword()" class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 font-semibold transition">Forgot Password?</button></div>
             <div class="flex gap-3">
                 <button type="button" id="login-btn" class="flex-1 py-3.5 bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 dark:hover:bg-slate-600 text-white font-bold rounded-xl transition duration-200 shadow-md">Log In</button>
                 <button type="button" id="signup-btn" class="flex-1 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition duration-200 shadow-md">Sign Up</button>
@@ -102,7 +58,6 @@
                     <div style="display:none;" class="w-12 h-12 bg-gradient-to-br from-blue-500 to-emerald-500 rounded-xl flex items-center justify-center text-white font-bold text-2xl">S</div>
                     <span class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-emerald-500 tracking-tight">STENOGRAM</span>
                 </div>
-                
                 <nav class="hidden md:flex space-x-4 lg:space-x-6" id="desktop-nav">
                     <button onclick="switchView('home')" class="nav-link active text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-1 py-2 font-semibold text-sm transition">Home</button>
                     <div id="logged-in-nav" class="hidden flex space-x-4 lg:space-x-6">
@@ -114,15 +69,9 @@
                         <button id="nav-admin" onclick="switchView('admin')" class="hidden nav-link-admin text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 px-1 py-2 font-bold text-sm transition">Admin Tracker</button>
                     </div>
                 </nav>
-
                 <div class="flex items-center">
-                    <span id="logged-out-view" class="flex gap-2">
-                        <button onclick="openAuthModal()" class="bg-gradient-to-r from-blue-600 to-emerald-500 hover:from-blue-500 hover:to-emerald-400 text-white px-5 py-2.5 rounded-xl shadow-lg font-bold transition text-sm">Sign In / Register</button>
-                    </span>
-                    <span id="logged-in-view" class="hidden flex items-center gap-4">
-                        <span id="user-email-display" class="hidden lg:inline bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 px-3 py-1.5 rounded-lg shadow-inner font-bold text-xs"></span>
-                        <button id="logout-btn" class="text-emerald-600 dark:text-emerald-400 hover:underline transition font-bold text-sm bg-slate-100 dark:bg-slate-800 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700">Sign Out</button>
-                    </span>
+                    <span id="logged-out-view" class="flex gap-2"><button onclick="openAuthModal()" class="bg-gradient-to-r from-blue-600 to-emerald-500 hover:from-blue-500 hover:to-emerald-400 text-white px-5 py-2.5 rounded-xl shadow-lg font-bold transition text-sm">Sign In / Register</button></span>
+                    <span id="logged-in-view" class="hidden flex items-center gap-4"><span id="user-email-display" class="hidden lg:inline bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 px-3 py-1.5 rounded-lg shadow-inner font-bold text-xs"></span><button id="logout-btn" class="text-emerald-600 dark:text-emerald-400 hover:underline transition font-bold text-sm bg-slate-100 dark:bg-slate-800 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700">Sign Out</button></span>
                 </div>
             </div>
         </div>
@@ -131,7 +80,6 @@
     <main class="max-w-7xl mx-auto w-full flex-grow flex flex-col items-center">
         
         <section id="view-home" class="app-view active-view w-full px-4 pt-10 pb-16">
-            
             <div class="w-full max-w-5xl mx-auto mb-16">
                 <img src="banner.jpg" alt="Stenogram Features Banner" class="w-full h-auto rounded-3xl shadow-2xl border-4 border-white dark:border-slate-800" onerror="this.style.display='none'; document.getElementById('fallback-banner').style.display='block';">
                 <div id="fallback-banner" style="display:none;" class="w-full bg-slate-900 rounded-3xl p-12 text-center shadow-2xl border border-slate-800 mb-10">
@@ -141,33 +89,15 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto text-left mb-16">
-                <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-lg border border-slate-100 dark:border-slate-700 transform hover:-translate-y-2 hover:shadow-2xl transition duration-300">
-                    <div class="bg-blue-50 dark:bg-blue-900/30 w-16 h-16 flex items-center justify-center rounded-2xl text-blue-600 dark:text-blue-400 text-3xl mb-6 border border-blue-100 dark:border-blue-800/50">⚡</div>
-                    <h3 class="font-extrabold text-slate-800 dark:text-white text-xl mb-2">Strict SSC Algorithm</h3>
-                    <p class="text-slate-500 dark:text-slate-400 leading-relaxed">Our custom math engine calculates exact Full & Half mistakes automatically, ignoring formatting quirks and perfectly matching SSC grading rules.</p>
-                </div>
-                <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-lg border border-slate-100 dark:border-slate-700 transform hover:-translate-y-2 hover:shadow-2xl transition duration-300">
-                    <div class="bg-emerald-50 dark:bg-emerald-900/30 w-16 h-16 flex items-center justify-center rounded-2xl text-emerald-600 dark:text-emerald-400 text-3xl mb-6 border border-emerald-100 dark:border-emerald-800/50">🎧</div>
-                    <h3 class="font-extrabold text-slate-800 dark:text-white text-xl mb-2">Pro Dictation Library</h3>
-                    <p class="text-slate-500 dark:text-slate-400 leading-relaxed">Access high-quality audios, practice transcribing them with a live on-screen timer, and instantly check your answers against official keys.</p>
-                </div>
-                <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-lg border border-slate-100 dark:border-slate-700 transform hover:-translate-y-2 hover:shadow-2xl transition duration-300">
-                    <div class="bg-purple-50 dark:bg-purple-900/30 w-16 h-16 flex items-center justify-center rounded-2xl text-purple-600 dark:text-purple-400 text-3xl mb-6 border border-purple-100 dark:border-purple-800/50">📈</div>
-                    <h3 class="font-extrabold text-slate-800 dark:text-white text-xl mb-2">Performance Tracking</h3>
-                    <p class="text-slate-500 dark:text-slate-400 leading-relaxed">Your free profile securely saves your exact mistakes, allowing you to review your specific errors and track your accuracy growth over time.</p>
-                </div>
+                <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-lg border border-slate-100 dark:border-slate-700 transform hover:-translate-y-2 hover:shadow-2xl transition duration-300"><div class="bg-blue-50 dark:bg-blue-900/30 w-16 h-16 flex items-center justify-center rounded-2xl text-blue-600 dark:text-blue-400 text-3xl mb-6 border border-blue-100 dark:border-blue-800/50">⚡</div><h3 class="font-extrabold text-slate-800 dark:text-white text-xl mb-2">Strict SSC Algorithm</h3><p class="text-slate-500 dark:text-slate-400 leading-relaxed">Our custom math engine calculates exact Full & Half mistakes automatically, ignoring formatting quirks and perfectly matching SSC grading rules.</p></div>
+                <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-lg border border-slate-100 dark:border-slate-700 transform hover:-translate-y-2 hover:shadow-2xl transition duration-300"><div class="bg-emerald-50 dark:bg-emerald-900/30 w-16 h-16 flex items-center justify-center rounded-2xl text-emerald-600 dark:text-emerald-400 text-3xl mb-6 border border-emerald-100 dark:border-emerald-800/50">🎧</div><h3 class="font-extrabold text-slate-800 dark:text-white text-xl mb-2">Pro Dictation Library</h3><p class="text-slate-500 dark:text-slate-400 leading-relaxed">Access high-quality audios, practice transcribing them with a live on-screen timer, and instantly check your answers against official keys.</p></div>
+                <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-lg border border-slate-100 dark:border-slate-700 transform hover:-translate-y-2 hover:shadow-2xl transition duration-300"><div class="bg-purple-50 dark:bg-purple-900/30 w-16 h-16 flex items-center justify-center rounded-2xl text-purple-600 dark:text-purple-400 text-3xl mb-6 border border-purple-100 dark:border-purple-800/50">📈</div><h3 class="font-extrabold text-slate-800 dark:text-white text-xl mb-2">Performance Tracking</h3><p class="text-slate-500 dark:text-slate-400 leading-relaxed">Your free profile securely saves your exact mistakes, allowing you to review your specific errors and track your accuracy growth over time.</p></div>
             </div>
 
             <div id="logged-out-cta" class="text-center py-12 bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-xl max-w-4xl mx-auto mb-12">
                 <h3 class="text-3xl font-extrabold text-slate-800 dark:text-white mb-3">Unlock the Tool Vault</h3>
                 <p class="text-slate-500 dark:text-slate-400 mb-8 text-lg">Create a free account to access dictations, notes, and the SSC analyzer.</p>
-                <div class="flex flex-col sm:flex-row justify-center items-center gap-4 px-6">
-                    <button onclick="window.signInWithGoogle()" class="w-full sm:w-auto flex items-center justify-center gap-3 bg-white dark:bg-slate-700 border-2 border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-600 text-slate-700 dark:text-white font-bold py-4 px-10 rounded-xl shadow-sm transition text-lg">
-                        <svg class="w-6 h-6" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-                        Continue with Google
-                    </button>
-                    <button onclick="openAuthModal()" class="w-full sm:w-auto bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 dark:hover:bg-slate-600 text-white font-bold py-4 px-10 rounded-xl shadow-md transition text-lg">Email Login</button>
-                </div>
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4 px-6"><button onclick="window.signInWithGoogle()" class="w-full sm:w-auto flex items-center justify-center gap-3 bg-white dark:bg-slate-700 border-2 border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-600 text-slate-700 dark:text-white font-bold py-4 px-10 rounded-xl shadow-sm transition text-lg"><svg class="w-6 h-6" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg> Continue with Google</button><button onclick="openAuthModal()" class="w-full sm:w-auto bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 dark:hover:bg-slate-600 text-white font-bold py-4 px-10 rounded-xl shadow-md transition text-lg">Email Login</button></div>
             </div>
 
             <div id="logged-in-cta" class="hidden text-center py-10 bg-emerald-50 dark:bg-emerald-900/20 rounded-3xl border border-emerald-100 dark:border-emerald-800 shadow-sm max-w-3xl mx-auto mb-12">
@@ -178,7 +108,6 @@
                     <button onclick="switchView('steno')" class="bg-blue-600 text-white px-6 py-2 rounded-lg font-bold shadow hover:bg-blue-700 transition">Steno Analyzer</button>
                 </div>
             </div>
-            
         </section>
 
         <div id="app-workspace" class="hidden w-full max-w-6xl mt-8 px-4 pb-16">
@@ -193,6 +122,11 @@
                         <textarea id="type-admin-body" placeholder="Paste the official paragraph here..." class="w-full h-32 p-3 rounded-lg border border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white resize-y mb-3"></textarea>
                         <button id="type-admin-btn" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 transition">Save to Cloud Library</button>
                         <p id="type-admin-status" class="text-sm font-bold mt-2 hidden text-emerald-500"></p>
+                        
+                        <div class="mt-5 border-t border-slate-200 dark:border-slate-700 pt-4">
+                            <h4 class="font-bold text-sm text-slate-600 dark:text-slate-400 mb-2">Manage Uploaded Texts:</h4>
+                            <div id="admin-typing-list" class="max-h-40 overflow-y-auto pr-2"></div>
+                        </div>
                     </div>
 
                     <div class="bg-slate-50 dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 mb-6 grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -248,7 +182,15 @@
                 </section>
 
                 <section id="view-steno" class="app-view p-6 md:p-10">
-                    <h2 class="text-3xl font-extrabold text-slate-800 dark:text-white mb-6">Steno Transcription Analyzer</h2>
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                        <h2 class="text-3xl font-extrabold text-slate-800 dark:text-white">Steno Transcription Analyzer</h2>
+                        
+                        <div class="flex items-center gap-2 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 px-4 py-2 rounded-lg shadow-sm">
+                            <input type="checkbox" id="sprint-mode-toggle" class="w-5 h-5 text-emerald-600 rounded cursor-pointer">
+                            <label for="sprint-mode-toggle" class="font-bold text-sm text-emerald-800 dark:text-emerald-400 cursor-pointer">Sprint Mode (Grade only what I typed)</label>
+                        </div>
+                    </div>
+                    
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                         <div>
                             <label class="block font-extrabold text-slate-700 dark:text-slate-300 mb-3 text-lg">Original Answer Key</label>
@@ -264,7 +206,7 @@
 
                     <div id="steno-results-area" class="hidden mt-10">
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 text-center">
-                            <div class="bg-slate-50 dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm"><span class="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">Words</span><br><span id="steno-total-words" class="text-4xl font-extrabold text-slate-800 dark:text-white">0</span></div>
+                            <div class="bg-slate-50 dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm"><span class="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">Words Typed</span><br><span id="steno-total-words" class="text-4xl font-extrabold text-slate-800 dark:text-white">0</span></div>
                             <div class="bg-emerald-50 dark:bg-emerald-900/20 p-5 rounded-xl border border-emerald-200 dark:border-emerald-800 shadow-sm"><span class="text-xs text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider">Accuracy</span><br><span class="text-4xl font-extrabold text-emerald-600"><span id="steno-accuracy">0</span>%</span></div>
                             <div class="bg-red-50 dark:bg-red-900/20 p-5 rounded-xl border border-red-200 dark:border-red-800 shadow-sm"><span class="text-xs text-red-500 dark:text-red-400 font-bold uppercase tracking-wider">Full Mistakes</span><br><span id="steno-full" class="text-4xl font-extrabold text-red-600">0</span></div>
                             <div class="bg-orange-50 dark:bg-orange-900/20 p-5 rounded-xl border border-orange-200 dark:border-orange-800 shadow-sm"><span class="text-xs text-orange-600 dark:text-orange-400 font-bold uppercase tracking-wider">Half Mistakes</span><br><span id="steno-half" class="text-4xl font-extrabold text-orange-600">0</span></div>
@@ -299,7 +241,6 @@
                     <div id="admin-upload-panel" class="hidden bg-white dark:bg-slate-800 p-8 rounded-2xl border border-emerald-200 dark:border-emerald-800 shadow-lg mb-10 relative overflow-hidden">
                         <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500"></div>
                         <h2 class="text-2xl font-extrabold text-emerald-800 dark:text-emerald-400 mb-6">Admin Upload Dashboard</h2>
-                        
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
                             <div class="md:col-span-1">
                                 <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Folder / Category</label>
@@ -316,7 +257,6 @@
                             <div class="md:col-span-1"><label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Title</label><input type="text" id="upload-title" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-white rounded-xl p-3 outline-none"></div>
                             <div class="md:col-span-1"><label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Base Speed</label><input type="number" id="upload-speed" value="80" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-white rounded-xl p-3 outline-none"></div>
                         </div>
-                        
                         <div class="mb-5"><label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Answer Key (Optional Transcript)</label><textarea id="upload-transcript" class="w-full h-24 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-white rounded-xl p-3 outline-none resize-y"></textarea></div>
                         <input type="file" id="upload-file" accept="audio/*" class="block w-full mb-5 border border-slate-300 dark:border-slate-600 rounded-xl p-2 bg-white dark:bg-slate-900 text-slate-500 file:bg-emerald-50 file:text-emerald-700 dark:file:bg-emerald-900/50 dark:file:text-emerald-400 cursor-pointer">
                         <button type="button" id="upload-submit-btn" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white text-lg font-bold rounded-xl shadow-md transition">Upload to Cloud</button>
@@ -403,57 +343,36 @@
     <footer class="w-full bg-slate-900 border-t border-slate-800 py-8 mt-auto z-40 relative">
         <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
             <p class="text-slate-400 font-medium text-sm">&copy; 2026 Stenogram Platform.</p>
-            
             <div class="flex flex-wrap justify-center gap-4">
-                <a href="https://t.me/Stenograam" target="_blank" class="flex items-center gap-2 bg-[#0088cc] hover:bg-[#0077b3] text-white px-4 py-2 rounded-lg font-bold text-sm transition shadow-lg">
-                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.21-1.12-.33-1.08-.7.02-.19.27-.39.75-.59 2.95-1.28 4.91-2.12 5.89-2.52 2.79-1.15 3.37-1.35 3.75-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .24z"/></svg> Telegram
-                </a>
-                <a href="http://www.youtube.com/@Stenograam" target="_blank" class="flex items-center gap-2 bg-[#FF0000] hover:bg-[#cc0000] text-white px-4 py-2 rounded-lg font-bold text-sm transition shadow-lg">
-                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M21.582 6.186a2.684 2.684 0 0 0-1.884-1.897C18.036 3.843 12 3.843 12 3.843s-6.036 0-7.698.446a2.684 2.684 0 0 0-1.884 1.897C2 7.848 2 12 2 12s0 4.152.418 5.814a2.684 2.684 0 0 0 1.884 1.897C6.036 20.157 12 20.157 12 20.157s6.036 0 7.698-.446a2.684 2.684 0 0 0 1.884-1.897C22 16.152 22 12 22 12s0-4.152-.418-5.814zM9.803 15.484V8.516L15.605 12l-5.792 3.484z"/></svg> YouTube
-                </a>
-                
-                <button onclick="toggleDarkMode()" class="flex items-center gap-2 bg-slate-800 border border-slate-700 hover:bg-slate-700 text-slate-300 px-4 py-2 rounded-lg font-bold text-sm transition shadow-lg ml-2 md:ml-6">
-                    <span id="dark-icon">🌙 Dark Mode</span>
-                </button>
+                <a href="https://t.me/Stenograam" target="_blank" class="flex items-center gap-2 bg-[#0088cc] hover:bg-[#0077b3] text-white px-4 py-2 rounded-lg font-bold text-sm transition shadow-lg"><svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.21-1.12-.33-1.08-.7.02-.19.27-.39.75-.59 2.95-1.28 4.91-2.12 5.89-2.52 2.79-1.15 3.37-1.35 3.75-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .24z"/></svg> Telegram</a>
+                <a href="http://www.youtube.com/@Stenograam" target="_blank" class="flex items-center gap-2 bg-[#FF0000] hover:bg-[#cc0000] text-white px-4 py-2 rounded-lg font-bold text-sm transition shadow-lg"><svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M21.582 6.186a2.684 2.684 0 0 0-1.884-1.897C18.036 3.843 12 3.843 12 3.843s-6.036 0-7.698.446a2.684 2.684 0 0 0-1.884 1.897C2 7.848 2 12 2 12s0 4.152.418 5.814a2.684 2.684 0 0 0 1.884 1.897C6.036 20.157 12 20.157 12 20.157s6.036 0 7.698-.446a2.684 2.684 0 0 0 1.884-1.897C22 16.152 22 12 22 12s0-4.152-.418-5.814zM9.803 15.484V8.516L15.605 12l-5.792 3.484z"/></svg> YouTube</a>
+                <button onclick="toggleDarkMode()" class="flex items-center gap-2 bg-slate-800 border border-slate-700 hover:bg-slate-700 text-slate-300 px-4 py-2 rounded-lg font-bold text-sm transition shadow-lg ml-2 md:ml-6"><span id="dark-icon">🌙 Dark Mode</span></button>
             </div>
         </div>
     </footer>
 
     <script>
         window.onerror = function(message, source, lineno) { console.error(message); return true; };
-        
-        // --- DARK MODE LOGIC ---
         function toggleDarkMode() {
-            const html = document.documentElement;
-            html.classList.toggle('dark');
-            const isDark = html.classList.contains('dark');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            const html = document.documentElement; html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark'); localStorage.setItem('theme', isDark ? 'dark' : 'light');
             document.getElementById('dark-icon').innerText = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
         }
-        
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-            document.getElementById('dark-icon').innerText = '☀️ Light Mode';
-        } else {
-            document.documentElement.classList.remove('dark');
-            document.getElementById('dark-icon').innerText = '🌙 Dark Mode';
-        }
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) { document.documentElement.classList.add('dark'); document.getElementById('dark-icon').innerText = '☀️ Light Mode'; } 
+        else { document.documentElement.classList.remove('dark'); document.getElementById('dark-icon').innerText = '🌙 Dark Mode'; }
 
-        // --- VIEW ROUTING ---
         function switchView(viewId) {
             if(!window.currentUser && viewId !== 'home') { openAuthModal(); return; }
             document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active-view'));
             document.querySelectorAll('.nav-link, .nav-link-admin').forEach(l => l.classList.remove('active'));
             document.getElementById('view-' + viewId).classList.add('active-view');
-            const link = document.querySelector(`button[onclick="switchView('${viewId}')"]`);
-            if(link) link.classList.add('active');
+            const link = document.querySelector(`button[onclick="switchView('${viewId}')"]`); if(link) link.classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-
         function openAuthModal() { document.getElementById('auth-modal').classList.remove('hidden'); }
         function closeAuthModal() { document.getElementById('auth-modal').classList.add('hidden'); document.getElementById('auth-error').style.display='none'; document.getElementById('auth-success').style.display='none';}
         
-        // --- REWRITTEN STENO ANALYZER LOGIC FOR SSC ---
+        // --- STENO ANALYZER LOGIC FOR SSC (WITH SPRINT MODE) ---
         function cleanStenoWord(w) { return !w ? "" : w.split('/').join(''); }
         function stripPunct(w) { if(!w) return ""; var c=['.',',','!','?',';',':','"','\'','(',')','-']; var r=w; for(var i=0;i<c.length;i++) r=r.split(c[i]).join(''); return r; }
         function wordToNumberStr(w) { var o={"zero":"0","one":"1","two":"2","three":"3","four":"4","five":"5","six":"6","seven":"7","eight":"8","nine":"9","ten":"10"}; return o[w] ? o[w] : w; }
@@ -461,34 +380,11 @@
 
         function checkWordMatch(orig, typed) {
             var nO = cleanStenoWord(orig); var nT = cleanStenoWord(typed);
-            
-            // 1. Exact Match
             if (nO === nT) return { cost: 0, penalty: 0, type: 'Match' };
-            
             var sO = stripPunct(nO).toLowerCase(); var sT = stripPunct(nT).toLowerCase();
-            
-            // 2. Same Base Word (Checks for Capitalization or Punctuation differences)
-            if (sO === sT) {
-                // If stripping punctuation leaves the words matching, but the case is different
-                if (stripPunct(nO) !== stripPunct(nT)) {
-                    return { cost: 0.1, penalty: 0.5, type: 'Capitalization' };
-                }
-                // If the case is identical, it MUST be a pure punctuation difference (like 'environment,' vs 'environment').
-                // SSC Rule: Punctuation is 100% ignored. No Penalty.
-                return { cost: 0, penalty: 0, type: 'Match' }; 
-            }
-            
-            // 3. Singular/Plural Error
-            if (sO+'s'===sT || sT+'s'===sO || sO+'es'===sT || sT+'es'===sO) {
-                return { cost: 0.3, penalty: 0.5, type: 'Spelling (Singular/Plural)' };
-            }
-            
-            // 4. Number Formatting (e.g. '20' vs 'twenty')
-            if (wordToNumberStr(sO) === wordToNumberStr(sT)) {
-                return { cost: 0, penalty: 0, type: 'Match (Number Format Ignored)' };
-            }
-            
-            // 5. Full Substitution
+            if (sO === sT) { if (stripPunct(nO) !== stripPunct(nT)) return { cost: 0.1, penalty: 0.5, type: 'Capitalization' }; return { cost: 0, penalty: 0, type: 'Match' }; }
+            if (sO+'s'===sT || sT+'s'===sO || sO+'es'===sT || sT+'es'===sO) return { cost: 0.3, penalty: 0.5, type: 'Spelling (Singular/Plural)' };
+            if (wordToNumberStr(sO) === wordToNumberStr(sT)) return { cost: 0, penalty: 0, type: 'Match (Number Format Ignored)' };
             return { cost: 1, penalty: 1, type: 'Substitution' };
         }
 
@@ -499,6 +395,7 @@
             var dp = []; var tr = [];
             for (var i=0; i<=oW.length; i++) { dp[i]=[]; tr[i]=[]; for (var j=0; j<=tW.length; j++) { dp[i][j]=0; tr[i][j]=null; } }
             for (var i=0; i<=oW.length; i++) dp[i][0]=i; for (var j=0; j<=tW.length; j++) dp[0][j]=j;
+            
             for (var i=1; i<=oW.length; i++) {
                 for (var j=1; j<=tW.length; j++) {
                     var m = checkWordMatch(oW[i-1], tW[j-1]);
@@ -507,7 +404,18 @@
                     if(mC===sC) tr[i][j]='sub'; else if(mC===dC) tr[i][j]='del'; else tr[i][j]='ins';
                 }
             }
+            
+            var isSprint = document.getElementById('sprint-mode-toggle') ? document.getElementById('sprint-mode-toggle').checked : false;
             var cI = oW.length; var cJ = tW.length; var alg = []; var fM = 0; var hM = 0; window.lastMistakeArray = [];
+            
+            // SPRINT MODE LOGIC: Find exactly where the user stopped typing in the original text
+            if (isSprint && tW.length > 0) {
+                let minC = Infinity; let bestI = tW.length;
+                let startSearch = Math.max(0, tW.length - 150); let endSearch = Math.min(oW.length, tW.length + 150);
+                for(let i = startSearch; i <= endSearch; i++) { if(dp[i][tW.length] < minC) { minC = dp[i][tW.length]; bestI = i; } }
+                cI = bestI; // Ignore all original text after this point
+            }
+
             while (cI>0 || cJ>0) {
                 if (cI>0 && cJ>0 && tr[cI][cJ]==='sub') {
                     var m = checkWordMatch(oW[cI-1], tW[cJ-1]); alg.unshift({o:oW[cI-1], t:tW[cJ-1], p:m.penalty, ty:m.type});
@@ -518,22 +426,21 @@
                     alg.unshift({o:'---', t:tW[cJ-1], p:1, ty:'Addition'}); window.lastMistakeArray.push({o:'[Extra]', t:tW[cJ-1], ty:'Addition'}); cJ--;
                 }
             }
+            
             var tb = document.getElementById('steno-table-body'); tb.innerHTML=''; var vH = "";
+            var evaluatedWordsCount = 0;
+            
             for (var k=0; k<alg.length; k++) {
                 var r = alg[k]; 
-                
-                // Render Visual Markup
-                if (r.p === 0) { 
-                    if(r.ty.includes('Number')) vH += `<span class='color-num'>[${r.t}=${r.o}]</span> `; 
-                    else vH += `<span class='color-match'>${r.t}</span> `; 
-                } 
+                if(r.ty !== 'Addition') evaluatedWordsCount++; // Count original words evaluated
+
+                if (r.p === 0) { if(r.ty.includes('Number')) vH += `<span class='color-num'>[${r.t}=${r.o}]</span> `; else vH += `<span class='color-match'>${r.t}</span> `; } 
                 else if (r.ty === 'Capitalization') { vH += `<span class='color-cap'>[${r.t}&rarr;${r.o}]</span> `; } 
                 else if (r.ty === 'Spelling (Singular/Plural)') { vH += `<span class='color-spell'>[${r.t}&rarr;${r.o}]</span> `; } 
                 else if (r.ty.includes('Omission')) { vH += `<span class='color-omit'>[Missing: ${r.o}]</span> `; } 
                 else if (r.ty.includes('Addition')) { vH += `<span class='color-add'>[Extra: ${r.t}]</span> `; } 
                 else { vH += `<span class='color-sub'>[${r.t}&rarr;${r.o}]</span> `; }
                 
-                // Add to table if penalty > 0
                 if (r.p > 0) {
                     var tRow = document.createElement('tr'); 
                     if(r.p===1){ fM++; tRow.className="border-b border-slate-100 dark:border-slate-700 bg-red-50 dark:bg-red-900/20"; } else { hM++; tRow.className="border-b border-slate-100 dark:border-slate-700 bg-orange-50 dark:bg-orange-900/20"; }
@@ -543,9 +450,11 @@
             }
             if (fM === 0 && hM === 0) tb.innerHTML = "<tr><td colspan='4' class='p-6 text-center font-extrabold text-lg text-emerald-600'>Perfect!</td></tr>";
             document.getElementById('steno-visual-passage').innerHTML = vH;
-            var tWds = oW.length; var tMC = fM + (hM/2); var err = tWds>0 ? (tMC/tWds)*100 : 0; var acc = Math.max(0, 100-err);
+            
+            var tMC = fM + (hM/2); var err = evaluatedWordsCount>0 ? (tMC/evaluatedWordsCount)*100 : 0; var acc = Math.max(0, 100-err);
             window.lastAnalysisAccuracy = acc.toFixed(2);
-            document.getElementById('steno-total-words').innerText = tWds; document.getElementById('steno-full').innerText = fM; document.getElementById('steno-half').innerText = hM; document.getElementById('steno-accuracy').innerText = window.lastAnalysisAccuracy;
+            document.getElementById('steno-total-words').innerText = tW.length; 
+            document.getElementById('steno-full').innerText = fM; document.getElementById('steno-half').innerText = hM; document.getElementById('steno-accuracy').innerText = window.lastAnalysisAccuracy;
             document.getElementById('steno-results-area').style.display='block';
             window.dispatchEvent(new Event('stenoAnalysisComplete'));
         }
@@ -563,11 +472,7 @@
         
         window.startTranscribe = function(id) {
             const area = document.getElementById('transcribe-area-' + id); const select = document.getElementById('timer-select-' + id); const display = document.getElementById('timer-display-' + id);
-            area.disabled = false; area.focus(); select.disabled = true;
-            
-            // Log start time for Data Tracking
-            window.transcribeStartTime = Date.now();
-            
+            area.disabled = false; area.focus(); select.disabled = true; window.transcribeStartTime = Date.now();
             if(window.transcribeIntervals[id]) clearInterval(window.transcribeIntervals[id]);
             let timeRemaining = parseInt(select.value) * 60;
             const updateDisplay = () => { let m = Math.floor(timeRemaining / 60); let s = timeRemaining % 60; display.innerText = `${m}:${s < 10 ? '0' : ''}${s}`; }; updateDisplay();
@@ -580,32 +485,19 @@
             const d = window.dictationData[id]; const orig = d.transcript || ""; const typed = document.getElementById('transcribe-area-' + id).value;
             if (!orig.trim()) { alert("Admin didn't upload a transcript."); return; }
             if (!typed.trim()) { alert("Please type something."); return; }
-            
-            // Pass data to Analyzer for saving
-            window.currentStenoMatter = d.title; 
-            if(window.transcribeStartTime) { window.currentStenoTimeSpent = Math.floor((Date.now() - window.transcribeStartTime) / 1000); }
-            
+            window.currentStenoMatter = d.title; if(window.transcribeStartTime) { window.currentStenoTimeSpent = Math.floor((Date.now() - window.transcribeStartTime) / 1000); }
             switchView('steno'); document.getElementById('steno-orig').value = orig; document.getElementById('steno-typed').value = typed; analyzeSteno();
         };
 
-        // --- EXTENDED TYPING TEST LOGIC ---
+        // --- TYPING TEST LOGIC ---
         const essayParagraphs = [
             "The Indian economy has witnessed a massive transformation over the past decade, heavily driven by digital innovation. With the introduction of the Digital India initiative, millions of citizens now have unprecedented access to online banking, e-commerce, and seamless UPI payments. This pivotal shift has not only streamlined daily financial transactions but has also effectively integrated unbanked individuals into the formal economy. Furthermore, robust initiatives designed to boost domestic manufacturing have begun to show highly promising results. The primary focus must now firmly remain on sustaining this rapid growth by investing heavily in foundational education and modern infrastructure. Ensuring that the younger generation is equipped with the precise skills necessary to thrive in a highly competitive global market is absolutely crucial. Building a secure and resilient digital backbone will undoubtedly serve as the cornerstone for the nation's future prosperity.",
-            "A strong public health infrastructure is the absolute foundation of any secure and developing nation. Recent global health events have drastically highlighted the critical, undeniable need for well-equipped local hospitals, rapid response medical teams, and widespread, affordable accessibility to essential life-saving medicines. Directed investments in advanced medical research and the rapid construction of primary healthcare centers in remote rural areas are definitive steps in the right direction. Additionally, actively generating public awareness regarding proper sanitation, balanced nutrition, and routine preventive care can drastically reduce the overwhelming burden placed on tertiary care facilities. As India continues to progress rapidly, ensuring perfectly equitable healthcare access for every single citizen, completely regardless of their socio-economic status, will be paramount to achieving long-term social stability.",
-            "The formal education system is arguably the most powerful tool available for profound social change. In a remarkably diverse and heavily populated country like India, providing consistently high-quality education to every single child is both a monumental logistical challenge and an absolute moral necessity. Comprehensively modernizing the outdated curriculum to heavily include practical vocational training, modern digital literacy, and independent critical thinking is essential to prepare students for the rapidly evolving jobs of tomorrow. Teachers inherently play a absolutely pivotal role in this complex ecosystem and therefore must be provided with continuous, high-quality training and adequate modern resources. Placing a strong emphasis on strictly inclusive education ensures that historically marginalized communities are never left behind. Empowering the massive youth demographic through accessible knowledge is the ultimate key.",
-            "Environmental conservation has rapidly shifted from a peripheral concern to a central pillar of global policy. The accelerating impacts of climate change, manifested through unpredictable weather patterns and rising sea levels, demand immediate and sustained action. Transitioning from heavily polluting fossil fuels to cleaner, renewable energy sources such as solar and wind power is no longer optional but absolutely imperative for survival. In parallel, stringent regulations must be actively enforced to curb widespread industrial pollution and severely limit rampant deforestation. Individual citizens also hold significant responsibility; adopting sustainable daily practices, reducing single-use plastic consumption, and actively participating in local conservation efforts can collectively make a tremendous difference. Protecting our fragile ecological balance is a shared global duty.",
-            "The rapid evolution of artificial intelligence and machine learning is fundamentally reshaping the modern technological landscape. These advanced tools are actively being integrated into diverse sectors, ranging from predictive healthcare diagnostics to automated financial trading systems. While the potential for significantly increased efficiency and groundbreaking innovation is immense, it also brings forth complex ethical dilemmas regarding data privacy, algorithmic bias, and potential widespread job displacement. It is therefore absolutely crucial for governments and tech leaders to establish highly transparent regulatory frameworks that actively encourage safe innovation while strictly protecting fundamental user rights. Striking this delicate balance will entirely determine whether the impending AI revolution serves as a tool for widespread empowerment or societal disruption."
+            "A strong public health infrastructure is the absolute foundation of any secure and developing nation. Recent global health events have drastically highlighted the critical, undeniable need for well-equipped local hospitals, rapid response medical teams, and widespread, affordable accessibility to essential life-saving medicines. Directed investments in advanced medical research and the rapid construction of primary healthcare centers in remote rural areas are definitive steps in the right direction. Additionally, actively generating public awareness regarding proper sanitation, balanced nutrition, and routine preventive care can drastically reduce the overwhelming burden placed on tertiary care facilities. As India continues to progress rapidly, ensuring perfectly equitable healthcare access for every single citizen, completely regardless of their socio-economic status, will be paramount to achieving long-term social stability."
         ];
 
         function generateRandom500Words() {
-            let text = "";
-            let shuffled = [...essayParagraphs].sort(() => 0.5 - Math.random());
-            let i = 0;
-            while (text.split(' ').filter(w=>w.length>0).length < 550) {
-                text += shuffled[i % shuffled.length] + " ";
-                i++;
-            }
-            return text.trim();
+            let text = ""; let shuffled = [...essayParagraphs].sort(() => 0.5 - Math.random()); let i = 0;
+            while (text.split(' ').filter(w=>w.length>0).length < 550) { text += shuffled[i % shuffled.length] + " "; i++; } return text.trim();
         }
 
         window.handleSourceChange = function() {
@@ -619,22 +511,13 @@
             clearInterval(typingTimer); typingTimeRemaining = typingTimeLimit; document.getElementById("timer-display").innerText = "10:00"; isTestStarted = false;
             const area = document.getElementById("typing-area"); area.value = ""; area.disabled = false; area.focus();
             document.getElementById("finish-btn").style.display = "block"; document.getElementById("typing-results").style.display = "none";
-            
-            const src = document.getElementById("source-select").value;
-            let origText = "";
+            const src = document.getElementById("source-select").value; let origText = "";
             if(src === 'random') { origText = generateRandom500Words(); } 
             else if (src === 'custom') { origText = document.getElementById('custom-input-area').value.trim(); if(!origText) { alert("Paste text first."); return; } }
-            else if (src.startsWith('admin_')) { 
-                const docId = src.split('_')[1]; 
-                const selectedDoc = window.typingData.find(d => d.id === docId);
-                origText = selectedDoc ? selectedDoc.body : "Error loading text.";
-            }
-
+            else if (src.startsWith('admin_')) { const docId = src.split('_')[1]; const selectedDoc = window.typingData.find(d => d.id === docId); origText = selectedDoc ? selectedDoc.body : "Error loading text."; }
             originalWordsArr = origText.split(' ').filter(w => w.length > 0);
             let spanHtml = ""; for(let i=0; i<originalWordsArr.length; i++) spanHtml += `<span id='word-${i}'>${originalWordsArr[i]}</span> `;
-            document.getElementById("original-text").innerHTML = spanHtml;
-            document.getElementById("status-message").innerHTML = '<span class="w-3 h-3 rounded-full bg-blue-500 animate-pulse"></span> Test Ready';
-            document.getElementById("original-text").scrollTop = 0;
+            document.getElementById("original-text").innerHTML = spanHtml; document.getElementById("status-message").innerHTML = '<span class="w-3 h-3 rounded-full bg-blue-500 animate-pulse"></span> Test Ready'; document.getElementById("original-text").scrollTop = 0;
         }
 
         window.handleTypingInput = function(area) {
@@ -646,106 +529,77 @@
                     if(typingTimeRemaining <= 0) endTypingTest();
                 }, 1000);
             }
-            
             const typedArr = area.value.split(' ').filter(w => w.length > 0 || area.value.endsWith(' '));
             const currentIndex = Math.max(0, typedArr.length - 1);
-            
-            if(document.getElementById('autoscroll-toggle').checked) {
-                let currentSpan = document.getElementById('word-' + currentIndex);
-                if(currentSpan) {
-                    currentSpan.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-            }
-
+            if(document.getElementById('autoscroll-toggle').checked) { let currentSpan = document.getElementById('word-' + currentIndex); if(currentSpan) { currentSpan.scrollIntoView({ behavior: 'smooth', block: 'center' }); } }
             if(document.getElementById('style-select').value === 'live') {
                 for(let i=0; i<originalWordsArr.length; i++) {
-                    let span = document.getElementById('word-'+i);
-                    span.className = '';
-                    
-                    if(i < typedArr.length - 1) { 
-                        span.style.color = (originalWordsArr[i] === typedArr[i]) ? '#16a34a' : '#dc2626'; 
-                        span.style.backgroundColor = 'transparent';
-                    }
-                    else if (i === currentIndex) { 
-                        span.className = 'typing-active-word';
-                    }
-                    else { 
-                        span.style.color = ''; span.style.backgroundColor = ''; 
-                    }
+                    let span = document.getElementById('word-'+i); span.className = '';
+                    if(i < typedArr.length - 1) { span.style.color = (originalWordsArr[i] === typedArr[i]) ? '#16a34a' : '#dc2626'; span.style.backgroundColor = 'transparent'; }
+                    else if (i === currentIndex) { span.className = 'typing-active-word'; }
+                    else { span.style.color = ''; span.style.backgroundColor = ''; }
                 }
             }
         }
 
-        // Modified to trigger the global save event
         window.endTypingTest = function() {
             clearInterval(typingTimer); document.getElementById("typing-area").disabled = true; document.getElementById("finish-btn").style.display = "none";
-            const typedText = document.getElementById("typing-area").value.trim();
-            const minutesElapsed = (typingTimeLimit - typingTimeRemaining) / 60;
-            const wpm = minutesElapsed > 0 ? (typedText.length / 5) / minutesElapsed : 0;
-            const typedArr = typedText.split(' ').filter(w=>w.length>0); let errs = 0;
+            const typedText = document.getElementById("typing-area").value.trim(); const minutesElapsed = (typingTimeLimit - typingTimeRemaining) / 60;
+            const wpm = minutesElapsed > 0 ? (typedText.length / 5) / minutesElapsed : 0; const typedArr = typedText.split(' ').filter(w=>w.length>0); let errs = 0;
             for(let i=0; i<typedArr.length; i++) { if(typedArr[i] !== originalWordsArr[i]) errs++; }
             const acc = typedArr.length > 0 ? ((typedArr.length - errs)/typedArr.length)*100 : 0;
-            
-            document.getElementById("wpm-result").innerText = wpm.toFixed(2); document.getElementById("acc-result").innerText = acc.toFixed(2);
-            document.getElementById("typing-results").style.display = "block"; document.getElementById("status-message").innerHTML = 'Test Complete';
-            
-            // Save Typing Data globally
+            document.getElementById("wpm-result").innerText = wpm.toFixed(2); document.getElementById("acc-result").innerText = acc.toFixed(2); document.getElementById("typing-results").style.display = "block"; document.getElementById("status-message").innerHTML = 'Test Complete';
             if(window.currentUser) {
-                let selectElem = document.getElementById('source-select');
-                window.currentTypingMatter = selectElem.options[selectElem.selectedIndex].text;
-                window.currentTypingTime = typingTimeLimit - typingTimeRemaining;
-                window.currentTypingWpm = parseFloat(wpm.toFixed(2));
-                window.currentTypingAcc = parseFloat(acc.toFixed(2));
-                window.dispatchEvent(new Event('typingTestComplete'));
+                let selectElem = document.getElementById('source-select'); window.currentTypingMatter = selectElem.options[selectElem.selectedIndex].text; window.currentTypingTime = typingTimeLimit - typingTimeRemaining; window.currentTypingWpm = parseFloat(wpm.toFixed(2)); window.currentTypingAcc = parseFloat(acc.toFixed(2)); window.dispatchEvent(new Event('typingTestComplete'));
             }
         }
     </script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy, where, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAoUj1rFjDljbqXkchLbcZUg817u-JsNYc",
-            authDomain: "eklavya-steno.firebaseapp.com",
-            projectId: "eklavya-steno",
-            storageBucket: "eklavya-steno.firebasestorage.app"
-        };
-
+        const firebaseConfig = { apiKey: "AIzaSyAoUj1rFjDljbqXkchLbcZUg817u-JsNYc", authDomain: "eklavya-steno.firebaseapp.com", projectId: "eklavya-steno", storageBucket: "eklavya-steno.firebasestorage.app" };
         const app = initializeApp(firebaseConfig); const db = getFirestore(app); const storage = getStorage(app); const auth = getAuth(app);
-        const googleProvider = new GoogleAuthProvider(); let currentUser = null; const ADMIN_EMAIL = "saqueeb111@gmail.com"; 
+        const googleProvider = new GoogleAuthProvider(); window.currentUser = null; const ADMIN_EMAIL = "saqueeb111@gmail.com"; 
 
         window.signInWithGoogle = function() { signInWithPopup(auth, googleProvider).catch(err => alert("Google Sign-In Failed: " + err.message)); };
 
-        window.handleForgotPassword = function() {
-            const email = document.getElementById('auth-email').value.trim();
-            const errBox = document.getElementById('auth-error'); const succBox = document.getElementById('auth-success');
-            errBox.style.display = 'none'; succBox.style.display = 'none';
-            if(!email) { errBox.innerText = "Please enter your email address in the box above first."; errBox.style.display = 'block'; return; }
-            sendPasswordResetEmail(auth, email).then(() => { succBox.innerText = "Password reset email sent! Check your inbox."; succBox.style.display = 'block'; }).catch(err => { errBox.innerText = "Error: " + err.message; errBox.style.display = 'block'; });
+        // --- GLOBAL ADMIN DELETE FUNCTIONS ---
+        window.deleteDictation = async function(id, fileUrl) {
+            if(!confirm("⚠️ WARNING: Are you sure you want to permanently delete this dictation? This will delete the database entry and the audio file. It cannot be undone.")) return;
+            try { await deleteDoc(doc(db, "dictations", id)); if(fileUrl) await deleteObject(ref(storage, fileUrl)); alert("Dictation deleted successfully."); window.fetchDictations(); } catch(e) { alert("Error deleting: " + e.message); }
+        };
+        window.deleteNote = async function(id, fileUrl) {
+            if(!confirm("⚠️ WARNING: Are you sure you want to permanently delete this note? This will delete the database entry and the PDF file. It cannot be undone.")) return;
+            try { await deleteDoc(doc(db, "notes", id)); if(fileUrl) await deleteObject(ref(storage, fileUrl)); alert("Note deleted successfully."); window.fetchNotes(); } catch(e) { alert("Error deleting: " + e.message); }
+        };
+        window.deleteTypingText = async function(id) {
+            if(!confirm("⚠️ WARNING: Are you sure you want to permanently delete this typing text? It cannot be undone.")) return;
+            try { await deleteDoc(doc(db, "typingTexts", id)); alert("Text deleted successfully."); window.fetchTypingTexts(); } catch(e) { alert("Error deleting: " + e.message); }
         };
 
         onAuthStateChanged(auth, (user) => {
-            currentUser = user; window.currentUser = user;
+            window.currentUser = user;
             if (user) {
                 document.getElementById('logged-out-cta').style.display = 'none'; document.getElementById('logged-in-cta').style.display = 'block';
                 document.getElementById('logged-out-view').style.display = 'none'; document.getElementById('logged-in-view').style.display = 'flex';
                 document.getElementById('desktop-nav').style.display = 'flex'; document.getElementById('logged-in-nav').style.display = 'flex';
                 document.getElementById('user-email-display').innerText = user.email; document.getElementById('app-workspace').style.display = 'block'; 
-                
                 closeAuthModal();
                 
-                const isAdmin = user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
-                document.getElementById('admin-upload-panel').style.display = isAdmin ? 'block' : 'none';
-                document.getElementById('typing-admin-panel').style.display = isAdmin ? 'block' : 'none';
-                document.getElementById('notes-admin-panel').style.display = isAdmin ? 'block' : 'none';
-                document.getElementById('nav-admin').style.display = isAdmin ? 'block' : 'none';
+                window.isAdminUser = user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+                document.getElementById('admin-upload-panel').style.display = window.isAdminUser ? 'block' : 'none';
+                document.getElementById('typing-admin-panel').style.display = window.isAdminUser ? 'block' : 'none';
+                document.getElementById('notes-admin-panel').style.display = window.isAdminUser ? 'block' : 'none';
+                document.getElementById('nav-admin').style.display = window.isAdminUser ? 'block' : 'none';
                 
                 window.fetchUserHistory(); window.fetchDictations(); window.fetchTypingTexts(); window.fetchNotes();
-                if(isAdmin) window.fetchAllUsersHistory();
+                if(window.isAdminUser) window.fetchAllUsersHistory();
             } else {
+                window.isAdminUser = false;
                 document.getElementById('logged-out-cta').style.display = 'block'; document.getElementById('logged-in-cta').style.display = 'none';
                 document.getElementById('logged-out-view').style.display = 'flex'; document.getElementById('logged-in-view').style.display = 'none';
                 document.getElementById('logged-in-nav').style.display = 'none'; document.getElementById('app-workspace').style.display = 'none';
@@ -753,11 +607,8 @@
             }
         });
 
-        document.getElementById('login-btn').addEventListener('click', () => { const e = document.getElementById('auth-email').value; const p = document.getElementById('auth-password').value; signInWithEmailAndPassword(auth, e, p).catch(err=> { document.getElementById('auth-error').innerText="Login Failed."; document.getElementById('auth-error').style.display='block'; }); });
-        document.getElementById('signup-btn').addEventListener('click', () => { const e = document.getElementById('auth-email').value; const p = document.getElementById('auth-password').value; createUserWithEmailAndPassword(auth, e, p).catch(err=> { document.getElementById('auth-error').innerText=err.message; document.getElementById('auth-error').style.display='block'; }); });
         document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
 
-        // --- FETCH DICTATIONS ---
         window.fetchDictations = async function() {
             const list = document.getElementById('dictations-list'); const filterCat = document.getElementById('filter-category').value;
             list.innerHTML = '<p class="text-center py-12 text-slate-500 dark:text-slate-400 font-medium text-lg">Loading dictations...</p>';
@@ -765,13 +616,11 @@
                 let q = filterCat === "All" ? query(collection(db, "dictations")) : query(collection(db, "dictations"), where("category", "==", filterCat));
                 const snap = await getDocs(q);
                 if (snap.empty) { list.innerHTML = '<p class="text-center py-12 text-slate-500 dark:text-slate-400 font-medium text-lg">No dictations found in this folder.</p>'; return; }
-                
                 let docsArray = []; snap.forEach(doc => { let d = doc.data(); d.id = doc.id; docsArray.push(d); }); docsArray.sort((a,b) => b.timestamp - a.timestamp);
                 let html = '';
                 docsArray.forEach((d) => {
                     window.dictationData[d.id] = d; const base = d.baseSpeed || 80; const cat = d.category || "General";
                     let spds = [60,70,80,90,100,110,120]; let opt = ''; spds.forEach(s => { opt += `<option value="${s}" ${s===parseInt(base)?'selected':''}>${s} WPM</option>`; });
-                    
                     html += `
                         <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition duration-300">
                             <div class="flex flex-col md:flex-row items-center gap-6">
@@ -787,40 +636,34 @@
                                 <div class="w-full md:w-auto mt-4 md:mt-0"><audio id="aud-${d.id}" controls class="w-full md:w-72 h-12 outline-none dark:opacity-90"><source src="${d.audioUrl}" type="audio/mpeg"></audio></div>
                             </div>
                             
-                            <div class="mt-5 border-t border-slate-100 dark:border-slate-700 pt-5 w-full">
+                            <div class="mt-5 border-t border-slate-100 dark:border-slate-700 pt-5 w-full flex justify-between items-center">
                                 <button onclick="toggleTranscribePanel('${d.id}')" class="text-sm font-bold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 flex items-center gap-1 transition mx-auto md:mx-0">
                                     Practice Transcription Here
                                 </button>
-                                
-                                <div id="transcribe-panel-${d.id}" class="hidden mt-4 bg-slate-50 dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-700">
-                                    <div class="flex flex-col md:flex-row gap-4 mb-4 items-center justify-between">
-                                        <div class="flex items-center gap-3 w-full md:w-auto">
-                                            <label class="text-sm font-bold text-slate-600 dark:text-slate-400">Timer:</label>
-                                            <select id="timer-select-${d.id}" class="border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-800 dark:text-white rounded-lg p-2 text-sm font-bold outline-none">
-                                                <option value="30">30 Min</option><option value="40">40 Min</option><option value="50" selected>50 Min</option><option value="60">60 Min</option>
-                                            </select>
-                                            <button onclick="startTranscribe('${d.id}')" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-bold shadow transition">Start</button>
-                                        </div>
-                                        <div id="timer-display-${d.id}" class="text-2xl font-mono font-extrabold text-slate-800 dark:text-white bg-white dark:bg-slate-800 px-4 py-1.5 rounded-lg border border-slate-200 dark:border-slate-600 shadow-sm">50:00</div>
+                                ${window.isAdminUser ? `<button onclick="deleteDictation('${d.id}', '${d.audioUrl}')" class="bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-red-200 dark:hover:bg-red-800 transition shadow-sm">🗑️ Delete</button>` : ''}
+                            </div>
+
+                            <div id="transcribe-panel-${d.id}" class="hidden mt-4 bg-slate-50 dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-700">
+                                <div class="flex flex-col md:flex-row gap-4 mb-4 items-center justify-between">
+                                    <div class="flex items-center gap-3 w-full md:w-auto">
+                                        <label class="text-sm font-bold text-slate-600 dark:text-slate-400">Timer:</label>
+                                        <select id="timer-select-${d.id}" class="border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-800 dark:text-white rounded-lg p-2 text-sm font-bold outline-none"><option value="30">30 Min</option><option value="40">40 Min</option><option value="50" selected>50 Min</option><option value="60">60 Min</option></select>
+                                        <button onclick="startTranscribe('${d.id}')" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-bold shadow transition">Start</button>
                                     </div>
-                                    
-                                    <textarea id="transcribe-area-${d.id}" disabled placeholder="Start typing..." class="w-full h-48 p-4 border-2 border-slate-300 dark:border-slate-600 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition resize-y mb-4 bg-white dark:bg-slate-800 disabled:bg-slate-100 dark:disabled:bg-slate-900 disabled:cursor-not-allowed text-slate-700 dark:text-white"></textarea>
-                                    
-                                    <div class="flex flex-wrap gap-3">
-                                        <button onclick="viewOriginalMatter('${d.id}')" class="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-white px-5 py-2.5 rounded-lg text-sm font-bold transition shadow-sm border border-slate-300 dark:border-slate-600">View Matter</button>
-                                        <button onclick="sendToAnalyzer('${d.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-lg text-sm font-bold shadow-md transition">Check Mistakes</button>
-                                    </div>
-                                    
-                                    <div id="original-matter-${d.id}" class="hidden mt-4 p-5 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/50 rounded-xl text-slate-800 dark:text-amber-100 leading-loose whitespace-pre-wrap font-medium shadow-inner"></div>
+                                    <div id="timer-display-${d.id}" class="text-2xl font-mono font-extrabold text-slate-800 dark:text-white bg-white dark:bg-slate-800 px-4 py-1.5 rounded-lg border border-slate-200 dark:border-slate-600 shadow-sm">50:00</div>
                                 </div>
+                                <textarea id="transcribe-area-${d.id}" disabled placeholder="Start typing..." class="w-full h-48 p-4 border-2 border-slate-300 dark:border-slate-600 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition resize-y mb-4 bg-white dark:bg-slate-800 disabled:bg-slate-100 dark:disabled:bg-slate-900 disabled:cursor-not-allowed text-slate-700 dark:text-white"></textarea>
+                                <div class="flex flex-wrap gap-3">
+                                    <button onclick="viewOriginalMatter('${d.id}')" class="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-white px-5 py-2.5 rounded-lg text-sm font-bold transition shadow-sm border border-slate-300 dark:border-slate-600">View Matter</button>
+                                    <button onclick="sendToAnalyzer('${d.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-lg text-sm font-bold shadow-md transition">Check Mistakes</button>
+                                </div>
+                                <div id="original-matter-${d.id}" class="hidden mt-4 p-5 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/50 rounded-xl text-slate-800 dark:text-amber-100 leading-loose whitespace-pre-wrap font-medium shadow-inner"></div>
                             </div>
                         </div>`;
-                });
-                list.innerHTML = html;
+                }); list.innerHTML = html;
             } catch (e) { list.innerHTML = `<p class="text-red-500 text-center py-12">Error loading dictations.</p>`; }
         };
 
-        // --- DICTATION ADMIN UPLOAD ---
         document.getElementById('upload-submit-btn').addEventListener('click', async () => {
             const cat = document.getElementById('upload-category').value; const tit = document.getElementById('upload-title').value; const spd = document.getElementById('upload-speed').value; const trans = document.getElementById('upload-transcript').value.trim(); const file = document.getElementById('upload-file').files[0]; const sts = document.getElementById('upload-status');
             if (!tit || !file) { alert("Missing fields."); return; }
@@ -832,33 +675,37 @@
             } catch(e) { sts.innerText="Error: " + e.message; sts.className = "mt-4 text-center text-sm font-bold text-red-500"; }
         });
 
-        // --- TYPING ADMIN UPLOAD ---
         document.getElementById('type-admin-btn').addEventListener('click', async () => {
             const tit = document.getElementById('type-admin-title').value.trim(); const body = document.getElementById('type-admin-body').value.trim(); const sts = document.getElementById('type-admin-status');
             if(!tit || !body) return alert("Fill all fields.");
             sts.style.display='block'; sts.innerText="Saving...";
             try {
                 await addDoc(collection(db, "typingTexts"), { title: tit, body: body, timestamp: new Date().getTime() });
-                sts.innerText = "Saved!"; document.getElementById('type-admin-title').value=''; document.getElementById('type-admin-body').value='';
-                window.fetchTypingTexts();
+                sts.innerText = "Saved!"; document.getElementById('type-admin-title').value=''; document.getElementById('type-admin-body').value=''; window.fetchTypingTexts();
             } catch(e) { sts.innerText="Error."; }
         });
 
-        // --- FETCH TYPING TEXTS ---
-        window.typingData = [];
         window.fetchTypingTexts = async function() {
             try {
                 const snap = await getDocs(query(collection(db, "typingTexts")));
                 window.typingData = []; snap.forEach(doc => { let d = doc.data(); d.id = doc.id; window.typingData.push(d); });
-                const select = document.getElementById('source-select');
-                document.querySelectorAll('.off-opt').forEach(e => e.remove());
+                const select = document.getElementById('source-select'); document.querySelectorAll('.off-opt').forEach(e => e.remove());
+                
+                let adminHtml = '';
                 window.typingData.forEach(d => {
                     const opt = document.createElement('option'); opt.value = 'admin_' + d.id; opt.text = "Official: " + d.title; opt.className = 'off-opt'; select.appendChild(opt);
+                    if(window.isAdminUser) {
+                        adminHtml += `
+                            <div class="flex justify-between items-center bg-white dark:bg-slate-800 p-3 rounded-lg border border-slate-200 dark:border-slate-700 mb-2">
+                                <span class="text-sm font-bold text-slate-700 dark:text-slate-300 truncate pr-2">${d.title}</span>
+                                <button onclick="deleteTypingText('${d.id}')" class="bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-red-200 dark:hover:bg-red-800 transition shadow-sm shrink-0">🗑️ Delete</button>
+                            </div>`;
+                    }
                 });
+                if(window.isAdminUser && document.getElementById('admin-typing-list')) { document.getElementById('admin-typing-list').innerHTML = adminHtml; }
             } catch(e) { console.error("Error fetching typing texts"); }
         };
 
-        // --- NOTES ADMIN UPLOAD ---
         document.getElementById('note-submit-btn').addEventListener('click', async () => {
             const tit = document.getElementById('note-title').value.trim(); const file = document.getElementById('note-file').files[0]; const sts = document.getElementById('note-status');
             if(!tit || !file) return alert("Fill all fields.");
@@ -870,7 +717,6 @@
             } catch(e) { sts.innerText="Error."; }
         });
 
-        // --- FETCH NOTES ---
         window.fetchNotes = async function() {
             const list = document.getElementById('notes-list'); list.innerHTML = '<p class="text-center py-12 col-span-2 text-slate-500">Loading notes...</p>';
             try {
@@ -885,84 +731,61 @@
                                 <div class="bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 p-3 rounded-lg border border-red-200 dark:border-red-800/50">📄</div>
                                 <div><h3 class="font-bold text-slate-800 dark:text-white">${d.title}</h3><p class="text-xs text-slate-500 dark:text-slate-400">${new Date(d.timestamp).toLocaleDateString()}</p></div>
                             </div>
-                            <a href="${d.fileUrl}" target="_blank" class="bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-white px-4 py-2 rounded-lg font-bold text-sm transition">Open</a>
+                            <div class="flex items-center gap-2">
+                                <a href="${d.fileUrl}" target="_blank" class="bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-white px-4 py-2 rounded-lg font-bold text-sm transition">Open</a>
+                                ${window.isAdminUser ? `<button onclick="deleteNote('${d.id}', '${d.fileUrl}')" class="bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-red-200 dark:hover:bg-red-800 transition shadow-sm">🗑️ Delete</button>` : ''}
+                            </div>
                         </div>`;
                 }); list.innerHTML = html;
             } catch(e) { list.innerHTML = '<p class="text-center py-12 col-span-2 text-red-500">Error loading notes.</p>'; }
         };
 
-        // --- DATA SAVING (STENO) ---
         window.addEventListener('stenoAnalysisComplete', async () => {
-            if(!currentUser) return;
+            if(!window.currentUser) return;
             try {
                 await addDoc(collection(db, "userHistory"), { 
-                    userId: currentUser.uid, 
-                    email: currentUser.email, 
-                    testType: 'Steno',
-                    matter: window.currentStenoMatter || 'Manual Paste',
-                    timeSpentSeconds: window.currentStenoTimeSpent || 2400, // Roughly 40 mins default if pasted manually
-                    accuracy: window.lastAnalysisAccuracy, 
-                    mistakes: window.lastMistakeArray.slice(0, 50), 
-                    date: new Date().toLocaleDateString(), 
-                    timestamp: new Date().getTime() 
+                    userId: window.currentUser.uid, email: window.currentUser.email, testType: 'Steno',
+                    matter: window.currentStenoMatter || 'Manual Paste', timeSpentSeconds: window.currentStenoTimeSpent || 2400,
+                    accuracy: window.lastAnalysisAccuracy, mistakes: window.lastMistakeArray.slice(0, 50), 
+                    date: new Date().toLocaleDateString(), timestamp: new Date().getTime() 
                 });
                 document.getElementById('save-status').innerText = "Score & Mistakes Saved Successfully!"; document.getElementById('save-status').style.display = 'block'; 
-                window.fetchUserHistory(); 
-                if(currentUser.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) window.fetchAllUsersHistory();
+                window.fetchUserHistory(); if(window.isAdminUser) window.fetchAllUsersHistory();
             } catch(e) { }
         });
         
-        // --- DATA SAVING (TYPING) ---
         window.addEventListener('typingTestComplete', async () => {
-            if(!currentUser) return;
+            if(!window.currentUser) return;
             try {
                 await addDoc(collection(db, "userHistory"), { 
-                    userId: currentUser.uid, 
-                    email: currentUser.email, 
-                    testType: 'Typing',
-                    matter: window.currentTypingMatter || 'Typing Practice',
-                    timeSpentSeconds: window.currentTypingTime || 0,
-                    wpm: window.currentTypingWpm || 0,
-                    accuracy: window.currentTypingAcc || 0, 
-                    date: new Date().toLocaleDateString(), 
-                    timestamp: new Date().getTime() 
+                    userId: window.currentUser.uid, email: window.currentUser.email, testType: 'Typing',
+                    matter: window.currentTypingMatter || 'Typing Practice', timeSpentSeconds: window.currentTypingTime || 0,
+                    wpm: window.currentTypingWpm || 0, accuracy: window.currentTypingAcc || 0, 
+                    date: new Date().toLocaleDateString(), timestamp: new Date().getTime() 
                 });
-                window.fetchUserHistory(); 
-                if(currentUser.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) window.fetchAllUsersHistory();
+                window.fetchUserHistory(); if(window.isAdminUser) window.fetchAllUsersHistory();
             } catch(e) { }
         });
 
-        // --- STUDENT DASHBOARD LOGIC ---
         window.fetchUserHistory = async function() {
-            if(!currentUser) return; const hl = document.getElementById('history-list');
+            if(!window.currentUser) return; const hl = document.getElementById('history-list');
             try {
-                const snap = await getDocs(query(collection(db, "userHistory"), where("userId", "==", currentUser.uid)));
+                const snap = await getDocs(query(collection(db, "userHistory"), where("userId", "==", window.currentUser.uid)));
                 if(snap.empty) { hl.innerHTML = '<p class="text-center py-12 text-slate-500 dark:text-slate-400">No tests taken yet. Practice in the Analyzer or Typing tab!</p>'; return; }
                 let records = []; snap.forEach(doc => records.push(doc.data())); records.sort((a,b) => b.timestamp - a.timestamp); 
                 let html = '';
                 records.forEach(d => {
                     let errs = '';
                     if(d.testType === 'Steno' && d.mistakes && d.mistakes.length > 0) {
-                        errs = `<div class="mt-4 bg-red-50 dark:bg-red-900/20 p-4 rounded-xl border border-red-100 dark:border-red-800/50 text-sm text-red-900 dark:text-red-200 shadow-inner">
-                            <strong class="flex items-center gap-2 mb-2">Top Mistakes:</strong>
-                            <ul class="list-disc list-inside ml-2 space-y-1">`;
-                        d.mistakes.forEach(m => { 
-                            let c = m.o === '---' ? '[Nothing]' : m.o;
-                            errs += `<li>Typed <strong class="bg-red-100 dark:bg-red-800 px-1 rounded">'${m.t}'</strong> instead of <strong class="bg-emerald-100 dark:bg-emerald-800 text-emerald-800 dark:text-emerald-200 px-1 rounded">'${c}'</strong> <i class="text-red-500 dark:text-red-400">(${m.ty})</i></li>`; 
-                        }); errs += `</ul></div>`;
+                        errs = `<div class="mt-4 bg-red-50 dark:bg-red-900/20 p-4 rounded-xl border border-red-100 dark:border-red-800/50 text-sm text-red-900 dark:text-red-200 shadow-inner"><strong class="flex items-center gap-2 mb-2">Top Mistakes:</strong><ul class="list-disc list-inside ml-2 space-y-1">`;
+                        d.mistakes.forEach(m => { let c = m.o === '---' ? '[Nothing]' : m.o; errs += `<li>Typed <strong class="bg-red-100 dark:bg-red-800 px-1 rounded">'${m.t}'</strong> instead of <strong class="bg-emerald-100 dark:bg-emerald-800 text-emerald-800 dark:text-emerald-200 px-1 rounded">'${c}'</strong> <i class="text-red-500 dark:text-red-400">(${m.ty})</i></li>`; }); errs += `</ul></div>`;
                     }
-                    
                     let typeColor = d.testType === 'Typing' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300' : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300';
                     let statStr = d.testType === 'Typing' ? `${d.wpm} WPM | ${d.accuracy}% Acc` : `${d.accuracy}% Acc`;
-                    
                     html += `
                         <div class="p-6 bg-white dark:bg-slate-800 transition duration-200 border-b border-slate-100 dark:border-slate-700 last:border-b-0">
                             <div class="flex flex-col md:flex-row justify-between md:items-center font-bold text-lg gap-2">
-                                <span class="text-slate-800 dark:text-white flex items-center gap-2">
-                                    <span class="px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider ${typeColor}">${d.testType || 'Steno'}</span> 
-                                    ${d.matter || 'Session'} 
-                                    <span class="text-sm font-medium text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded ml-2">${d.date}</span>
-                                </span>
+                                <span class="text-slate-800 dark:text-white flex items-center gap-2"><span class="px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider ${typeColor}">${d.testType || 'Steno'}</span> ${d.matter || 'Session'} <span class="text-sm font-medium text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded ml-2">${d.date}</span></span>
                                 <span class="text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-900 px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm">${statStr}</span>
                             </div>${errs}
                         </div>`;
@@ -970,101 +793,45 @@
             } catch(e) { hl.innerHTML = '<p class="text-center text-red-500 py-12">Error loading history.</p>'; }
         };
 
-        // --- NEW: MASTER ADMIN TRACKER LOGIC ---
         window.fetchAllUsersHistory = async function() {
-            if(!currentUser) return; 
-            const hl = document.getElementById('admin-history-list');
+            if(!window.currentUser || !window.isAdminUser) return; const hl = document.getElementById('admin-history-list');
             try {
-                // Fetch absolutely everything (No "where" clause)
                 const snap = await getDocs(query(collection(db, "userHistory")));
                 if(snap.empty) { hl.innerHTML = '<p class="text-center py-12 text-slate-500 dark:text-slate-400">No tests taken by anyone yet.</p>'; return; }
-                
-                // Group all data by User Email
                 let usersMap = {};
                 snap.forEach(doc => {
                     let d = doc.data(); let email = d.email || 'Unknown User';
-                    if(!usersMap[email]) {
-                        usersMap[email] = {
-                            tests: [], joinDate: d.timestamp, totalTime: 0,
-                            stenoAccSum: 0, stenoCount: 0, typingWpmSum: 0, typingAccSum: 0, typingCount: 0, matters: {}
-                        };
-                    }
-                    
+                    if(!usersMap[email]) { usersMap[email] = { tests: [], joinDate: d.timestamp, totalTime: 0, stenoAccSum: 0, stenoCount: 0, typingWpmSum: 0, typingAccSum: 0, typingCount: 0, matters: {} }; }
                     usersMap[email].tests.push(d);
-                    
-                    // Track oldest test as Join Date
                     if(d.timestamp < usersMap[email].joinDate) usersMap[email].joinDate = d.timestamp;
-                    
-                    // Aggregate stats
-                    if(d.testType === 'Typing') {
-                        usersMap[email].typingWpmSum += (d.wpm || 0);
-                        usersMap[email].typingAccSum += parseFloat(d.accuracy || 0);
-                        usersMap[email].typingCount++;
-                        usersMap[email].totalTime += (d.timeSpentSeconds || 0);
-                    } else {
-                        usersMap[email].stenoAccSum += parseFloat(d.accuracy || 0);
-                        usersMap[email].stenoCount++;
-                        usersMap[email].totalTime += (d.timeSpentSeconds || 2400); // 40 mins assumed if manual paste
-                    }
-                    
-                    // Track favorite matters
-                    let mat = d.matter || 'Unknown';
-                    usersMap[email].matters[mat] = (usersMap[email].matters[mat] || 0) + 1;
+                    if(d.testType === 'Typing') { usersMap[email].typingWpmSum += (d.wpm || 0); usersMap[email].typingAccSum += parseFloat(d.accuracy || 0); usersMap[email].typingCount++; usersMap[email].totalTime += (d.timeSpentSeconds || 0);
+                    } else { usersMap[email].stenoAccSum += parseFloat(d.accuracy || 0); usersMap[email].stenoCount++; usersMap[email].totalTime += (d.timeSpentSeconds || 2400); }
+                    let mat = d.matter || 'Unknown'; usersMap[email].matters[mat] = (usersMap[email].matters[mat] || 0) + 1;
                 });
-
-                // Build Accordion HTML
                 let html = '';
                 for(let email in usersMap) {
-                    let u = usersMap[email];
-                    u.tests.sort((a,b) => b.timestamp - a.timestamp); // Sort user's tests newest first
-                    let safeId = email.replace(/[^a-zA-Z0-9]/g, '');
-
-                    let avgWpm = u.typingCount > 0 ? (u.typingWpmSum / u.typingCount).toFixed(1) : 0;
-                    let avgStenoAcc = u.stenoCount > 0 ? (u.stenoAccSum / u.stenoCount).toFixed(1) : 0;
+                    let u = usersMap[email]; u.tests.sort((a,b) => b.timestamp - a.timestamp); let safeId = email.replace(/[^a-zA-Z0-9]/g, '');
+                    let avgWpm = u.typingCount > 0 ? (u.typingWpmSum / u.typingCount).toFixed(1) : 0; let avgStenoAcc = u.stenoCount > 0 ? (u.stenoAccSum / u.stenoCount).toFixed(1) : 0;
                     let topMatter = Object.keys(u.matters).sort((a,b) => u.matters[b] - u.matters[a])[0] || 'N/A';
-                    let hours = Math.floor(u.totalTime / 3600); let mins = Math.floor((u.totalTime % 3600) / 60);
-                    let timeStr = hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
-
+                    let hours = Math.floor(u.totalTime / 3600); let mins = Math.floor((u.totalTime % 3600) / 60); let timeStr = hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
                     html += `
                     <div class="mb-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
-                        
-                        <button onclick="document.getElementById('admin-detail-${safeId}').classList.toggle('hidden')" class="w-full p-5 text-left bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 transition flex justify-between items-center">
-                            <span class="font-extrabold text-lg text-slate-800 dark:text-white flex items-center gap-2">👤 ${email}</span>
-                            <span class="text-sm font-bold text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900 px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-700">Joined: ${new Date(u.joinDate).toLocaleDateString()} ▼</span>
-                        </button>
-                        
+                        <button onclick="document.getElementById('admin-detail-${safeId}').classList.toggle('hidden')" class="w-full p-5 text-left bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 transition flex justify-between items-center"><span class="font-extrabold text-lg text-slate-800 dark:text-white flex items-center gap-2">👤 ${email}</span><span class="text-sm font-bold text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900 px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-700">Joined: ${new Date(u.joinDate).toLocaleDateString()} ▼</span></button>
                         <div id="admin-detail-${safeId}" class="hidden p-6 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
-                            
                             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                                 <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl border border-blue-100 dark:border-blue-800/50 text-center"><span class="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Avg WPM</span><br><span class="text-2xl font-extrabold text-slate-800 dark:text-white">${avgWpm}</span></div>
                                 <div class="bg-emerald-50 dark:bg-emerald-900/20 p-4 rounded-xl border border-emerald-100 dark:border-emerald-800/50 text-center"><span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">Avg Steno Acc</span><br><span class="text-2xl font-extrabold text-slate-800 dark:text-white">${avgStenoAcc}%</span></div>
                                 <div class="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-xl border border-purple-100 dark:border-purple-800/50 text-center"><span class="text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider">Time Spent</span><br><span class="text-2xl font-extrabold text-slate-800 dark:text-white">${timeStr}</span></div>
                                 <div class="bg-orange-50 dark:bg-orange-900/20 p-4 rounded-xl border border-orange-100 dark:border-orange-800/50 text-center flex flex-col justify-center overflow-hidden"><span class="text-xs font-bold text-orange-600 dark:text-orange-400 uppercase tracking-wider">Top Matter</span><span class="text-sm mt-1 font-extrabold text-slate-800 dark:text-white truncate block px-1" title="${topMatter}">${topMatter}</span></div>
                             </div>
-                            
                             <h4 class="font-bold text-slate-700 dark:text-slate-300 mb-3 border-b border-slate-100 dark:border-slate-700 pb-2">Recent Test History (Last 15)</h4>
                             <div class="space-y-3 max-h-64 overflow-y-auto pr-2">`;
-
                     u.tests.slice(0, 15).forEach(t => {
                         let typeColor = t.testType === 'Typing' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300' : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300';
                         let statStr = t.testType === 'Typing' ? `${t.wpm} WPM | ${t.accuracy}% Acc` : `${t.accuracy}% Acc`;
-                        html += `
-                            <div class="p-3 bg-slate-50 dark:bg-slate-900 rounded-lg text-sm flex justify-between items-center border border-slate-100 dark:border-slate-700">
-                                <div class="flex items-center max-w-[60%]">
-                                    <span class="px-2 py-0.5 rounded text-xs font-bold mr-3 ${typeColor}">${t.testType || 'Steno'}</span>
-                                    <span class="font-medium text-slate-700 dark:text-slate-300 truncate">${t.matter || 'Manual Practice'}</span>
-                                </div>
-                                <div class="text-right shrink-0">
-                                    <span class="font-bold text-slate-800 dark:text-white">${statStr}</span>
-                                    <span class="text-xs text-slate-400 font-medium ml-3">${t.date}</span>
-                                </div>
-                            </div>`;
-                    });
-
-                    html += `</div></div></div>`;
-                }
-                hl.innerHTML = html;
-
+                        html += `<div class="p-3 bg-slate-50 dark:bg-slate-900 rounded-lg text-sm flex justify-between items-center border border-slate-100 dark:border-slate-700"><div class="flex items-center max-w-[60%]"><span class="px-2 py-0.5 rounded text-xs font-bold mr-3 ${typeColor}">${t.testType || 'Steno'}</span><span class="font-medium text-slate-700 dark:text-slate-300 truncate">${t.matter || 'Manual Practice'}</span></div><div class="text-right shrink-0"><span class="font-bold text-slate-800 dark:text-white">${statStr}</span><span class="text-xs text-slate-400 font-medium ml-3">${t.date}</span></div></div>`;
+                    }); html += `</div></div></div>`;
+                } hl.innerHTML = html;
             } catch(e) { hl.innerHTML = '<p class="text-red-500 text-center py-12">Error loading global data.</p>'; console.error(e); }
         };
     </script>
