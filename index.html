@@ -576,19 +576,36 @@
 
         window.signInWithGoogle = function() { signInWithPopup(auth, googleProvider).catch(err => alert("Google Sign-In Failed: " + err.message)); };
 
+        // RESTORED AUTH EVENT LISTENERS
+        window.handleForgotPassword = function() {
+            const email = document.getElementById('auth-email').value.trim();
+            const errBox = document.getElementById('auth-error'); const succBox = document.getElementById('auth-success');
+            errBox.style.display = 'none'; succBox.style.display = 'none';
+            if(!email) { errBox.innerText = "Please enter your email address in the box above first."; errBox.style.display = 'block'; return; }
+            sendPasswordResetEmail(auth, email).then(() => { succBox.innerText = "Password reset email sent! Check your inbox."; succBox.style.display = 'block'; }).catch(err => { errBox.innerText = "Error: " + err.message; errBox.style.display = 'block'; });
+        };
+
+        document.getElementById('login-btn').addEventListener('click', () => {
+            const e = document.getElementById('auth-email').value; const p = document.getElementById('auth-password').value;
+            const errBox = document.getElementById('auth-error'); errBox.style.display = 'none';
+            if(!e || !p) { errBox.innerText = "Please enter email and password."; errBox.style.display = 'block'; return; }
+            signInWithEmailAndPassword(auth, e, p).catch(err => { errBox.innerText = "Login Failed: " + err.message; errBox.style.display = 'block'; });
+        });
+
+        document.getElementById('signup-btn').addEventListener('click', () => {
+            const e = document.getElementById('auth-email').value; const p = document.getElementById('auth-password').value;
+            const errBox = document.getElementById('auth-error'); errBox.style.display = 'none';
+            if(!e || !p) { errBox.innerText = "Please enter email and password."; errBox.style.display = 'block'; return; }
+            createUserWithEmailAndPassword(auth, e, p).catch(err => { errBox.innerText = err.message; errBox.style.display = 'block'; });
+        });
+
         window.deleteDictation = async function(id, fileUrl) { if(!confirm("⚠️ WARNING: Delete this dictation permanently?")) return; try { await deleteDoc(doc(db, "dictations", id)); if(fileUrl && fileUrl !== 'undefined') await deleteObject(ref(storage, fileUrl)); alert("Deleted successfully."); window.fetchDictations(); } catch(e) { alert("Error: " + e.message); } };
         window.deleteNote = async function(id, fileUrl) { if(!confirm("⚠️ WARNING: Delete this note permanently?")) return; try { await deleteDoc(doc(db, "notes", id)); if(fileUrl && fileUrl !== 'undefined') await deleteObject(ref(storage, fileUrl)); alert("Deleted successfully."); window.fetchNotes(); } catch(e) { alert("Error: " + e.message); } };
         window.deleteTypingText = async function(id) { if(!confirm("⚠️ WARNING: Delete this typing text?")) return; try { await deleteDoc(doc(db, "typingTexts", id)); alert("Deleted successfully."); window.fetchTypingTexts(); } catch(e) { alert("Error: " + e.message); } };
 
-        // --- NEW ADMIN EDIT FUNCTION ---
         window.editDictationTitle = async function(id, currentTitle) {
             const newTitle = prompt("Edit Dictation Title:", currentTitle);
-            if (newTitle && newTitle.trim() !== "" && newTitle !== currentTitle) {
-                try {
-                    await updateDoc(doc(db, "dictations", id), { title: newTitle.trim() });
-                    window.fetchDictations();
-                } catch(e) { alert("Error updating title: " + e.message); }
-            }
+            if (newTitle && newTitle.trim() !== "" && newTitle !== currentTitle) { try { await updateDoc(doc(db, "dictations", id), { title: newTitle.trim() }); window.fetchDictations(); } catch(e) { alert("Error updating title: " + e.message); } }
         };
 
         onAuthStateChanged(auth, (user) => {
