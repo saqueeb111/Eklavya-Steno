@@ -16,6 +16,7 @@
         .color-cap { color: #9333ea; font-weight: bold; background: #f3e8ff; padding: 2px 4px; border-radius: 4px; } .dark .color-cap { color: #c084fc; background: #581c87; }
         .color-punct { color: #ea580c; font-weight: bold; background: #ffedd5; padding: 2px 4px; border-radius: 4px; } .dark .color-punct { color: #fb923c; background: #7c2d12; }
         .color-spell { color: #2563eb; font-weight: bold; background: #dbeafe; padding: 2px 4px; border-radius: 4px; } .dark .color-spell { color: #60a5fa; background: #1e3a8a; }
+        .color-spell-err { color: #db2777; font-weight: bold; background: #fce7f3; padding: 2px 4px; border-radius: 4px; } .dark .color-spell-err { color: #f472b6; background: #831843; }
         .color-sub { color: #dc2626; font-weight: bold; background: #fee2e2; padding: 2px 4px; border-radius: 4px; } .dark .color-sub { color: #f87171; background: #7f1d1d; }
         .color-omit { color: #dc2626; font-weight: bold; text-decoration: underline; background: #fee2e2; padding: 2px 4px; border-radius: 4px; } .dark .color-omit { color: #f87171; background: #7f1d1d; }
         .color-add { color: #dc2626; font-weight: bold; text-decoration: line-through; background: #fee2e2; padding: 2px 4px; border-radius: 4px; } .dark .color-add { color: #f87171; background: #7f1d1d; }
@@ -215,7 +216,7 @@
                         <div class="bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl mb-8 shadow-sm overflow-hidden">
                             <div class="p-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 font-bold flex justify-between items-center text-slate-700 dark:text-slate-300">Visual Markup <button onclick="printVisualPassage()" class="bg-slate-800 dark:bg-slate-700 text-white px-4 py-1.5 rounded-lg text-sm hover:bg-slate-900 dark:hover:bg-slate-600 transition shadow">Save PDF</button></div>
                             <div class="px-6 py-3 border-b border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm z-10 relative">
-                                <div class="flex flex-wrap gap-4 text-xs"><span class="color-match">Green: Correct</span><span class="color-cap">Purple: Capitalization</span><span class="color-spell">Blue: Singular/Plural</span><span class="color-num">Teal: Numbers</span><span class="color-sub">Red: Wrong/Missing/Extra</span></div>
+                                <div class="flex flex-wrap gap-4 text-xs"><span class="color-match">Green: Correct</span><span class="color-cap">Purple: Capitalization</span><span class="color-spell">Blue: Singular/Plural</span><span class="color-spell-err">Pink: Spelling Mistake</span><span class="color-num">Teal: Numbers</span><span class="color-sub">Red: Wrong/Missing/Extra</span></div>
                             </div>
                             <div id="steno-visual-passage" class="p-6 text-lg leading-loose min-h-[120px] bg-slate-50/50 dark:bg-slate-900/50 text-slate-800 dark:text-slate-200"></div>
                         </div>
@@ -391,16 +392,53 @@
         
         function cleanStenoWord(w) { return !w ? "" : w.split('/').join(''); }
         function stripPunct(w) { if(!w) return ""; var c=['.',',','!','?',';',':','"','\'','(',')','-']; var r=w; for(var i=0;i<c.length;i++) r=r.split(c[i]).join(''); return r; }
-        function wordToNumberStr(w) { var o={"zero":"0","one":"1","two":"2","three":"3","four":"4","five":"5","six":"6","seven":"7","eight":"8","nine":"9","ten":"10"}; return o[w] ? o[w] : w; }
+        
+        function getEditDistance(a, b) {
+            if(a.length === 0) return b.length;
+            if(b.length === 0) return a.length;
+            var matrix = [];
+            for(var i = 0; i <= b.length; i++){ matrix[i] = [i]; }
+            for(var j = 0; j <= a.length; j++){ matrix[0][j] = j; }
+            for(var i = 1; i <= b.length; i++){
+                for(var j = 1; j <= a.length; j++){
+                    if(b.charAt(i-1) == a.charAt(j-1)){ matrix[i][j] = matrix[i-1][j-1]; } 
+                    else { matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, Math.min(matrix[i][j-1] + 1, matrix[i-1][j] + 1)); }
+                }
+            }
+            return matrix[b.length][a.length];
+        }
+
         window.lastMistakeArray = []; window.lastAnalysisAccuracy = 0; window.lastVisualMarkup = "";
 
         function checkWordMatch(orig, typed) {
             var nO = cleanStenoWord(orig); var nT = cleanStenoWord(typed);
             if (nO === nT) return { cost: 0, penalty: 0, type: 'Match' };
             var sO = stripPunct(nO).toLowerCase(); var sT = stripPunct(nT).toLowerCase();
-            if (sO === sT) { if (stripPunct(nO) !== stripPunct(nT)) return { cost: 0.1, penalty: 0.5, type: 'Capitalization' }; return { cost: 0, penalty: 0, type: 'Match' }; }
-            if (sO+'s'===sT || sT+'s'===sO || sO+'es'===sT || sT+'es'===sO) return { cost: 0.3, penalty: 0.5, type: 'Spelling (Singular/Plural)' };
-            if (wordToNumberStr(sO) === wordToNumberStr(sT)) return { cost: 0, penalty: 0, type: 'Match (Number Format Ignored)' };
+            
+            var altForms = {
+                "honble": "honourable", "hon": "honourable", "honorable": "honourable",
+                "1st": "first", "2nd": "second", "3rd": "third", "4th": "fourth", "5th": "fifth", "6th": "sixth", "7th": "seventh", "8th": "eighth", "9th": "ninth", "10th": "tenth",
+                "1": "one", "2": "two", "3": "three", "4": "four", "5": "five", "6": "six", "7": "seven", "8": "eight", "9": "nine", "10": "ten",
+                "11": "eleven", "12": "twelve", "13": "thirteen", "14": "fourteen", "15": "fifteen", "16": "sixteen", "17": "seventeen", "18": "eighteen", "19": "nineteen", "20": "twenty",
+                "30": "thirty", "40": "forty", "50": "fifty", "60": "sixty", "70": "seventy", "80": "eighty", "90": "ninety", "100": "hundred", "1000": "thousand",
+                "percent": "%", "rupees": "rs", "mr": "mister", "dr": "doctor"
+            };
+
+            var normO = altForms[sO] || sO;
+            var normT = altForms[sT] || sT;
+
+            if (normO === normT) { 
+                if (stripPunct(nO) !== stripPunct(nT) && sO === sT) return { cost: 0.1, penalty: 0.5, type: 'Capitalization' }; 
+                if (sO !== sT) return { cost: 0, penalty: 0, type: 'Match (Alternate Form / Number)' };
+                return { cost: 0, penalty: 0, type: 'Match' }; 
+            }
+            if (normO+'s'===normT || normT+'s'===normO || normO+'es'===normT || normT+'es'===normO) return { cost: 0.3, penalty: 0.5, type: 'Spelling (Singular/Plural)' };
+            
+            var ed = getEditDistance(normO, normT);
+            if ((ed === 1 && normO.length > 2) || (ed === 2 && normO.length > 4)) {
+                return { cost: 0.4, penalty: 0.5, type: 'Spelling Mistake' };
+            }
+
             return { cost: 1, penalty: 1, type: 'Substitution' };
         }
 
@@ -443,27 +481,37 @@
             }
             
             var tb = document.getElementById('steno-table-body'); tb.innerHTML=''; var vH = ""; var evaluatedWordsCount = 0;
+
             for (var k=0; k<alg.length; k++) {
                 var r = alg[k]; 
                 if(r.ty !== 'Addition') evaluatedWordsCount++;
-                if (r.p === 0) { if(r.ty.includes('Number')) vH += `<span class='color-num'>[${r.t}=${r.o}]</span> `; else vH += `<span class='color-match'>${r.t}</span> `; } 
+                if (r.p === 0) { if(r.ty.includes('Number') || r.ty.includes('Alternate')) vH += `<span class='color-num'>[${r.t}=${r.o}]</span> `; else vH += `<span class='color-match'>${r.t}</span> `; } 
                 else if (r.ty === 'Capitalization') { vH += `<span class='color-cap'>[${r.t}&rarr;${r.o}]</span> `; } 
                 else if (r.ty === 'Spelling (Singular/Plural)') { vH += `<span class='color-spell'>[${r.t}&rarr;${r.o}]</span> `; } 
+                else if (r.ty === 'Spelling Mistake') { vH += `<span class='color-spell-err'>[${r.t}&rarr;${r.o}]</span> `; } 
                 else if (r.ty.includes('Omission')) { vH += `<span class='color-omit'>[Missing: ${r.o}]</span> `; } 
                 else if (r.ty.includes('Addition')) { vH += `<span class='color-add'>[Extra: ${r.t}]</span> `; } 
                 else { vH += `<span class='color-sub'>[${r.t}&rarr;${r.o}]</span> `; }
                 
                 if (r.p > 0) {
                     var tRow = document.createElement('tr'); 
-                    if(r.p===1){ fM++; tRow.className="border-b border-slate-100 dark:border-slate-700 bg-red-50 dark:bg-red-900/20"; } else { hM++; tRow.className="border-b border-slate-100 dark:border-slate-700 bg-orange-50 dark:bg-orange-900/20"; }
-                    var pText = r.p === 0.5 ? "1/2 Mistake" : "1 Full Mistake";
+                    var pText = "";
+                    
+                    if (r.ty === 'Spelling Mistake') {
+                        hM++; pText = "1/2 Mistake";
+                        tRow.className="border-b border-slate-100 dark:border-slate-700 bg-pink-50 dark:bg-pink-900/20";
+                    } else if(r.p===1) { 
+                        fM++; tRow.className="border-b border-slate-100 dark:border-slate-700 bg-red-50 dark:bg-red-900/20"; pText = "1 Full Mistake";
+                    } else { 
+                        hM++; tRow.className="border-b border-slate-100 dark:border-slate-700 bg-orange-50 dark:bg-orange-900/20"; pText = "1/2 Mistake";
+                    }
                     tRow.innerHTML = `<td class='px-5 py-3'>${r.o}</td><td class='px-5 py-3 font-semibold'>${r.t}</td><td class='px-5 py-3 font-bold'>${pText}</td><td class='px-5 py-3 text-slate-600 dark:text-slate-400'>❌ ${r.ty}</td>`; tb.appendChild(tRow);
                 }
             }
             if (fM === 0 && hM === 0) tb.innerHTML = "<tr><td colspan='4' class='p-6 text-center font-extrabold text-lg text-emerald-600'>Perfect!</td></tr>";
             
             document.getElementById('steno-visual-passage').innerHTML = vH;
-            window.lastVisualMarkup = vH; // CAPTURE FOR DASHBOARD
+            window.lastVisualMarkup = vH; 
 
             var tMC = fM + (hM/2); var err = evaluatedWordsCount>0 ? (tMC/evaluatedWordsCount)*100 : 0; var acc = Math.max(0, 100-err);
             window.lastAnalysisAccuracy = acc.toFixed(2);
@@ -475,7 +523,7 @@
         
         function printVisualPassage() {
             var content = document.getElementById("steno-visual-passage").innerHTML; var printWin = window.open('', '', 'width=800,height=800');
-            printWin.document.write('<html><head><title>Stenogram Review</title><style>body{font-family:sans-serif;line-height:2;font-size:16px;padding:20px;color:#333;}.color-match{color:#16a34a;}.color-num{color:#0d9488;font-weight:bold;background:#ccfbf1;padding:2px 4px;border-radius:4px;}.color-cap{color:#9333ea;font-weight:bold;background:#f3e8ff;padding:2px 4px;border-radius:4px;}.color-spell{color:#2563eb;font-weight:bold;background:#dbeafe;padding:2px 4px;border-radius:4px;}.color-sub{color:#dc2626;font-weight:bold;background:#fee2e2;padding:2px 4px;border-radius:4px;}.color-omit{color:#dc2626;font-weight:bold;text-decoration:underline;background:#fee2e2;padding:2px 4px;border-radius:4px;}.color-add{color:#dc2626;font-weight:bold;text-decoration:line-through;background:#fee2e2;padding:2px 4px;border-radius:4px;}</style></head><body><h2>Stenogram Analysis</h2><div>' + content + '</div></body></html>');
+            printWin.document.write('<html><head><title>Stenogram Review</title><style>body{font-family:sans-serif;line-height:2;font-size:16px;padding:20px;color:#333;}.color-match{color:#16a34a;}.color-num{color:#0d9488;font-weight:bold;background:#ccfbf1;padding:2px 4px;border-radius:4px;}.color-cap{color:#9333ea;font-weight:bold;background:#f3e8ff;padding:2px 4px;border-radius:4px;}.color-spell{color:#2563eb;font-weight:bold;background:#dbeafe;padding:2px 4px;border-radius:4px;}.color-spell-err{color:#db2777;font-weight:bold;background:#fce7f3;padding:2px 4px;border-radius:4px;}.color-sub{color:#dc2626;font-weight:bold;background:#fee2e2;padding:2px 4px;border-radius:4px;}.color-omit{color:#dc2626;font-weight:bold;text-decoration:underline;background:#fee2e2;padding:2px 4px;border-radius:4px;}.color-add{color:#dc2626;font-weight:bold;text-decoration:line-through;background:#fee2e2;padding:2px 4px;border-radius:4px;}</style></head><body><h2>Stenogram Analysis</h2><div>' + content + '</div></body></html>');
             printWin.document.close(); printWin.focus(); setTimeout(function(){printWin.print();}, 500);
         }
 
@@ -744,7 +792,6 @@
             } catch(e) { list.innerHTML = '<p class="text-center py-12 col-span-2 text-red-500">Error loading notes.</p>'; }
         };
 
-        // --- DASHBOARD DATA SAVING & FETCHING (UPGRADED) ---
         window.addEventListener('stenoAnalysisComplete', async () => {
             if(!window.currentUser) return;
             try {
@@ -774,14 +821,13 @@
                         detailedView = `
                             <div class="mt-4">
                                 <div class="flex flex-wrap gap-4 text-xs mb-3 bg-white dark:bg-slate-800 p-3 rounded-lg border border-slate-200 dark:border-slate-700">
-                                    <span class="color-match">Green: Correct</span><span class="color-cap">Purple: Capitalization</span><span class="color-spell">Blue: Singular/Plural</span><span class="color-num">Teal: Numbers</span><span class="color-sub">Red: Wrong/Missing/Extra</span>
+                                    <span class="color-match">Green: Correct</span><span class="color-cap">Purple: Capitalization</span><span class="color-spell">Blue: Singular/Plural</span><span class="color-spell-err">Pink: Spelling Mistake</span><span class="color-num">Teal: Numbers</span><span class="color-sub">Red: Wrong/Missing/Extra</span>
                                 </div>
                                 <div class="p-6 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-lg leading-loose shadow-inner overflow-x-auto text-slate-800 dark:text-slate-200">
                                     ${d.visualMarkup}
                                 </div>
                             </div>`;
                     } else if (d.testType === 'Steno' && d.mistakes && d.mistakes.length > 0) {
-                        // Fallback for older tests without visualMarkup saved
                         let errs = `<div class="mt-4 bg-red-50 dark:bg-red-900/20 p-4 rounded-xl border border-red-100 dark:border-red-800/50 text-sm text-red-900 dark:text-red-200 shadow-inner"><strong class="flex items-center gap-2 mb-2">Top Mistakes:</strong><ul class="list-disc list-inside ml-2 space-y-1">`; d.mistakes.forEach(m => { let c = m.o === '---' ? '[Nothing]' : m.o; errs += `<li>Typed <strong class="bg-red-100 dark:bg-red-800 px-1 rounded">'${m.t}'</strong> instead of <strong class="bg-emerald-100 dark:bg-emerald-800 text-emerald-800 dark:text-emerald-200 px-1 rounded">'${c}'</strong> <i class="text-red-500 dark:text-red-400">(${m.ty})</i></li>`; }); errs += `</ul></div>`;
                         detailedView = errs;
                     } else { detailedView = `<p class="text-slate-500 dark:text-slate-400 text-sm italic">No specific mistake data available for this test.</p>`; }
