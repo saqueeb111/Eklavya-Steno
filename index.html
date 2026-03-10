@@ -316,8 +316,17 @@
                 </section>
 
                 <section id="view-dashboard" class="app-view p-6 md:p-10 bg-slate-50 dark:bg-slate-900/50">
-                    <div class="flex items-center gap-5 mb-8"><div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center text-3xl shadow-sm border border-emerald-200 dark:border-emerald-800">👤</div><div><h2 class="text-3xl font-extrabold text-slate-800 dark:text-white">My Dashboard</h2><p class="text-slate-500 dark:text-slate-400 font-medium mt-1">Review your past performance.</p></div></div>
-                    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden"><div class="p-5 border-b border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 font-bold text-slate-700 dark:text-slate-300 flex justify-between items-center"><span class="text-lg">History Log</span><button onclick="fetchUserHistory()" class="text-sm bg-white dark:bg-slate-800 px-4 py-1.5 rounded-lg border border-slate-300 dark:border-slate-600 text-blue-600 dark:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700 transition shadow-sm">Refresh Data</button></div><div id="history-list" class="divide-y divide-slate-100 dark:divide-slate-700 bg-white dark:bg-slate-800"><p class="text-center py-12 text-slate-500 dark:text-slate-400">Take a test in the Analyzer tab to see your history here.</p></div></div>
+                    <div class="flex items-center gap-5 mb-8"><div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center text-3xl shadow-sm border border-emerald-200 dark:border-emerald-800">👤</div><div><h2 class="text-3xl font-extrabold text-slate-800 dark:text-white">My Dashboard</h2><p class="text-slate-500 dark:text-slate-400 font-medium mt-1">Review your past performance & visual mistakes.</p></div></div>
+                    
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+                        <div class="p-5 border-b border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 font-bold text-slate-700 dark:text-slate-300 flex justify-between items-center">
+                            <span class="text-lg">History Log</span>
+                            <button onclick="fetchUserHistory()" class="text-sm bg-white dark:bg-slate-800 px-4 py-1.5 rounded-lg border border-slate-300 dark:border-slate-600 text-blue-600 dark:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700 transition shadow-sm">Refresh Data</button>
+                        </div>
+                        <div id="history-list" class="bg-transparent p-4">
+                            <p class="text-center py-12 text-slate-500 dark:text-slate-400">Take a test in the Analyzer tab to see your history here.</p>
+                        </div>
+                    </div>
                 </section>
 
                 <section id="view-admin" class="app-view p-6 md:p-10 bg-slate-50 dark:bg-slate-900/50">
@@ -383,7 +392,7 @@
         function cleanStenoWord(w) { return !w ? "" : w.split('/').join(''); }
         function stripPunct(w) { if(!w) return ""; var c=['.',',','!','?',';',':','"','\'','(',')','-']; var r=w; for(var i=0;i<c.length;i++) r=r.split(c[i]).join(''); return r; }
         function wordToNumberStr(w) { var o={"zero":"0","one":"1","two":"2","three":"3","four":"4","five":"5","six":"6","seven":"7","eight":"8","nine":"9","ten":"10"}; return o[w] ? o[w] : w; }
-        window.lastMistakeArray = []; window.lastAnalysisAccuracy = 0;
+        window.lastMistakeArray = []; window.lastAnalysisAccuracy = 0; window.lastVisualMarkup = "";
 
         function checkWordMatch(orig, typed) {
             var nO = cleanStenoWord(orig); var nT = cleanStenoWord(typed);
@@ -452,7 +461,10 @@
                 }
             }
             if (fM === 0 && hM === 0) tb.innerHTML = "<tr><td colspan='4' class='p-6 text-center font-extrabold text-lg text-emerald-600'>Perfect!</td></tr>";
+            
             document.getElementById('steno-visual-passage').innerHTML = vH;
+            window.lastVisualMarkup = vH; // CAPTURE FOR DASHBOARD
+
             var tMC = fM + (hM/2); var err = evaluatedWordsCount>0 ? (tMC/evaluatedWordsCount)*100 : 0; var acc = Math.max(0, 100-err);
             window.lastAnalysisAccuracy = acc.toFixed(2);
             document.getElementById('steno-total-words').innerText = tW.length; 
@@ -732,10 +744,11 @@
             } catch(e) { list.innerHTML = '<p class="text-center py-12 col-span-2 text-red-500">Error loading notes.</p>'; }
         };
 
+        // --- DASHBOARD DATA SAVING & FETCHING (UPGRADED) ---
         window.addEventListener('stenoAnalysisComplete', async () => {
             if(!window.currentUser) return;
             try {
-                await addDoc(collection(db, "userHistory"), { userId: window.currentUser.uid, email: window.currentUser.email, testType: 'Steno', matter: window.currentStenoMatter || 'Manual Paste', timeSpentSeconds: window.currentStenoTimeSpent || 2400, accuracy: window.lastAnalysisAccuracy, mistakes: window.lastMistakeArray.slice(0, 50), date: new Date().toLocaleDateString(), timestamp: new Date().getTime() });
+                await addDoc(collection(db, "userHistory"), { userId: window.currentUser.uid, email: window.currentUser.email, testType: 'Steno', matter: window.currentStenoMatter || 'Manual Paste', timeSpentSeconds: window.currentStenoTimeSpent || 2400, accuracy: window.lastAnalysisAccuracy, mistakes: window.lastMistakeArray.slice(0, 50), visualMarkup: window.lastVisualMarkup, date: new Date().toLocaleDateString(), timestamp: new Date().getTime() });
                 document.getElementById('save-status').innerText = "Score & Mistakes Saved Successfully!"; document.getElementById('save-status').style.display = 'block'; window.fetchUserHistory(); if(window.isAdminUser) window.fetchAllUsersHistory();
             } catch(e) { }
         });
@@ -751,11 +764,45 @@
                 const snap = await getDocs(query(collection(db, "userHistory"), where("userId", "==", window.currentUser.uid)));
                 if(snap.empty) { hl.innerHTML = '<p class="text-center py-12 text-slate-500 dark:text-slate-400">No tests taken yet. Practice in the Analyzer or Typing tab!</p>'; return; }
                 let records = []; snap.forEach(doc => records.push(doc.data())); records.sort((a,b) => b.timestamp - a.timestamp); let html = '';
-                records.forEach(d => {
-                    let errs = ''; if(d.testType === 'Steno' && d.mistakes && d.mistakes.length > 0) { errs = `<div class="mt-4 bg-red-50 dark:bg-red-900/20 p-4 rounded-xl border border-red-100 dark:border-red-800/50 text-sm text-red-900 dark:text-red-200 shadow-inner"><strong class="flex items-center gap-2 mb-2">Top Mistakes:</strong><ul class="list-disc list-inside ml-2 space-y-1">`; d.mistakes.forEach(m => { let c = m.o === '---' ? '[Nothing]' : m.o; errs += `<li>Typed <strong class="bg-red-100 dark:bg-red-800 px-1 rounded">'${m.t}'</strong> instead of <strong class="bg-emerald-100 dark:bg-emerald-800 text-emerald-800 dark:text-emerald-200 px-1 rounded">'${c}'</strong> <i class="text-red-500 dark:text-red-400">(${m.ty})</i></li>`; }); errs += `</ul></div>`; }
+                records.forEach((d, idx) => {
+                    let safeId = 'hist-' + d.timestamp + '-' + idx;
                     let typeColor = d.testType === 'Typing' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300' : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300';
                     let statStr = d.testType === 'Typing' ? `${d.wpm} WPM | ${d.accuracy}% Acc` : `${d.accuracy}% Acc`;
-                    html += `<div class="p-6 bg-white dark:bg-slate-800 transition duration-200 border-b border-slate-100 dark:border-slate-700 last:border-b-0"><div class="flex flex-col md:flex-row justify-between md:items-center font-bold text-lg gap-2"><span class="text-slate-800 dark:text-white flex items-center gap-2"><span class="px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider ${typeColor}">${d.testType || 'Steno'}</span> ${d.matter || 'Session'} <span class="text-sm font-medium text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded ml-2">${d.date}</span></span><span class="text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-900 px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm">${statStr}</span></div>${errs}</div>`;
+                    
+                    let detailedView = '';
+                    if(d.testType === 'Steno' && d.visualMarkup) {
+                        detailedView = `
+                            <div class="mt-4">
+                                <div class="flex flex-wrap gap-4 text-xs mb-3 bg-white dark:bg-slate-800 p-3 rounded-lg border border-slate-200 dark:border-slate-700">
+                                    <span class="color-match">Green: Correct</span><span class="color-cap">Purple: Capitalization</span><span class="color-spell">Blue: Singular/Plural</span><span class="color-num">Teal: Numbers</span><span class="color-sub">Red: Wrong/Missing/Extra</span>
+                                </div>
+                                <div class="p-6 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-lg leading-loose shadow-inner overflow-x-auto text-slate-800 dark:text-slate-200">
+                                    ${d.visualMarkup}
+                                </div>
+                            </div>`;
+                    } else if (d.testType === 'Steno' && d.mistakes && d.mistakes.length > 0) {
+                        // Fallback for older tests without visualMarkup saved
+                        let errs = `<div class="mt-4 bg-red-50 dark:bg-red-900/20 p-4 rounded-xl border border-red-100 dark:border-red-800/50 text-sm text-red-900 dark:text-red-200 shadow-inner"><strong class="flex items-center gap-2 mb-2">Top Mistakes:</strong><ul class="list-disc list-inside ml-2 space-y-1">`; d.mistakes.forEach(m => { let c = m.o === '---' ? '[Nothing]' : m.o; errs += `<li>Typed <strong class="bg-red-100 dark:bg-red-800 px-1 rounded">'${m.t}'</strong> instead of <strong class="bg-emerald-100 dark:bg-emerald-800 text-emerald-800 dark:text-emerald-200 px-1 rounded">'${c}'</strong> <i class="text-red-500 dark:text-red-400">(${m.ty})</i></li>`; }); errs += `</ul></div>`;
+                        detailedView = errs;
+                    } else { detailedView = `<p class="text-slate-500 dark:text-slate-400 text-sm italic">No specific mistake data available for this test.</p>`; }
+
+                    html += `
+                        <div class="mb-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+                            <button onclick="document.getElementById('${safeId}').classList.toggle('hidden')" class="w-full p-5 text-left transition flex flex-col md:flex-row md:justify-between md:items-center hover:bg-slate-50 dark:hover:bg-slate-700/50 gap-4">
+                                <div class="flex items-center gap-3">
+                                    <span class="px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider ${typeColor}">${d.testType || 'Steno'}</span> 
+                                    <span class="font-extrabold text-slate-800 dark:text-white truncate max-w-xs md:max-w-md">${d.matter || 'Session'}</span> 
+                                    <span class="text-sm font-medium text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded hidden sm:inline-block">${d.date}</span>
+                                </div>
+                                <div class="flex items-center justify-between w-full md:w-auto">
+                                    <span class="text-sm font-medium text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded sm:hidden">${d.date}</span>
+                                    <span class="text-slate-700 dark:text-slate-300 font-bold bg-slate-50 dark:bg-slate-900 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm flex items-center gap-2">${statStr} <span class="text-xs opacity-50">▼</span></span>
+                                </div>
+                            </button>
+                            <div id="${safeId}" class="hidden p-6 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50">
+                                ${detailedView}
+                            </div>
+                        </div>`;
                 }); hl.innerHTML = html;
             } catch(e) { hl.innerHTML = '<p class="text-center text-red-500 py-12">Error loading history.</p>'; }
         };
