@@ -19,11 +19,13 @@
         .color-sub { color: #dc2626; font-weight: bold; background: #fee2e2; padding: 2px 4px; border-radius: 4px; } .dark .color-sub { color: #f87171; background: #7f1d1d; }
         .color-omit { color: #dc2626; font-weight: bold; text-decoration: underline; background: #fee2e2; padding: 2px 4px; border-radius: 4px; } .dark .color-omit { color: #f87171; background: #7f1d1d; }
         .color-add { color: #dc2626; font-weight: bold; text-decoration: line-through; background: #fee2e2; padding: 2px 4px; border-radius: 4px; } .dark .color-add { color: #f87171; background: #7f1d1d; }
-        ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; } .dark ::-webkit-scrollbar-thumb { background: #475569; } ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; } .dark ::-webkit-scrollbar-thumb { background: #475569; } ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; } .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .app-view { display: none; animation: fadeIn 0.4s ease-out; } .app-view.active-view { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .nav-link.active { color: #10b981; border-bottom: 2px solid #10b981; } .nav-link-admin.active { color: #9333ea; border-bottom: 2px solid #9333ea; }
         .typing-active-word { background-color: #e2e8f0; color: black; border-radius: 4px; padding: 0 2px; } .dark .typing-active-word { background-color: #475569; color: white; }
+        :fullscreen { background-color: #f8fafc; padding: 2rem; overflow-y: auto; } .dark :fullscreen { background-color: #0f172a; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 antialiased min-h-screen flex flex-col transition-colors duration-300">
@@ -122,11 +124,7 @@
                         <textarea id="type-admin-body" placeholder="Paste the official paragraph here..." class="w-full h-32 p-3 rounded-lg border border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white resize-y mb-3"></textarea>
                         <button id="type-admin-btn" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 transition">Save to Cloud Library</button>
                         <p id="type-admin-status" class="text-sm font-bold mt-2 hidden text-emerald-500"></p>
-                        
-                        <div class="mt-5 border-t border-slate-200 dark:border-slate-700 pt-4">
-                            <h4 class="font-bold text-sm text-slate-600 dark:text-slate-400 mb-2">Manage Uploaded Texts:</h4>
-                            <div id="admin-typing-list" class="max-h-40 overflow-y-auto pr-2"></div>
-                        </div>
+                        <div class="mt-5 border-t border-slate-200 dark:border-slate-700 pt-4"><h4 class="font-bold text-sm text-slate-600 dark:text-slate-400 mb-2">Manage Uploaded Texts:</h4><div id="admin-typing-list" class="max-h-40 overflow-y-auto pr-2"></div></div>
                     </div>
 
                     <div class="bg-slate-50 dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 mb-6 grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -156,7 +154,12 @@
                     
                     <textarea id="custom-input-area" placeholder="Paste your custom material here..." class="hidden w-full h-32 p-4 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl mb-6 shadow-inner resize-y outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                     
-                    <button onclick="loadTypingTest()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-xl font-bold shadow-md transition duration-200 mb-6 text-lg tracking-wide">Load Settings & Start Timer</button>
+                    <div class="flex gap-4 mb-6">
+                        <select id="typing-timer-select" class="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-xl p-4 font-bold text-slate-700 dark:text-slate-200 outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="1">1 Min (Sprint) ⚡</option><option value="2">2 Min (Short) 🏃</option><option value="5">5 Min (Medium)</option><option value="10" selected>10 Min (Standard Exam) ⏱️</option>
+                        </select>
+                        <button onclick="loadTypingTest()" class="flex-grow w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-xl font-bold shadow-md transition duration-200 text-lg tracking-wide">Load Settings & Start Timer</button>
+                    </div>
 
                     <div class="flex justify-between items-center font-bold text-lg mb-3">
                         <span id="status-message" class="text-slate-500 dark:text-slate-400 flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-slate-300 dark:bg-slate-600"></span> Ready</span>
@@ -173,11 +176,7 @@
                     
                     <div id="typing-results" class="hidden mt-6 p-8 bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 rounded-2xl text-center shadow-sm">
                         <h3 class="text-xl font-bold text-blue-800 dark:text-blue-300 mb-4">Performance Results</h3>
-                        <p class="text-slate-700 dark:text-slate-200">
-                            Speed: <span id="wpm-result" class="text-blue-600 dark:text-blue-400 text-4xl font-extrabold mx-2">0</span> WPM 
-                            <span class="mx-6 text-slate-300 dark:text-slate-600">|</span> 
-                            Accuracy: <span id="acc-result" class="text-emerald-500 text-4xl font-extrabold mx-2">0</span>%
-                        </p>
+                        <p class="text-slate-700 dark:text-slate-200">Speed: <span id="wpm-result" class="text-blue-600 dark:text-blue-400 text-4xl font-extrabold mx-2">0</span> WPM <span class="mx-6 text-slate-300 dark:text-slate-600">|</span> Accuracy: <span id="acc-result" class="text-emerald-500 text-4xl font-extrabold mx-2">0</span>%</p>
                     </div>
                 </section>
 
@@ -198,12 +197,9 @@
                     <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-4">
                         <div class="flex items-center gap-3 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 px-5 py-4 rounded-xl shadow-sm sm:w-auto shrink-0 transition hover:bg-emerald-100 dark:hover:bg-emerald-900/40">
                             <input type="checkbox" id="partial-analyzer-toggle" class="w-6 h-6 text-emerald-600 rounded cursor-pointer">
-                            <label for="partial-analyzer-toggle" class="font-extrabold text-emerald-800 dark:text-emerald-400 cursor-pointer select-none">Partial Analyser</label>
+                            <label for="partial-analyzer-toggle" class="font-extrabold text-emerald-800 dark:text-emerald-400 cursor-pointer select-none">Partial Analyser <span class="block text-xs font-normal opacity-80">(Grade only what I typed)</span></label>
                         </div>
-                        
-                        <button type="button" onclick="analyzeSteno()" class="flex-grow w-full py-4 sm:py-0 h-[60px] bg-emerald-600 hover:bg-emerald-700 text-white text-xl font-extrabold rounded-xl shadow-lg transition duration-200 transform hover:-translate-y-1 tracking-wide">
-                            Run Analysis & Save to Profile
-                        </button>
+                        <button type="button" onclick="analyzeSteno()" class="flex-grow w-full py-4 sm:py-0 h-[75px] bg-emerald-600 hover:bg-emerald-700 text-white text-xl font-extrabold rounded-xl shadow-lg transition duration-200 transform hover:-translate-y-1 tracking-wide">Run Analysis & Save</button>
                     </div>
                     <p id="save-status" class="text-center mt-2 text-sm font-bold text-emerald-600 hidden"></p>
 
@@ -216,13 +212,9 @@
                         </div>
                         
                         <div class="bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl mb-8 shadow-sm overflow-hidden">
-                            <div class="p-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 font-bold flex justify-between items-center text-slate-700 dark:text-slate-300">
-                                Visual Markup <button onclick="printVisualPassage()" class="bg-slate-800 dark:bg-slate-700 text-white px-4 py-1.5 rounded-lg text-sm hover:bg-slate-900 dark:hover:bg-slate-600 transition shadow">Save PDF</button>
-                            </div>
+                            <div class="p-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 font-bold flex justify-between items-center text-slate-700 dark:text-slate-300">Visual Markup <button onclick="printVisualPassage()" class="bg-slate-800 dark:bg-slate-700 text-white px-4 py-1.5 rounded-lg text-sm hover:bg-slate-900 dark:hover:bg-slate-600 transition shadow">Save PDF</button></div>
                             <div class="px-6 py-3 border-b border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm z-10 relative">
-                                <div class="flex flex-wrap gap-4 text-xs">
-                                    <span class="color-match">Green: Correct</span><span class="color-cap">Purple: Capitalization</span><span class="color-spell">Blue: Singular/Plural</span><span class="color-num">Teal: Numbers</span><span class="color-sub">Red: Wrong/Missing/Extra</span>
-                                </div>
+                                <div class="flex flex-wrap gap-4 text-xs"><span class="color-match">Green: Correct</span><span class="color-cap">Purple: Capitalization</span><span class="color-spell">Blue: Singular/Plural</span><span class="color-num">Teal: Numbers</span><span class="color-sub">Red: Wrong/Missing/Extra</span></div>
                             </div>
                             <div id="steno-visual-passage" class="p-6 text-lg leading-loose min-h-[120px] bg-slate-50/50 dark:bg-slate-900/50 text-slate-800 dark:text-slate-200"></div>
                         </div>
@@ -230,9 +222,7 @@
                         <h3 class="font-extrabold text-xl mb-4 text-slate-800 dark:text-white flex items-center gap-2">Mistakes Breakdown</h3>
                         <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
                             <table class="w-full text-left text-sm">
-                                <thead class="bg-slate-800 dark:bg-slate-900 text-white">
-                                    <tr><th class="px-5 py-4">Correct Answer</th><th class="px-5 py-4">What You Typed</th><th class="px-5 py-4">SSC Penalty</th><th class="px-5 py-4">Mistake Type</th></tr>
-                                </thead>
+                                <thead class="bg-slate-800 dark:bg-slate-900 text-white"><tr><th class="px-5 py-4">Correct Answer</th><th class="px-5 py-4">What You Typed</th><th class="px-5 py-4">SSC Penalty</th><th class="px-5 py-4">Mistake Type</th></tr></thead>
                                 <tbody id="steno-table-body" class="divide-y divide-slate-200 dark:divide-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300"></tbody>
                             </table>
                         </div>
@@ -245,18 +235,7 @@
                         <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500"></div>
                         <h2 class="text-2xl font-extrabold text-emerald-800 dark:text-emerald-400 mb-6">Admin Upload Dashboard</h2>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
-                            <div class="md:col-span-1">
-                                <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Folder / Category</label>
-                                <select id="upload-category" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-white rounded-xl p-3 outline-none focus:border-emerald-500">
-                                    <option value="Kailash Chandra">Kailash Chandra</option>
-                                    <option value="Progressive February">Progressive February</option>
-                                    <option value="GD Bisht">GD Bisht</option>
-                                    <option value="General Matter">General Matter</option>
-                                    <option value="Legal Matter">Legal Matter</option>
-                                    <option value="Important Words">Important Words</option>
-                                    <option value="Most Important Matters">Most Important Matters</option>
-                                </select>
-                            </div>
+                            <div class="md:col-span-1"><label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Category</label><select id="upload-category" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-white rounded-xl p-3 outline-none focus:border-emerald-500"><option value="Kailash Chandra">Kailash Chandra</option><option value="Progressive February">Progressive February</option><option value="GD Bisht">GD Bisht</option><option value="General Matter">General Matter</option><option value="Legal Matter">Legal Matter</option><option value="Important Words">Important Words</option><option value="Most Important Matters">Most Important Matters</option></select></div>
                             <div class="md:col-span-1"><label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Title</label><input type="text" id="upload-title" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-white rounded-xl p-3 outline-none"></div>
                             <div class="md:col-span-1"><label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Base Speed</label><input type="number" id="upload-speed" value="80" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-white rounded-xl p-3 outline-none"></div>
                         </div>
@@ -266,24 +245,71 @@
                         <p id="upload-status" class="mt-4 text-center text-sm font-bold hidden"></p>
                     </div>
 
-                    <div>
-                        <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-                            <h2 class="text-3xl font-extrabold text-slate-800 dark:text-white">Dictation Library</h2>
-                            <div class="flex items-center gap-3 bg-white dark:bg-slate-800 p-2 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
-                                <label class="font-bold text-sm text-slate-600 dark:text-slate-400 ml-2">Filter:</label>
-                                <select id="filter-category" onchange="fetchDictations()" class="bg-slate-50 dark:bg-slate-900 border-none font-semibold text-slate-700 dark:text-slate-200 rounded-lg p-2 outline-none cursor-pointer">
-                                    <option value="All">All Folders</option>
-                                    <option value="Kailash Chandra">Kailash Chandra</option>
-                                    <option value="Progressive February">Progressive February</option>
-                                    <option value="GD Bisht">GD Bisht</option>
-                                    <option value="General Matter">General Matter</option>
-                                    <option value="Legal Matter">Legal Matter</option>
-                                    <option value="Important Words">Important Words</option> 
-                                    <option value="Most Important Matters">Most Important Matters</option>
-                                </select>
+                    <div id="dictation-main-view">
+                        <h2 class="text-3xl font-extrabold text-slate-800 dark:text-white mb-6">Dictation Library</h2>
+                        
+                        <div id="category-tabs" class="flex overflow-x-auto gap-3 pb-4 mb-6 hide-scrollbar border-b border-slate-200 dark:border-slate-700">
+                            </div>
+
+                        <div id="dictations-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <p class="text-center py-12 text-slate-500 col-span-full">Loading dictations...</p>
+                        </div>
+                    </div>
+
+                    <div id="dictation-workspace" class="hidden">
+                        <button onclick="closeDictationWorkspace()" class="mb-6 flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white font-bold transition">
+                            <span>←</span> Back to Library
+                        </button>
+                        
+                        <div class="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-3xl shadow-lg border border-slate-200 dark:border-slate-700">
+                            <div class="flex justify-between items-start mb-6">
+                                <div>
+                                    <span id="ws-category" class="text-xs font-bold text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-md uppercase tracking-wide border border-blue-100 dark:border-blue-800/50">Category</span>
+                                    <h2 id="ws-title" class="text-3xl font-extrabold text-slate-800 dark:text-white mt-2">Dictation Title</h2>
+                                </div>
+                                <span id="ws-base-speed" class="bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-white px-4 py-2 rounded-xl font-extrabold shadow-sm border border-slate-200 dark:border-slate-600">80 WPM</span>
+                            </div>
+
+                            <div class="bg-slate-900 dark:bg-black p-4 rounded-2xl shadow-inner flex flex-col md:flex-row gap-4 items-center mb-8 border border-slate-800">
+                                <div class="flex items-center justify-center bg-emerald-500 text-white w-12 h-12 rounded-full shadow-lg shrink-0 text-xl font-bold">🎧</div>
+                                <audio id="ws-audio" controls class="w-full h-12 outline-none dark:opacity-90"></audio>
+                                <div class="flex items-center gap-2 shrink-0">
+                                    <span class="text-slate-400 text-xs font-bold uppercase tracking-wider">Speed</span>
+                                    <select id="ws-speed-select" onchange="changeSpeed('ws-audio', this.value, window.currentDictationBaseSpeed)" class="bg-slate-800 text-white border border-slate-700 rounded-lg p-2 text-sm font-bold outline-none cursor-pointer focus:ring-2 focus:ring-emerald-500">
+                                        </select>
+                                </div>
+                            </div>
+
+                            <div id="ws-transcribe-container" class="bg-slate-50 dark:bg-slate-900/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 transition-all duration-300 flex flex-col h-full">
+                                <div class="flex flex-wrap gap-4 mb-4 items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <select id="ws-timer-select" class="border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-800 dark:text-white rounded-lg p-2.5 text-sm font-bold outline-none shadow-sm"><option value="30">30 Min</option><option value="40">40 Min</option><option value="50" selected>50 Min</option><option value="60">60 Min</option></select>
+                                        <button onclick="startWorkspaceTranscribe()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg text-sm font-bold shadow transition">Start Timer</button>
+                                    </div>
+                                    
+                                    <div class="flex items-center gap-4">
+                                        <div id="ws-timer-display" class="text-2xl font-mono font-extrabold text-slate-800 dark:text-white bg-white dark:bg-slate-800 px-5 py-2 rounded-xl border border-slate-200 dark:border-slate-600 shadow-sm">50:00</div>
+                                        <button onclick="toggleFullscreen('ws-transcribe-container')" class="bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 dark:hover:bg-slate-600 text-white px-4 py-2.5 rounded-lg text-sm font-bold shadow transition flex items-center gap-2">⛶ <span class="hidden sm:inline">Fullscreen</span></button>
+                                    </div>
+                                </div>
+                                
+                                <textarea id="ws-textarea" disabled placeholder="Hit Start Timer, expand to Fullscreen, and begin typing your shorthand translation here..." class="w-full h-64 p-5 border-2 border-slate-300 dark:border-slate-600 rounded-xl text-lg leading-relaxed outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 dark:focus:ring-emerald-900 transition resize-y mb-6 bg-white dark:bg-slate-800 disabled:bg-slate-100 dark:disabled:bg-slate-900 disabled:cursor-not-allowed text-slate-800 dark:text-white shadow-inner flex-grow"></textarea>
+                                
+                                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 justify-between">
+                                    <button onclick="viewWorkspaceMatter()" class="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-white px-6 py-3 rounded-xl font-bold transition shadow-sm border border-slate-300 dark:border-slate-600 w-full sm:w-auto">View Original Matter</button>
+                                    
+                                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
+                                        <div class="flex items-center gap-2 bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 px-4 py-3 rounded-xl shadow-sm justify-center">
+                                            <input type="checkbox" id="ws-partial-toggle" class="w-5 h-5 text-emerald-600 rounded cursor-pointer">
+                                            <label for="ws-partial-toggle" class="font-bold text-sm text-emerald-800 dark:text-emerald-400 cursor-pointer">Partial Analyser</label>
+                                        </div>
+                                        <button onclick="submitWorkspaceAnalyzer()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-xl font-extrabold shadow-lg transition transform hover:-translate-y-1 text-lg w-full sm:w-auto">Check Mistakes</button>
+                                    </div>
+                                </div>
+                                
+                                <div id="ws-original-matter" class="hidden mt-6 p-6 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/50 rounded-xl text-slate-800 dark:text-amber-100 leading-loose whitespace-pre-wrap font-medium shadow-inner text-lg"></div>
                             </div>
                         </div>
-                        <div id="dictations-list" class="grid grid-cols-1 gap-5"><p class="text-center py-12 text-slate-500 font-medium">Loading dictations...</p></div>
                     </div>
                 </section>
 
@@ -411,12 +437,11 @@
             var isPartial = document.getElementById('partial-analyzer-toggle') ? document.getElementById('partial-analyzer-toggle').checked : false;
             var cI = oW.length; var cJ = tW.length; var alg = []; var fM = 0; var hM = 0; window.lastMistakeArray = [];
             
-            // PARTIAL ANALYSER LOGIC: Find exactly where the user stopped typing in the original text
             if (isPartial && tW.length > 0) {
                 let minC = Infinity; let bestI = tW.length;
                 let startSearch = Math.max(0, tW.length - 150); let endSearch = Math.min(oW.length, tW.length + 150);
                 for(let i = startSearch; i <= endSearch; i++) { if(dp[i][tW.length] < minC) { minC = dp[i][tW.length]; bestI = i; } }
-                cI = bestI; // Ignore all original text after this point
+                cI = bestI; 
             }
 
             while (cI>0 || cJ>0) {
@@ -430,13 +455,10 @@
                 }
             }
             
-            var tb = document.getElementById('steno-table-body'); tb.innerHTML=''; var vH = "";
-            var evaluatedWordsCount = 0;
-            
+            var tb = document.getElementById('steno-table-body'); tb.innerHTML=''; var vH = ""; var evaluatedWordsCount = 0;
             for (var k=0; k<alg.length; k++) {
                 var r = alg[k]; 
                 if(r.ty !== 'Addition') evaluatedWordsCount++;
-
                 if (r.p === 0) { if(r.ty.includes('Number')) vH += `<span class='color-num'>[${r.t}=${r.o}]</span> `; else vH += `<span class='color-match'>${r.t}</span> `; } 
                 else if (r.ty === 'Capitalization') { vH += `<span class='color-cap'>[${r.t}&rarr;${r.o}]</span> `; } 
                 else if (r.ty === 'Spelling (Singular/Plural)') { vH += `<span class='color-spell'>[${r.t}&rarr;${r.o}]</span> `; } 
@@ -453,7 +475,6 @@
             }
             if (fM === 0 && hM === 0) tb.innerHTML = "<tr><td colspan='4' class='p-6 text-center font-extrabold text-lg text-emerald-600'>Perfect!</td></tr>";
             document.getElementById('steno-visual-passage').innerHTML = vH;
-            
             var tMC = fM + (hM/2); var err = evaluatedWordsCount>0 ? (tMC/evaluatedWordsCount)*100 : 0; var acc = Math.max(0, 100-err);
             window.lastAnalysisAccuracy = acc.toFixed(2);
             document.getElementById('steno-total-words').innerText = tW.length; 
@@ -468,28 +489,67 @@
             printWin.document.close(); printWin.focus(); setTimeout(function(){printWin.print();}, 500);
         }
 
-        // --- DICTATION LOGIC ---
+        // --- NEW DICTATION WORKSPACE LOGIC ---
         function changeSpeed(id, target, base) { var a = document.getElementById(id); if(a) a.playbackRate = parseFloat(target)/parseFloat(base); }
-        window.dictationData = {}; window.transcribeIntervals = {};
-        window.toggleTranscribePanel = function(id) { document.getElementById('transcribe-panel-' + id).classList.toggle('hidden'); };
-        
-        window.startTranscribe = function(id) {
-            const area = document.getElementById('transcribe-area-' + id); const select = document.getElementById('timer-select-' + id); const display = document.getElementById('timer-display-' + id);
+        window.dictationData = {}; window.transcribeIntervals = {}; window.activeDictationCategory = "All"; window.currentDictationId = null; window.currentDictationBaseSpeed = 80;
+
+        function toggleFullscreen(elemId) {
+            let elem = document.getElementById(elemId);
+            if (!document.fullscreenElement) {
+                elem.requestFullscreen().catch(err => alert(`Error enabling full-screen mode: ${err.message}`));
+            } else { document.exitFullscreen(); }
+        }
+
+        window.startWorkspaceTranscribe = function() {
+            const area = document.getElementById('ws-textarea'); const select = document.getElementById('ws-timer-select'); const display = document.getElementById('ws-timer-display');
             area.disabled = false; area.focus(); select.disabled = true; window.transcribeStartTime = Date.now();
-            if(window.transcribeIntervals[id]) clearInterval(window.transcribeIntervals[id]);
+            if(window.transcribeIntervals['ws']) clearInterval(window.transcribeIntervals['ws']);
             let timeRemaining = parseInt(select.value) * 60;
             const updateDisplay = () => { let m = Math.floor(timeRemaining / 60); let s = timeRemaining % 60; display.innerText = `${m}:${s < 10 ? '0' : ''}${s}`; }; updateDisplay();
-            window.transcribeIntervals[id] = setInterval(() => { timeRemaining--; updateDisplay(); if(timeRemaining <= 0) { clearInterval(window.transcribeIntervals[id]); area.disabled = true; display.innerText = "0:00"; alert("Time's up!"); } }, 1000);
+            window.transcribeIntervals['ws'] = setInterval(() => { timeRemaining--; updateDisplay(); if(timeRemaining <= 0) { clearInterval(window.transcribeIntervals['ws']); area.disabled = true; display.innerText = "0:00"; alert("Time's up!"); } }, 1000);
         };
-        
-        window.viewOriginalMatter = function(id) { const d = window.dictationData[id]; const div = document.getElementById('original-matter-' + id); if(div.classList.contains('hidden')) { div.innerText = d.transcript || "No transcript available."; div.classList.remove('hidden'); } else { div.classList.add('hidden'); } };
-        
-        window.sendToAnalyzer = function(id) {
-            const d = window.dictationData[id]; const orig = d.transcript || ""; const typed = document.getElementById('transcribe-area-' + id).value;
-            if (!orig.trim()) { alert("Admin didn't upload a transcript."); return; }
-            if (!typed.trim()) { alert("Please type something."); return; }
+
+        window.viewWorkspaceMatter = function() { 
+            const d = window.dictationData[window.currentDictationId]; const div = document.getElementById('ws-original-matter'); 
+            if(div.classList.contains('hidden')) { div.innerText = d.transcript || "No transcript available."; div.classList.remove('hidden'); } else { div.classList.add('hidden'); } 
+        };
+
+        window.submitWorkspaceAnalyzer = function() {
+            const d = window.dictationData[window.currentDictationId]; const orig = d.transcript || ""; const typed = document.getElementById('ws-textarea').value;
+            if (!orig.trim()) { alert("Admin didn't upload a transcript for this dictation."); return; }
+            if (!typed.trim()) { alert("Please type something to analyze."); return; }
+            
+            // Sync Partial Toggle to Analyzer Tab
+            document.getElementById('partial-analyzer-toggle').checked = document.getElementById('ws-partial-toggle').checked;
+            
             window.currentStenoMatter = d.title; if(window.transcribeStartTime) { window.currentStenoTimeSpent = Math.floor((Date.now() - window.transcribeStartTime) / 1000); }
             switchView('steno'); document.getElementById('steno-orig').value = orig; document.getElementById('steno-typed').value = typed; analyzeSteno();
+        };
+
+        window.openDictationWorkspace = function(id) {
+            window.currentDictationId = id; const d = window.dictationData[id]; window.currentDictationBaseSpeed = d.baseSpeed || 80;
+            
+            document.getElementById('ws-title').innerText = d.title;
+            document.getElementById('ws-category').innerText = d.category;
+            document.getElementById('ws-base-speed').innerText = window.currentDictationBaseSpeed + ' WPM';
+            
+            const aud = document.getElementById('ws-audio'); aud.src = d.audioUrl; aud.playbackRate = 1.0;
+            
+            let spds = [60,70,80,90,100,110,120]; let opt = ''; 
+            spds.forEach(s => { opt += `<option value="${s}" ${s===parseInt(window.currentDictationBaseSpeed)?'selected':''}>${s} WPM</option>`; });
+            document.getElementById('ws-speed-select').innerHTML = opt;
+            
+            document.getElementById('ws-textarea').value = ''; document.getElementById('ws-textarea').disabled = true;
+            document.getElementById('ws-timer-select').disabled = false; document.getElementById('ws-timer-display').innerText = document.getElementById('ws-timer-select').value + ":00";
+            if(window.transcribeIntervals['ws']) clearInterval(window.transcribeIntervals['ws']);
+            document.getElementById('ws-original-matter').classList.add('hidden');
+            
+            document.getElementById('dictation-main-view').style.display = 'none'; document.getElementById('dictation-workspace').style.display = 'block';
+        };
+
+        window.closeDictationWorkspace = function() {
+            document.getElementById('ws-audio').pause();
+            document.getElementById('dictation-workspace').style.display = 'none'; document.getElementById('dictation-main-view').style.display = 'block';
         };
 
         // --- TYPING TEST LOGIC ---
@@ -498,49 +558,31 @@
             "A strong public health infrastructure is the absolute foundation of any secure and developing nation. Recent global health events have drastically highlighted the critical, undeniable need for well-equipped local hospitals, rapid response medical teams, and widespread, affordable accessibility to essential life-saving medicines. Directed investments in advanced medical research and the rapid construction of primary healthcare centers in remote rural areas are definitive steps in the right direction. Additionally, actively generating public awareness regarding proper sanitation, balanced nutrition, and routine preventive care can drastically reduce the overwhelming burden placed on tertiary care facilities. As India continues to progress rapidly, ensuring perfectly equitable healthcare access for every single citizen, completely regardless of their socio-economic status, will be paramount to achieving long-term social stability."
         ];
 
-        function generateRandom500Words() {
-            let text = ""; let shuffled = [...essayParagraphs].sort(() => 0.5 - Math.random()); let i = 0;
-            while (text.split(' ').filter(w=>w.length>0).length < 550) { text += shuffled[i % shuffled.length] + " "; i++; } return text.trim();
-        }
-
-        window.handleSourceChange = function() {
-            const val = document.getElementById('source-select').value;
-            document.getElementById('custom-input-area').classList.add('hidden');
-            if(val === 'custom') { document.getElementById('custom-input-area').classList.remove('hidden'); }
-        }
+        function generateRandom500Words() { let text = ""; let shuffled = [...essayParagraphs].sort(() => 0.5 - Math.random()); let i = 0; while (text.split(' ').filter(w=>w.length>0).length < 550) { text += shuffled[i % shuffled.length] + " "; i++; } return text.trim(); }
+        window.handleSourceChange = function() { const val = document.getElementById('source-select').value; document.getElementById('custom-input-area').classList.add('hidden'); if(val === 'custom') { document.getElementById('custom-input-area').classList.remove('hidden'); } }
 
         var typingTimeLimit = 10 * 60; var typingTimer; var typingTimeRemaining = typingTimeLimit; var isTestStarted = false; var originalWordsArr = [];
         window.loadTypingTest = function() {
-            clearInterval(typingTimer); typingTimeRemaining = typingTimeLimit; document.getElementById("timer-display").innerText = "10:00"; isTestStarted = false;
+            typingTimeLimit = parseInt(document.getElementById("typing-timer-select").value) * 60;
+            clearInterval(typingTimer); typingTimeRemaining = typingTimeLimit; 
+            document.getElementById("timer-display").innerText = document.getElementById("typing-timer-select").value + ":00"; isTestStarted = false;
             const area = document.getElementById("typing-area"); area.value = ""; area.disabled = false; area.focus();
             document.getElementById("finish-btn").style.display = "block"; document.getElementById("typing-results").style.display = "none";
             const src = document.getElementById("source-select").value; let origText = "";
-            if(src === 'random') { origText = generateRandom500Words(); } 
-            else if (src === 'custom') { origText = document.getElementById('custom-input-area').value.trim(); if(!origText) { alert("Paste text first."); return; } }
-            else if (src.startsWith('admin_')) { const docId = src.split('_')[1]; const selectedDoc = window.typingData.find(d => d.id === docId); origText = selectedDoc ? selectedDoc.body : "Error loading text."; }
+            if(src === 'random') { origText = generateRandom500Words(); } else if (src === 'custom') { origText = document.getElementById('custom-input-area').value.trim(); if(!origText) { alert("Paste text first."); return; } } else if (src.startsWith('admin_')) { const docId = src.split('_')[1]; const selectedDoc = window.typingData.find(d => d.id === docId); origText = selectedDoc ? selectedDoc.body : "Error loading text."; }
             originalWordsArr = origText.split(' ').filter(w => w.length > 0);
             let spanHtml = ""; for(let i=0; i<originalWordsArr.length; i++) spanHtml += `<span id='word-${i}'>${originalWordsArr[i]}</span> `;
             document.getElementById("original-text").innerHTML = spanHtml; document.getElementById("status-message").innerHTML = '<span class="w-3 h-3 rounded-full bg-blue-500 animate-pulse"></span> Test Ready'; document.getElementById("original-text").scrollTop = 0;
         }
 
         window.handleTypingInput = function(area) {
-            if(!isTestStarted) {
-                isTestStarted = true;
-                typingTimer = setInterval(() => {
-                    typingTimeRemaining--; let m = Math.floor(typingTimeRemaining / 60); let s = typingTimeRemaining % 60;
-                    document.getElementById("timer-display").innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
-                    if(typingTimeRemaining <= 0) endTypingTest();
-                }, 1000);
-            }
-            const typedArr = area.value.split(' ').filter(w => w.length > 0 || area.value.endsWith(' '));
-            const currentIndex = Math.max(0, typedArr.length - 1);
+            if(!isTestStarted) { isTestStarted = true; typingTimer = setInterval(() => { typingTimeRemaining--; let m = Math.floor(typingTimeRemaining / 60); let s = typingTimeRemaining % 60; document.getElementById("timer-display").innerText = `${m}:${s < 10 ? '0' : ''}${s}`; if(typingTimeRemaining <= 0) endTypingTest(); }, 1000); }
+            const typedArr = area.value.split(' ').filter(w => w.length > 0 || area.value.endsWith(' ')); const currentIndex = Math.max(0, typedArr.length - 1);
             if(document.getElementById('autoscroll-toggle').checked) { let currentSpan = document.getElementById('word-' + currentIndex); if(currentSpan) { currentSpan.scrollIntoView({ behavior: 'smooth', block: 'center' }); } }
             if(document.getElementById('style-select').value === 'live') {
                 for(let i=0; i<originalWordsArr.length; i++) {
                     let span = document.getElementById('word-'+i); span.className = '';
-                    if(i < typedArr.length - 1) { span.style.color = (originalWordsArr[i] === typedArr[i]) ? '#16a34a' : '#dc2626'; span.style.backgroundColor = 'transparent'; }
-                    else if (i === currentIndex) { span.className = 'typing-active-word'; }
-                    else { span.style.color = ''; span.style.backgroundColor = ''; }
+                    if(i < typedArr.length - 1) { span.style.color = (originalWordsArr[i] === typedArr[i]) ? '#16a34a' : '#dc2626'; span.style.backgroundColor = 'transparent'; } else if (i === currentIndex) { span.className = 'typing-active-word'; } else { span.style.color = ''; span.style.backgroundColor = ''; }
                 }
             }
         }
@@ -552,9 +594,7 @@
             for(let i=0; i<typedArr.length; i++) { if(typedArr[i] !== originalWordsArr[i]) errs++; }
             const acc = typedArr.length > 0 ? ((typedArr.length - errs)/typedArr.length)*100 : 0;
             document.getElementById("wpm-result").innerText = wpm.toFixed(2); document.getElementById("acc-result").innerText = acc.toFixed(2); document.getElementById("typing-results").style.display = "block"; document.getElementById("status-message").innerHTML = 'Test Complete';
-            if(window.currentUser) {
-                let selectElem = document.getElementById('source-select'); window.currentTypingMatter = selectElem.options[selectElem.selectedIndex].text; window.currentTypingTime = typingTimeLimit - typingTimeRemaining; window.currentTypingWpm = parseFloat(wpm.toFixed(2)); window.currentTypingAcc = parseFloat(acc.toFixed(2)); window.dispatchEvent(new Event('typingTestComplete'));
-            }
+            if(window.currentUser) { let selectElem = document.getElementById('source-select'); window.currentTypingMatter = selectElem.options[selectElem.selectedIndex].text; window.currentTypingTime = typingTimeLimit - typingTimeRemaining; window.currentTypingWpm = parseFloat(wpm.toFixed(2)); window.currentTypingAcc = parseFloat(acc.toFixed(2)); window.dispatchEvent(new Event('typingTestComplete')); }
         }
     </script>
 
@@ -570,19 +610,9 @@
 
         window.signInWithGoogle = function() { signInWithPopup(auth, googleProvider).catch(err => alert("Google Sign-In Failed: " + err.message)); };
 
-        // --- GLOBAL ADMIN DELETE FUNCTIONS ---
-        window.deleteDictation = async function(id, fileUrl) {
-            if(!confirm("⚠️ WARNING: Are you sure you want to permanently delete this dictation? This will delete the database entry and the audio file. It cannot be undone.")) return;
-            try { await deleteDoc(doc(db, "dictations", id)); if(fileUrl) await deleteObject(ref(storage, fileUrl)); alert("Dictation deleted successfully."); window.fetchDictations(); } catch(e) { alert("Error deleting: " + e.message); }
-        };
-        window.deleteNote = async function(id, fileUrl) {
-            if(!confirm("⚠️ WARNING: Are you sure you want to permanently delete this note? This will delete the database entry and the PDF file. It cannot be undone.")) return;
-            try { await deleteDoc(doc(db, "notes", id)); if(fileUrl) await deleteObject(ref(storage, fileUrl)); alert("Note deleted successfully."); window.fetchNotes(); } catch(e) { alert("Error deleting: " + e.message); }
-        };
-        window.deleteTypingText = async function(id) {
-            if(!confirm("⚠️ WARNING: Are you sure you want to permanently delete this typing text? It cannot be undone.")) return;
-            try { await deleteDoc(doc(db, "typingTexts", id)); alert("Text deleted successfully."); window.fetchTypingTexts(); } catch(e) { alert("Error deleting: " + e.message); }
-        };
+        window.deleteDictation = async function(id, fileUrl) { if(!confirm("⚠️ WARNING: Delete this dictation permanently?")) return; try { await deleteDoc(doc(db, "dictations", id)); if(fileUrl && fileUrl !== 'undefined') await deleteObject(ref(storage, fileUrl)); alert("Deleted successfully."); window.fetchDictations(); } catch(e) { alert("Error: " + e.message); } };
+        window.deleteNote = async function(id, fileUrl) { if(!confirm("⚠️ WARNING: Delete this note permanently?")) return; try { await deleteDoc(doc(db, "notes", id)); if(fileUrl && fileUrl !== 'undefined') await deleteObject(ref(storage, fileUrl)); alert("Deleted successfully."); window.fetchNotes(); } catch(e) { alert("Error: " + e.message); } };
+        window.deleteTypingText = async function(id) { if(!confirm("⚠️ WARNING: Delete this typing text?")) return; try { await deleteDoc(doc(db, "typingTexts", id)); alert("Deleted successfully."); window.fetchTypingTexts(); } catch(e) { alert("Error: " + e.message); } };
 
         onAuthStateChanged(auth, (user) => {
             window.currentUser = user;
@@ -592,79 +622,55 @@
                 document.getElementById('desktop-nav').style.display = 'flex'; document.getElementById('logged-in-nav').style.display = 'flex';
                 document.getElementById('user-email-display').innerText = user.email; document.getElementById('app-workspace').style.display = 'block'; 
                 closeAuthModal();
-                
                 window.isAdminUser = user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
-                document.getElementById('admin-upload-panel').style.display = window.isAdminUser ? 'block' : 'none';
-                document.getElementById('typing-admin-panel').style.display = window.isAdminUser ? 'block' : 'none';
-                document.getElementById('notes-admin-panel').style.display = window.isAdminUser ? 'block' : 'none';
-                document.getElementById('nav-admin').style.display = window.isAdminUser ? 'block' : 'none';
-                
-                window.fetchUserHistory(); window.fetchDictations(); window.fetchTypingTexts(); window.fetchNotes();
-                if(window.isAdminUser) window.fetchAllUsersHistory();
+                document.getElementById('admin-upload-panel').style.display = window.isAdminUser ? 'block' : 'none'; document.getElementById('typing-admin-panel').style.display = window.isAdminUser ? 'block' : 'none'; document.getElementById('notes-admin-panel').style.display = window.isAdminUser ? 'block' : 'none'; document.getElementById('nav-admin').style.display = window.isAdminUser ? 'block' : 'none';
+                window.fetchUserHistory(); window.fetchDictations(); window.fetchTypingTexts(); window.fetchNotes(); if(window.isAdminUser) window.fetchAllUsersHistory();
             } else {
-                window.isAdminUser = false;
-                document.getElementById('logged-out-cta').style.display = 'block'; document.getElementById('logged-in-cta').style.display = 'none';
-                document.getElementById('logged-out-view').style.display = 'flex'; document.getElementById('logged-in-view').style.display = 'none';
-                document.getElementById('logged-in-nav').style.display = 'none'; document.getElementById('app-workspace').style.display = 'none';
-                switchView('home');
+                window.isAdminUser = false; document.getElementById('logged-out-cta').style.display = 'block'; document.getElementById('logged-in-cta').style.display = 'none'; document.getElementById('logged-out-view').style.display = 'flex'; document.getElementById('logged-in-view').style.display = 'none'; document.getElementById('logged-in-nav').style.display = 'none'; document.getElementById('app-workspace').style.display = 'none'; switchView('home');
             }
         });
 
         document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
 
+        const CATEGORIES = ["All", "Kailash Chandra", "Progressive February", "GD Bisht", "General Matter", "Legal Matter", "Important Words", "Most Important Matters"];
+        
+        window.renderCategoryTabs = function() {
+            let html = '';
+            CATEGORIES.forEach(cat => {
+                let activeClass = window.activeDictationCategory === cat ? 'bg-emerald-600 text-white shadow-md' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700';
+                html += `<button onclick="setDictationCategory('${cat}')" class="whitespace-nowrap px-5 py-2.5 rounded-xl font-bold text-sm transition ${activeClass}">${cat}</button>`;
+            });
+            document.getElementById('category-tabs').innerHTML = html;
+        };
+
+        window.setDictationCategory = function(cat) { window.activeDictationCategory = cat; window.renderCategoryTabs(); window.fetchDictations(); };
+
         window.fetchDictations = async function() {
-            const list = document.getElementById('dictations-list'); const filterCat = document.getElementById('filter-category').value;
-            list.innerHTML = '<p class="text-center py-12 text-slate-500 dark:text-slate-400 font-medium text-lg">Loading dictations...</p>';
+            window.renderCategoryTabs();
+            const list = document.getElementById('dictations-grid');
+            list.innerHTML = '<p class="text-center py-12 text-slate-500 dark:text-slate-400 font-medium text-lg col-span-full">Loading dictations...</p>';
             try {
-                let q = filterCat === "All" ? query(collection(db, "dictations")) : query(collection(db, "dictations"), where("category", "==", filterCat));
+                let q = window.activeDictationCategory === "All" ? query(collection(db, "dictations")) : query(collection(db, "dictations"), where("category", "==", window.activeDictationCategory));
                 const snap = await getDocs(q);
-                if (snap.empty) { list.innerHTML = '<p class="text-center py-12 text-slate-500 dark:text-slate-400 font-medium text-lg">No dictations found in this folder.</p>'; return; }
+                if (snap.empty) { list.innerHTML = '<p class="text-center py-12 text-slate-500 dark:text-slate-400 font-medium text-lg col-span-full">No dictations found in this folder.</p>'; return; }
                 let docsArray = []; snap.forEach(doc => { let d = doc.data(); d.id = doc.id; docsArray.push(d); }); docsArray.sort((a,b) => b.timestamp - a.timestamp);
                 let html = '';
                 docsArray.forEach((d) => {
                     window.dictationData[d.id] = d; const base = d.baseSpeed || 80; const cat = d.category || "General";
-                    let spds = [60,70,80,90,100,110,120]; let opt = ''; spds.forEach(s => { opt += `<option value="${s}" ${s===parseInt(base)?'selected':''}>${s} WPM</option>`; });
                     html += `
-                        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition duration-300">
-                            <div class="flex flex-col md:flex-row items-center gap-6">
-                                <div class="bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 w-20 h-20 flex items-center justify-center rounded-2xl font-extrabold text-2xl border border-blue-100 dark:border-blue-800/50 shrink-0">${base}</div>
-                                <div class="flex-grow text-center md:text-left w-full md:w-auto">
-                                    <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-2.5 py-1 rounded-md uppercase tracking-wide border border-emerald-100 dark:border-emerald-800/50">${cat}</span>
-                                    <h3 class="font-extrabold text-xl mt-2 text-slate-800 dark:text-white">${d.title}</h3>
-                                    <div class="mt-3 flex items-center justify-center md:justify-start gap-2">
-                                        <span class="text-sm font-bold text-slate-400">Speed:</span>
-                                        <select onchange="changeSpeed('aud-${d.id}', this.value, ${base})" class="border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 p-1.5 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-300 outline-none focus:ring-2 focus:ring-blue-200 cursor-pointer">${opt}</select>
-                                    </div>
-                                </div>
-                                <div class="w-full md:w-auto mt-4 md:mt-0"><audio id="aud-${d.id}" controls class="w-full md:w-72 h-12 outline-none dark:opacity-90"><source src="${d.audioUrl}" type="audio/mpeg"></audio></div>
+                        <div class="relative bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm hover:shadow-2xl hover:-translate-y-1 transition duration-300 border border-slate-100 dark:border-slate-700 flex flex-col justify-between group cursor-pointer" onclick="openDictationWorkspace('${d.id}')">
+                            ${window.isAdminUser ? `<button onclick="event.stopPropagation(); deleteDictation('${d.id}', '${d.audioUrl}')" class="absolute top-4 right-4 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 p-2 rounded-lg text-xs font-bold hover:bg-red-200 dark:hover:bg-red-800 transition z-10">🗑️</button>` : ''}
+                            <div>
+                                <span class="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-md uppercase tracking-wide border border-blue-100 dark:border-blue-800/50">${cat}</span>
+                                <h3 class="font-extrabold text-xl mt-4 text-slate-800 dark:text-white line-clamp-2">${d.title}</h3>
                             </div>
-                            
-                            <div class="mt-5 border-t border-slate-100 dark:border-slate-700 pt-5 w-full flex justify-between items-center">
-                                <button onclick="toggleTranscribePanel('${d.id}')" class="text-sm font-bold text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 flex items-center gap-1 transition mx-auto md:mx-0">
-                                    Practice Transcription Here
-                                </button>
-                                ${window.isAdminUser ? `<button onclick="deleteDictation('${d.id}', '${d.audioUrl}')" class="bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-red-200 dark:hover:bg-red-800 transition shadow-sm">🗑️ Delete</button>` : ''}
-                            </div>
-
-                            <div id="transcribe-panel-${d.id}" class="hidden mt-4 bg-slate-50 dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-700">
-                                <div class="flex flex-col md:flex-row gap-4 mb-4 items-center justify-between">
-                                    <div class="flex items-center gap-3 w-full md:w-auto">
-                                        <label class="text-sm font-bold text-slate-600 dark:text-slate-400">Timer:</label>
-                                        <select id="timer-select-${d.id}" class="border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-800 dark:text-white rounded-lg p-2 text-sm font-bold outline-none"><option value="30">30 Min</option><option value="40">40 Min</option><option value="50" selected>50 Min</option><option value="60">60 Min</option></select>
-                                        <button onclick="startTranscribe('${d.id}')" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-bold shadow transition">Start</button>
-                                    </div>
-                                    <div id="timer-display-${d.id}" class="text-2xl font-mono font-extrabold text-slate-800 dark:text-white bg-white dark:bg-slate-800 px-4 py-1.5 rounded-lg border border-slate-200 dark:border-slate-600 shadow-sm">50:00</div>
-                                </div>
-                                <textarea id="transcribe-area-${d.id}" disabled placeholder="Start typing..." class="w-full h-48 p-4 border-2 border-slate-300 dark:border-slate-600 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition resize-y mb-4 bg-white dark:bg-slate-800 disabled:bg-slate-100 dark:disabled:bg-slate-900 disabled:cursor-not-allowed text-slate-700 dark:text-white"></textarea>
-                                <div class="flex flex-wrap gap-3">
-                                    <button onclick="viewOriginalMatter('${d.id}')" class="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-white px-5 py-2.5 rounded-lg text-sm font-bold transition shadow-sm border border-slate-300 dark:border-slate-600">View Matter</button>
-                                    <button onclick="sendToAnalyzer('${d.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-lg text-sm font-bold shadow-md transition">Check Mistakes</button>
-                                </div>
-                                <div id="original-matter-${d.id}" class="hidden mt-4 p-5 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/50 rounded-xl text-slate-800 dark:text-amber-100 leading-loose whitespace-pre-wrap font-medium shadow-inner"></div>
+                            <div class="mt-6 flex justify-between items-center text-sm font-bold text-slate-500 dark:text-slate-400 border-t border-slate-100 dark:border-slate-700 pt-4">
+                                <span class="flex items-center gap-2 bg-slate-50 dark:bg-slate-900 px-3 py-1 rounded-lg">⏱️ ${base} WPM</span>
+                                <span class="text-emerald-500 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition flex items-center gap-1">Practice ➔</span>
                             </div>
                         </div>`;
                 }); list.innerHTML = html;
-            } catch (e) { list.innerHTML = `<p class="text-red-500 text-center py-12">Error loading dictations.</p>`; }
+            } catch (e) { list.innerHTML = `<p class="text-red-500 text-center py-12 col-span-full">Error loading dictations.</p>`; }
         };
 
         document.getElementById('upload-submit-btn').addEventListener('click', async () => {
@@ -680,94 +686,47 @@
 
         document.getElementById('type-admin-btn').addEventListener('click', async () => {
             const tit = document.getElementById('type-admin-title').value.trim(); const body = document.getElementById('type-admin-body').value.trim(); const sts = document.getElementById('type-admin-status');
-            if(!tit || !body) return alert("Fill all fields.");
-            sts.style.display='block'; sts.innerText="Saving...";
-            try {
-                await addDoc(collection(db, "typingTexts"), { title: tit, body: body, timestamp: new Date().getTime() });
-                sts.innerText = "Saved!"; document.getElementById('type-admin-title').value=''; document.getElementById('type-admin-body').value=''; window.fetchTypingTexts();
-            } catch(e) { sts.innerText="Error."; }
+            if(!tit || !body) return alert("Fill all fields."); sts.style.display='block'; sts.innerText="Saving...";
+            try { await addDoc(collection(db, "typingTexts"), { title: tit, body: body, timestamp: new Date().getTime() }); sts.innerText = "Saved!"; document.getElementById('type-admin-title').value=''; document.getElementById('type-admin-body').value=''; window.fetchTypingTexts(); } catch(e) { sts.innerText="Error."; }
         });
 
         window.fetchTypingTexts = async function() {
             try {
-                const snap = await getDocs(query(collection(db, "typingTexts")));
-                window.typingData = []; snap.forEach(doc => { let d = doc.data(); d.id = doc.id; window.typingData.push(d); });
+                const snap = await getDocs(query(collection(db, "typingTexts"))); window.typingData = []; snap.forEach(doc => { let d = doc.data(); d.id = doc.id; window.typingData.push(d); });
                 const select = document.getElementById('source-select'); document.querySelectorAll('.off-opt').forEach(e => e.remove());
-                
-                let adminHtml = '';
-                window.typingData.forEach(d => {
+                let adminHtml = ''; window.typingData.forEach(d => {
                     const opt = document.createElement('option'); opt.value = 'admin_' + d.id; opt.text = "Official: " + d.title; opt.className = 'off-opt'; select.appendChild(opt);
-                    if(window.isAdminUser) {
-                        adminHtml += `
-                            <div class="flex justify-between items-center bg-white dark:bg-slate-800 p-3 rounded-lg border border-slate-200 dark:border-slate-700 mb-2">
-                                <span class="text-sm font-bold text-slate-700 dark:text-slate-300 truncate pr-2">${d.title}</span>
-                                <button onclick="deleteTypingText('${d.id}')" class="bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-red-200 dark:hover:bg-red-800 transition shadow-sm shrink-0">🗑️ Delete</button>
-                            </div>`;
-                    }
-                });
-                if(window.isAdminUser && document.getElementById('admin-typing-list')) { document.getElementById('admin-typing-list').innerHTML = adminHtml; }
+                    if(window.isAdminUser) { adminHtml += `<div class="flex justify-between items-center bg-white dark:bg-slate-800 p-3 rounded-lg border border-slate-200 dark:border-slate-700 mb-2"><span class="text-sm font-bold text-slate-700 dark:text-slate-300 truncate pr-2">${d.title}</span><button onclick="deleteTypingText('${d.id}')" class="bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-red-200 dark:hover:bg-red-800 transition shadow-sm shrink-0">🗑️ Delete</button></div>`; }
+                }); if(window.isAdminUser && document.getElementById('admin-typing-list')) { document.getElementById('admin-typing-list').innerHTML = adminHtml; }
             } catch(e) { console.error("Error fetching typing texts"); }
         };
 
         document.getElementById('note-submit-btn').addEventListener('click', async () => {
             const tit = document.getElementById('note-title').value.trim(); const file = document.getElementById('note-file').files[0]; const sts = document.getElementById('note-status');
-            if(!tit || !file) return alert("Fill all fields.");
-            sts.style.display='block'; sts.innerText="Uploading PDF...";
-            try {
-                const sRef = ref(storage, 'notes/' + Date.now() + '_' + file.name); await uploadBytes(sRef, file); const url = await getDownloadURL(sRef);
-                await addDoc(collection(db, "notes"), { title: tit, fileUrl: url, fileName: file.name, timestamp: new Date().getTime() });
-                sts.innerText = "Saved!"; document.getElementById('note-title').value=''; document.getElementById('note-file').value=''; window.fetchNotes();
-            } catch(e) { sts.innerText="Error."; }
+            if(!tit || !file) return alert("Fill all fields."); sts.style.display='block'; sts.innerText="Uploading PDF...";
+            try { const sRef = ref(storage, 'notes/' + Date.now() + '_' + file.name); await uploadBytes(sRef, file); const url = await getDownloadURL(sRef); await addDoc(collection(db, "notes"), { title: tit, fileUrl: url, fileName: file.name, timestamp: new Date().getTime() }); sts.innerText = "Saved!"; document.getElementById('note-title').value=''; document.getElementById('note-file').value=''; window.fetchNotes(); } catch(e) { sts.innerText="Error."; }
         });
 
         window.fetchNotes = async function() {
             const list = document.getElementById('notes-list'); list.innerHTML = '<p class="text-center py-12 col-span-2 text-slate-500">Loading notes...</p>';
             try {
-                const snap = await getDocs(query(collection(db, "notes")));
-                if (snap.empty) { list.innerHTML = '<p class="text-center py-12 col-span-2 text-slate-500 dark:text-slate-400">No notes uploaded yet.</p>'; return; }
-                let docs = []; snap.forEach(doc => docs.push(doc.data())); docs.sort((a,b) => b.timestamp - a.timestamp);
-                let html = '';
-                docs.forEach(d => {
-                    html += `
-                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition flex items-center justify-between">
-                            <div class="flex items-center gap-3">
-                                <div class="bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 p-3 rounded-lg border border-red-200 dark:border-red-800/50">📄</div>
-                                <div><h3 class="font-bold text-slate-800 dark:text-white">${d.title}</h3><p class="text-xs text-slate-500 dark:text-slate-400">${new Date(d.timestamp).toLocaleDateString()}</p></div>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <a href="${d.fileUrl}" target="_blank" class="bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-white px-4 py-2 rounded-lg font-bold text-sm transition">Open</a>
-                                ${window.isAdminUser ? `<button onclick="deleteNote('${d.id}', '${d.fileUrl}')" class="bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-red-200 dark:hover:bg-red-800 transition shadow-sm">🗑️ Delete</button>` : ''}
-                            </div>
-                        </div>`;
-                }); list.innerHTML = html;
+                const snap = await getDocs(query(collection(db, "notes"))); if (snap.empty) { list.innerHTML = '<p class="text-center py-12 col-span-2 text-slate-500 dark:text-slate-400">No notes uploaded yet.</p>'; return; }
+                let docs = []; snap.forEach(doc => docs.push(doc.data())); docs.sort((a,b) => b.timestamp - a.timestamp); let html = '';
+                docs.forEach(d => { html += `<div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition flex items-center justify-between"><div class="flex items-center gap-3"><div class="bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 p-3 rounded-lg border border-red-200 dark:border-red-800/50">📄</div><div><h3 class="font-bold text-slate-800 dark:text-white">${d.title}</h3><p class="text-xs text-slate-500 dark:text-slate-400">${new Date(d.timestamp).toLocaleDateString()}</p></div></div><div class="flex items-center gap-2"><a href="${d.fileUrl}" target="_blank" class="bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-white px-4 py-2 rounded-lg font-bold text-sm transition">Open</a>${window.isAdminUser ? `<button onclick="deleteNote('${d.id}', '${d.fileUrl}')" class="bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-red-200 dark:hover:bg-red-800 transition shadow-sm">🗑️ Delete</button>` : ''}</div></div>`; }); list.innerHTML = html;
             } catch(e) { list.innerHTML = '<p class="text-center py-12 col-span-2 text-red-500">Error loading notes.</p>'; }
         };
 
         window.addEventListener('stenoAnalysisComplete', async () => {
             if(!window.currentUser) return;
             try {
-                await addDoc(collection(db, "userHistory"), { 
-                    userId: window.currentUser.uid, email: window.currentUser.email, testType: 'Steno',
-                    matter: window.currentStenoMatter || 'Manual Paste', timeSpentSeconds: window.currentStenoTimeSpent || 2400,
-                    accuracy: window.lastAnalysisAccuracy, mistakes: window.lastMistakeArray.slice(0, 50), 
-                    date: new Date().toLocaleDateString(), timestamp: new Date().getTime() 
-                });
-                document.getElementById('save-status').innerText = "Score & Mistakes Saved Successfully!"; document.getElementById('save-status').style.display = 'block'; 
-                window.fetchUserHistory(); if(window.isAdminUser) window.fetchAllUsersHistory();
+                await addDoc(collection(db, "userHistory"), { userId: window.currentUser.uid, email: window.currentUser.email, testType: 'Steno', matter: window.currentStenoMatter || 'Manual Paste', timeSpentSeconds: window.currentStenoTimeSpent || 2400, accuracy: window.lastAnalysisAccuracy, mistakes: window.lastMistakeArray.slice(0, 50), date: new Date().toLocaleDateString(), timestamp: new Date().getTime() });
+                document.getElementById('save-status').innerText = "Score & Mistakes Saved Successfully!"; document.getElementById('save-status').style.display = 'block'; window.fetchUserHistory(); if(window.isAdminUser) window.fetchAllUsersHistory();
             } catch(e) { }
         });
         
         window.addEventListener('typingTestComplete', async () => {
             if(!window.currentUser) return;
-            try {
-                await addDoc(collection(db, "userHistory"), { 
-                    userId: window.currentUser.uid, email: window.currentUser.email, testType: 'Typing',
-                    matter: window.currentTypingMatter || 'Typing Practice', timeSpentSeconds: window.currentTypingTime || 0,
-                    wpm: window.currentTypingWpm || 0, accuracy: window.currentTypingAcc || 0, 
-                    date: new Date().toLocaleDateString(), timestamp: new Date().getTime() 
-                });
-                window.fetchUserHistory(); if(window.isAdminUser) window.fetchAllUsersHistory();
-            } catch(e) { }
+            try { await addDoc(collection(db, "userHistory"), { userId: window.currentUser.uid, email: window.currentUser.email, testType: 'Typing', matter: window.currentTypingMatter || 'Typing Practice', timeSpentSeconds: window.currentTypingTime || 0, wpm: window.currentTypingWpm || 0, accuracy: window.currentTypingAcc || 0, date: new Date().toLocaleDateString(), timestamp: new Date().getTime() }); window.fetchUserHistory(); if(window.isAdminUser) window.fetchAllUsersHistory(); } catch(e) { }
         });
 
         window.fetchUserHistory = async function() {
@@ -775,23 +734,12 @@
             try {
                 const snap = await getDocs(query(collection(db, "userHistory"), where("userId", "==", window.currentUser.uid)));
                 if(snap.empty) { hl.innerHTML = '<p class="text-center py-12 text-slate-500 dark:text-slate-400">No tests taken yet. Practice in the Analyzer or Typing tab!</p>'; return; }
-                let records = []; snap.forEach(doc => records.push(doc.data())); records.sort((a,b) => b.timestamp - a.timestamp); 
-                let html = '';
+                let records = []; snap.forEach(doc => records.push(doc.data())); records.sort((a,b) => b.timestamp - a.timestamp); let html = '';
                 records.forEach(d => {
-                    let errs = '';
-                    if(d.testType === 'Steno' && d.mistakes && d.mistakes.length > 0) {
-                        errs = `<div class="mt-4 bg-red-50 dark:bg-red-900/20 p-4 rounded-xl border border-red-100 dark:border-red-800/50 text-sm text-red-900 dark:text-red-200 shadow-inner"><strong class="flex items-center gap-2 mb-2">Top Mistakes:</strong><ul class="list-disc list-inside ml-2 space-y-1">`;
-                        d.mistakes.forEach(m => { let c = m.o === '---' ? '[Nothing]' : m.o; errs += `<li>Typed <strong class="bg-red-100 dark:bg-red-800 px-1 rounded">'${m.t}'</strong> instead of <strong class="bg-emerald-100 dark:bg-emerald-800 text-emerald-800 dark:text-emerald-200 px-1 rounded">'${c}'</strong> <i class="text-red-500 dark:text-red-400">(${m.ty})</i></li>`; }); errs += `</ul></div>`;
-                    }
+                    let errs = ''; if(d.testType === 'Steno' && d.mistakes && d.mistakes.length > 0) { errs = `<div class="mt-4 bg-red-50 dark:bg-red-900/20 p-4 rounded-xl border border-red-100 dark:border-red-800/50 text-sm text-red-900 dark:text-red-200 shadow-inner"><strong class="flex items-center gap-2 mb-2">Top Mistakes:</strong><ul class="list-disc list-inside ml-2 space-y-1">`; d.mistakes.forEach(m => { let c = m.o === '---' ? '[Nothing]' : m.o; errs += `<li>Typed <strong class="bg-red-100 dark:bg-red-800 px-1 rounded">'${m.t}'</strong> instead of <strong class="bg-emerald-100 dark:bg-emerald-800 text-emerald-800 dark:text-emerald-200 px-1 rounded">'${c}'</strong> <i class="text-red-500 dark:text-red-400">(${m.ty})</i></li>`; }); errs += `</ul></div>`; }
                     let typeColor = d.testType === 'Typing' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300' : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300';
                     let statStr = d.testType === 'Typing' ? `${d.wpm} WPM | ${d.accuracy}% Acc` : `${d.accuracy}% Acc`;
-                    html += `
-                        <div class="p-6 bg-white dark:bg-slate-800 transition duration-200 border-b border-slate-100 dark:border-slate-700 last:border-b-0">
-                            <div class="flex flex-col md:flex-row justify-between md:items-center font-bold text-lg gap-2">
-                                <span class="text-slate-800 dark:text-white flex items-center gap-2"><span class="px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider ${typeColor}">${d.testType || 'Steno'}</span> ${d.matter || 'Session'} <span class="text-sm font-medium text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded ml-2">${d.date}</span></span>
-                                <span class="text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-900 px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm">${statStr}</span>
-                            </div>${errs}
-                        </div>`;
+                    html += `<div class="p-6 bg-white dark:bg-slate-800 transition duration-200 border-b border-slate-100 dark:border-slate-700 last:border-b-0"><div class="flex flex-col md:flex-row justify-between md:items-center font-bold text-lg gap-2"><span class="text-slate-800 dark:text-white flex items-center gap-2"><span class="px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider ${typeColor}">${d.testType || 'Steno'}</span> ${d.matter || 'Session'} <span class="text-sm font-medium text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded ml-2">${d.date}</span></span><span class="text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-900 px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm">${statStr}</span></div>${errs}</div>`;
                 }); hl.innerHTML = html;
             } catch(e) { hl.innerHTML = '<p class="text-center text-red-500 py-12">Error loading history.</p>'; }
         };
@@ -799,41 +747,22 @@
         window.fetchAllUsersHistory = async function() {
             if(!window.currentUser || !window.isAdminUser) return; const hl = document.getElementById('admin-history-list');
             try {
-                const snap = await getDocs(query(collection(db, "userHistory")));
-                if(snap.empty) { hl.innerHTML = '<p class="text-center py-12 text-slate-500 dark:text-slate-400">No tests taken by anyone yet.</p>'; return; }
+                const snap = await getDocs(query(collection(db, "userHistory"))); if(snap.empty) { hl.innerHTML = '<p class="text-center py-12 text-slate-500 dark:text-slate-400">No tests taken by anyone yet.</p>'; return; }
                 let usersMap = {};
                 snap.forEach(doc => {
                     let d = doc.data(); let email = d.email || 'Unknown User';
                     if(!usersMap[email]) { usersMap[email] = { tests: [], joinDate: d.timestamp, totalTime: 0, stenoAccSum: 0, stenoCount: 0, typingWpmSum: 0, typingAccSum: 0, typingCount: 0, matters: {} }; }
-                    usersMap[email].tests.push(d);
-                    if(d.timestamp < usersMap[email].joinDate) usersMap[email].joinDate = d.timestamp;
-                    if(d.testType === 'Typing') { usersMap[email].typingWpmSum += (d.wpm || 0); usersMap[email].typingAccSum += parseFloat(d.accuracy || 0); usersMap[email].typingCount++; usersMap[email].totalTime += (d.timeSpentSeconds || 0);
-                    } else { usersMap[email].stenoAccSum += parseFloat(d.accuracy || 0); usersMap[email].stenoCount++; usersMap[email].totalTime += (d.timeSpentSeconds || 2400); }
+                    usersMap[email].tests.push(d); if(d.timestamp < usersMap[email].joinDate) usersMap[email].joinDate = d.timestamp;
+                    if(d.testType === 'Typing') { usersMap[email].typingWpmSum += (d.wpm || 0); usersMap[email].typingAccSum += parseFloat(d.accuracy || 0); usersMap[email].typingCount++; usersMap[email].totalTime += (d.timeSpentSeconds || 0); } else { usersMap[email].stenoAccSum += parseFloat(d.accuracy || 0); usersMap[email].stenoCount++; usersMap[email].totalTime += (d.timeSpentSeconds || 2400); }
                     let mat = d.matter || 'Unknown'; usersMap[email].matters[mat] = (usersMap[email].matters[mat] || 0) + 1;
                 });
                 let html = '';
                 for(let email in usersMap) {
                     let u = usersMap[email]; u.tests.sort((a,b) => b.timestamp - a.timestamp); let safeId = email.replace(/[^a-zA-Z0-9]/g, '');
                     let avgWpm = u.typingCount > 0 ? (u.typingWpmSum / u.typingCount).toFixed(1) : 0; let avgStenoAcc = u.stenoCount > 0 ? (u.stenoAccSum / u.stenoCount).toFixed(1) : 0;
-                    let topMatter = Object.keys(u.matters).sort((a,b) => u.matters[b] - u.matters[a])[0] || 'N/A';
-                    let hours = Math.floor(u.totalTime / 3600); let mins = Math.floor((u.totalTime % 3600) / 60); let timeStr = hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
-                    html += `
-                    <div class="mb-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
-                        <button onclick="document.getElementById('admin-detail-${safeId}').classList.toggle('hidden')" class="w-full p-5 text-left bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 transition flex justify-between items-center"><span class="font-extrabold text-lg text-slate-800 dark:text-white flex items-center gap-2">👤 ${email}</span><span class="text-sm font-bold text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900 px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-700">Joined: ${new Date(u.joinDate).toLocaleDateString()} ▼</span></button>
-                        <div id="admin-detail-${safeId}" class="hidden p-6 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                                <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl border border-blue-100 dark:border-blue-800/50 text-center"><span class="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Avg WPM</span><br><span class="text-2xl font-extrabold text-slate-800 dark:text-white">${avgWpm}</span></div>
-                                <div class="bg-emerald-50 dark:bg-emerald-900/20 p-4 rounded-xl border border-emerald-100 dark:border-emerald-800/50 text-center"><span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">Avg Steno Acc</span><br><span class="text-2xl font-extrabold text-slate-800 dark:text-white">${avgStenoAcc}%</span></div>
-                                <div class="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-xl border border-purple-100 dark:border-purple-800/50 text-center"><span class="text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider">Time Spent</span><br><span class="text-2xl font-extrabold text-slate-800 dark:text-white">${timeStr}</span></div>
-                                <div class="bg-orange-50 dark:bg-orange-900/20 p-4 rounded-xl border border-orange-100 dark:border-orange-800/50 text-center flex flex-col justify-center overflow-hidden"><span class="text-xs font-bold text-orange-600 dark:text-orange-400 uppercase tracking-wider">Top Matter</span><span class="text-sm mt-1 font-extrabold text-slate-800 dark:text-white truncate block px-1" title="${topMatter}">${topMatter}</span></div>
-                            </div>
-                            <h4 class="font-bold text-slate-700 dark:text-slate-300 mb-3 border-b border-slate-100 dark:border-slate-700 pb-2">Recent Test History (Last 15)</h4>
-                            <div class="space-y-3 max-h-64 overflow-y-auto pr-2">`;
-                    u.tests.slice(0, 15).forEach(t => {
-                        let typeColor = t.testType === 'Typing' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300' : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300';
-                        let statStr = t.testType === 'Typing' ? `${t.wpm} WPM | ${t.accuracy}% Acc` : `${t.accuracy}% Acc`;
-                        html += `<div class="p-3 bg-slate-50 dark:bg-slate-900 rounded-lg text-sm flex justify-between items-center border border-slate-100 dark:border-slate-700"><div class="flex items-center max-w-[60%]"><span class="px-2 py-0.5 rounded text-xs font-bold mr-3 ${typeColor}">${t.testType || 'Steno'}</span><span class="font-medium text-slate-700 dark:text-slate-300 truncate">${t.matter || 'Manual Practice'}</span></div><div class="text-right shrink-0"><span class="font-bold text-slate-800 dark:text-white">${statStr}</span><span class="text-xs text-slate-400 font-medium ml-3">${t.date}</span></div></div>`;
-                    }); html += `</div></div></div>`;
+                    let topMatter = Object.keys(u.matters).sort((a,b) => u.matters[b] - u.matters[a])[0] || 'N/A'; let hours = Math.floor(u.totalTime / 3600); let mins = Math.floor((u.totalTime % 3600) / 60); let timeStr = hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
+                    html += `<div class="mb-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden"><button onclick="document.getElementById('admin-detail-${safeId}').classList.toggle('hidden')" class="w-full p-5 text-left bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 transition flex justify-between items-center"><span class="font-extrabold text-lg text-slate-800 dark:text-white flex items-center gap-2">👤 ${email}</span><span class="text-sm font-bold text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900 px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-700">Joined: ${new Date(u.joinDate).toLocaleDateString()} ▼</span></button><div id="admin-detail-${safeId}" class="hidden p-6 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"><div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6"><div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl border border-blue-100 dark:border-blue-800/50 text-center"><span class="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Avg WPM</span><br><span class="text-2xl font-extrabold text-slate-800 dark:text-white">${avgWpm}</span></div><div class="bg-emerald-50 dark:bg-emerald-900/20 p-4 rounded-xl border border-emerald-100 dark:border-emerald-800/50 text-center"><span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">Avg Steno Acc</span><br><span class="text-2xl font-extrabold text-slate-800 dark:text-white">${avgStenoAcc}%</span></div><div class="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-xl border border-purple-100 dark:border-purple-800/50 text-center"><span class="text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider">Time Spent</span><br><span class="text-2xl font-extrabold text-slate-800 dark:text-white">${timeStr}</span></div><div class="bg-orange-50 dark:bg-orange-900/20 p-4 rounded-xl border border-orange-100 dark:border-orange-800/50 text-center flex flex-col justify-center overflow-hidden"><span class="text-xs font-bold text-orange-600 dark:text-orange-400 uppercase tracking-wider">Top Matter</span><span class="text-sm mt-1 font-extrabold text-slate-800 dark:text-white truncate block px-1" title="${topMatter}">${topMatter}</span></div></div><h4 class="font-bold text-slate-700 dark:text-slate-300 mb-3 border-b border-slate-100 dark:border-slate-700 pb-2">Recent Test History (Last 15)</h4><div class="space-y-3 max-h-64 overflow-y-auto pr-2">`;
+                    u.tests.slice(0, 15).forEach(t => { let typeColor = t.testType === 'Typing' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300' : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300'; let statStr = t.testType === 'Typing' ? `${t.wpm} WPM | ${t.accuracy}% Acc` : `${t.accuracy}% Acc`; html += `<div class="p-3 bg-slate-50 dark:bg-slate-900 rounded-lg text-sm flex justify-between items-center border border-slate-100 dark:border-slate-700"><div class="flex items-center max-w-[60%]"><span class="px-2 py-0.5 rounded text-xs font-bold mr-3 ${typeColor}">${t.testType || 'Steno'}</span><span class="font-medium text-slate-700 dark:text-slate-300 truncate">${t.matter || 'Manual Practice'}</span></div><div class="text-right shrink-0"><span class="font-bold text-slate-800 dark:text-white">${statStr}</span><span class="text-xs text-slate-400 font-medium ml-3">${t.date}</span></div></div>`; }); html += `</div></div></div>`;
                 } hl.innerHTML = html;
             } catch(e) { hl.innerHTML = '<p class="text-red-500 text-center py-12">Error loading global data.</p>'; console.error(e); }
         };
