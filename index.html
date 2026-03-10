@@ -124,7 +124,11 @@
                         <textarea id="type-admin-body" placeholder="Paste the official paragraph here..." class="w-full h-32 p-3 rounded-lg border border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white resize-y mb-3"></textarea>
                         <button id="type-admin-btn" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 transition">Save to Cloud Library</button>
                         <p id="type-admin-status" class="text-sm font-bold mt-2 hidden text-emerald-500"></p>
-                        <div class="mt-5 border-t border-slate-200 dark:border-slate-700 pt-4"><h4 class="font-bold text-sm text-slate-600 dark:text-slate-400 mb-2">Manage Uploaded Texts:</h4><div id="admin-typing-list" class="max-h-40 overflow-y-auto pr-2"></div></div>
+                        
+                        <div class="mt-5 border-t border-slate-200 dark:border-slate-700 pt-4">
+                            <h4 class="font-bold text-sm text-slate-600 dark:text-slate-400 mb-2">Manage Uploaded Texts:</h4>
+                            <div id="admin-typing-list" class="max-h-40 overflow-y-auto pr-2"></div>
+                        </div>
                     </div>
 
                     <div class="bg-slate-50 dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 mb-6 grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -176,7 +180,11 @@
                     
                     <div id="typing-results" class="hidden mt-6 p-8 bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 rounded-2xl text-center shadow-sm">
                         <h3 class="text-xl font-bold text-blue-800 dark:text-blue-300 mb-4">Performance Results</h3>
-                        <p class="text-slate-700 dark:text-slate-200">Speed: <span id="wpm-result" class="text-blue-600 dark:text-blue-400 text-4xl font-extrabold mx-2">0</span> WPM <span class="mx-6 text-slate-300 dark:text-slate-600">|</span> Accuracy: <span id="acc-result" class="text-emerald-500 text-4xl font-extrabold mx-2">0</span>%</p>
+                        <p class="text-slate-700 dark:text-slate-200">
+                            Speed: <span id="wpm-result" class="text-blue-600 dark:text-blue-400 text-4xl font-extrabold mx-2">0</span> WPM 
+                            <span class="mx-6 text-slate-300 dark:text-slate-600">|</span> 
+                            Accuracy: <span id="acc-result" class="text-emerald-500 text-4xl font-extrabold mx-2">0</span>%
+                        </p>
                     </div>
                 </section>
 
@@ -247,26 +255,17 @@
 
                     <div id="dictation-main-view">
                         <h2 class="text-3xl font-extrabold text-slate-800 dark:text-white mb-6">Dictation Library</h2>
-                        
-                        <div id="category-tabs" class="flex overflow-x-auto gap-3 pb-4 mb-6 hide-scrollbar border-b border-slate-200 dark:border-slate-700">
-                            </div>
-
+                        <div id="category-tabs" class="flex overflow-x-auto gap-3 pb-4 mb-6 hide-scrollbar border-b border-slate-200 dark:border-slate-700"></div>
                         <div id="dictations-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             <p class="text-center py-12 text-slate-500 col-span-full">Loading dictations...</p>
                         </div>
                     </div>
 
                     <div id="dictation-workspace" class="hidden">
-                        <button onclick="closeDictationWorkspace()" class="mb-6 flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white font-bold transition">
-                            <span>←</span> Back to Library
-                        </button>
-                        
+                        <button onclick="closeDictationWorkspace()" class="mb-6 flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white font-bold transition"><span>←</span> Back to Library</button>
                         <div class="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-3xl shadow-lg border border-slate-200 dark:border-slate-700">
                             <div class="flex justify-between items-start mb-6">
-                                <div>
-                                    <span id="ws-category" class="text-xs font-bold text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-md uppercase tracking-wide border border-blue-100 dark:border-blue-800/50">Category</span>
-                                    <h2 id="ws-title" class="text-3xl font-extrabold text-slate-800 dark:text-white mt-2">Dictation Title</h2>
-                                </div>
+                                <div><span id="ws-category" class="text-xs font-bold text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-md uppercase tracking-wide border border-blue-100 dark:border-blue-800/50">Category</span><h2 id="ws-title" class="text-3xl font-extrabold text-slate-800 dark:text-white mt-2">Dictation Title</h2></div>
                                 <span id="ws-base-speed" class="bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-white px-4 py-2 rounded-xl font-extrabold shadow-sm border border-slate-200 dark:border-slate-600">80 WPM</span>
                             </div>
 
@@ -275,8 +274,7 @@
                                 <audio id="ws-audio" controls class="w-full h-12 outline-none dark:opacity-90"></audio>
                                 <div class="flex items-center gap-2 shrink-0">
                                     <span class="text-slate-400 text-xs font-bold uppercase tracking-wider">Speed</span>
-                                    <select id="ws-speed-select" onchange="changeSpeed('ws-audio', this.value, window.currentDictationBaseSpeed)" class="bg-slate-800 text-white border border-slate-700 rounded-lg p-2 text-sm font-bold outline-none cursor-pointer focus:ring-2 focus:ring-emerald-500">
-                                        </select>
+                                    <select id="ws-speed-select" onchange="changeSpeed('ws-audio', this.value, window.currentDictationBaseSpeed)" class="bg-slate-800 text-white border border-slate-700 rounded-lg p-2 text-sm font-bold outline-none cursor-pointer focus:ring-2 focus:ring-emerald-500"></select>
                                 </div>
                             </div>
 
@@ -286,7 +284,6 @@
                                         <select id="ws-timer-select" class="border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-800 dark:text-white rounded-lg p-2.5 text-sm font-bold outline-none shadow-sm"><option value="30">30 Min</option><option value="40">40 Min</option><option value="50" selected>50 Min</option><option value="60">60 Min</option></select>
                                         <button onclick="startWorkspaceTranscribe()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg text-sm font-bold shadow transition">Start Timer</button>
                                     </div>
-                                    
                                     <div class="flex items-center gap-4">
                                         <div id="ws-timer-display" class="text-2xl font-mono font-extrabold text-slate-800 dark:text-white bg-white dark:bg-slate-800 px-5 py-2 rounded-xl border border-slate-200 dark:border-slate-600 shadow-sm">50:00</div>
                                         <button onclick="toggleFullscreen('ws-transcribe-container')" class="bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 dark:hover:bg-slate-600 text-white px-4 py-2.5 rounded-lg text-sm font-bold shadow transition flex items-center gap-2">⛶ <span class="hidden sm:inline">Fullscreen</span></button>
@@ -306,7 +303,6 @@
                                         <button onclick="submitWorkspaceAnalyzer()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-xl font-extrabold shadow-lg transition transform hover:-translate-y-1 text-lg w-full sm:w-auto">Check Mistakes</button>
                                     </div>
                                 </div>
-                                
                                 <div id="ws-original-matter" class="hidden mt-6 p-6 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/50 rounded-xl text-slate-800 dark:text-amber-100 leading-loose whitespace-pre-wrap font-medium shadow-inner text-lg"></div>
                             </div>
                         </div>
@@ -315,53 +311,18 @@
 
                 <section id="view-notes" class="app-view p-6 md:p-10 bg-slate-50 dark:bg-slate-900/50">
                     <h2 class="text-3xl font-extrabold text-slate-800 dark:text-white mb-8">Study Notes & PDFs</h2>
-                    
-                    <div id="notes-admin-panel" class="hidden bg-white dark:bg-slate-800 p-6 rounded-2xl border border-blue-200 dark:border-blue-800 shadow-sm mb-8 relative overflow-hidden">
-                        <div class="absolute top-0 left-0 w-full h-1 bg-blue-500"></div>
-                        <h3 class="font-bold text-blue-800 dark:text-blue-400 mb-4">Upload New Note/PDF</h3>
-                        <input type="text" id="note-title" placeholder="Document Title (e.g., Short Forms PDF)" class="w-full mb-3 p-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white">
-                        <input type="file" id="note-file" class="w-full mb-3 p-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-600 dark:text-slate-400">
-                        <button id="note-submit-btn" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold w-full shadow-sm hover:bg-blue-700">Upload File</button>
-                        <p id="note-status" class="text-sm font-bold mt-2 hidden text-emerald-500"></p>
-                    </div>
-
-                    <div id="notes-list" class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <p class="text-center py-12 text-slate-500 w-full col-span-2">Loading notes...</p>
-                    </div>
+                    <div id="notes-admin-panel" class="hidden bg-white dark:bg-slate-800 p-6 rounded-2xl border border-blue-200 dark:border-blue-800 shadow-sm mb-8 relative overflow-hidden"><div class="absolute top-0 left-0 w-full h-1 bg-blue-500"></div><h3 class="font-bold text-blue-800 dark:text-blue-400 mb-4">Upload New Note/PDF</h3><input type="text" id="note-title" placeholder="Document Title (e.g., Short Forms PDF)" class="w-full mb-3 p-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white"><input type="file" id="note-file" class="w-full mb-3 p-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-600 dark:text-slate-400"><button id="note-submit-btn" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold w-full shadow-sm hover:bg-blue-700">Upload File</button><p id="note-status" class="text-sm font-bold mt-2 hidden text-emerald-500"></p></div>
+                    <div id="notes-list" class="grid grid-cols-1 md:grid-cols-2 gap-5"><p class="text-center py-12 text-slate-500 w-full col-span-2">Loading notes...</p></div>
                 </section>
 
                 <section id="view-dashboard" class="app-view p-6 md:p-10 bg-slate-50 dark:bg-slate-900/50">
-                    <div class="flex items-center gap-5 mb-8">
-                        <div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center text-3xl shadow-sm border border-emerald-200 dark:border-emerald-800">👤</div>
-                        <div><h2 class="text-3xl font-extrabold text-slate-800 dark:text-white">My Dashboard</h2><p class="text-slate-500 dark:text-slate-400 font-medium mt-1">Review your past performance.</p></div>
-                    </div>
-                    
-                    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-                        <div class="p-5 border-b border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 font-bold text-slate-700 dark:text-slate-300 flex justify-between items-center">
-                            <span class="text-lg">History Log</span>
-                            <button onclick="fetchUserHistory()" class="text-sm bg-white dark:bg-slate-800 px-4 py-1.5 rounded-lg border border-slate-300 dark:border-slate-600 text-blue-600 dark:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700 transition shadow-sm">Refresh Data</button>
-                        </div>
-                        <div id="history-list" class="divide-y divide-slate-100 dark:divide-slate-700 bg-white dark:bg-slate-800">
-                            <p class="text-center py-12 text-slate-500 dark:text-slate-400">Take a test in the Analyzer tab to see your history here.</p>
-                        </div>
-                    </div>
+                    <div class="flex items-center gap-5 mb-8"><div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center text-3xl shadow-sm border border-emerald-200 dark:border-emerald-800">👤</div><div><h2 class="text-3xl font-extrabold text-slate-800 dark:text-white">My Dashboard</h2><p class="text-slate-500 dark:text-slate-400 font-medium mt-1">Review your past performance.</p></div></div>
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden"><div class="p-5 border-b border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 font-bold text-slate-700 dark:text-slate-300 flex justify-between items-center"><span class="text-lg">History Log</span><button onclick="fetchUserHistory()" class="text-sm bg-white dark:bg-slate-800 px-4 py-1.5 rounded-lg border border-slate-300 dark:border-slate-600 text-blue-600 dark:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700 transition shadow-sm">Refresh Data</button></div><div id="history-list" class="divide-y divide-slate-100 dark:divide-slate-700 bg-white dark:bg-slate-800"><p class="text-center py-12 text-slate-500 dark:text-slate-400">Take a test in the Analyzer tab to see your history here.</p></div></div>
                 </section>
 
                 <section id="view-admin" class="app-view p-6 md:p-10 bg-slate-50 dark:bg-slate-900/50">
-                    <div class="flex items-center gap-5 mb-8">
-                        <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-full flex items-center justify-center text-3xl shadow-sm border border-purple-200 dark:border-purple-800">👑</div>
-                        <div><h2 class="text-3xl font-extrabold text-slate-800 dark:text-white">Master Performance Tracker</h2><p class="text-slate-500 dark:text-slate-400 font-medium mt-1">View all user transcriptions and scores globally.</p></div>
-                    </div>
-                    
-                    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-                        <div class="p-5 border-b border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 font-bold text-slate-700 dark:text-slate-300 flex justify-between items-center">
-                            <span class="text-lg">Global Student Analytics</span>
-                            <button onclick="fetchAllUsersHistory()" class="text-sm bg-white dark:bg-slate-800 px-4 py-1.5 rounded-lg border border-slate-300 dark:border-slate-600 text-purple-600 dark:text-purple-400 hover:bg-slate-50 dark:hover:bg-slate-700 transition shadow-sm">Refresh Global Data</button>
-                        </div>
-                        <div id="admin-history-list" class="p-4 bg-slate-50 dark:bg-slate-900">
-                            <p class="text-center py-12 text-slate-500 dark:text-slate-400">Loading global data...</p>
-                        </div>
-                    </div>
+                    <div class="flex items-center gap-5 mb-8"><div class="w-16 h-16 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-full flex items-center justify-center text-3xl shadow-sm border border-purple-200 dark:border-purple-800">👑</div><div><h2 class="text-3xl font-extrabold text-slate-800 dark:text-white">Master Performance Tracker</h2><p class="text-slate-500 dark:text-slate-400 font-medium mt-1">View all user transcriptions and scores globally.</p></div></div>
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden"><div class="p-5 border-b border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 font-bold text-slate-700 dark:text-slate-300 flex justify-between items-center"><span class="text-lg">Global Student Analytics</span><button onclick="fetchAllUsersHistory()" class="text-sm bg-white dark:bg-slate-800 px-4 py-1.5 rounded-lg border border-slate-300 dark:border-slate-600 text-purple-600 dark:text-purple-400 hover:bg-slate-50 dark:hover:bg-slate-700 transition shadow-sm">Refresh Global Data</button></div><div id="admin-history-list" class="p-4 bg-slate-50 dark:bg-slate-900"><p class="text-center py-12 text-slate-500 dark:text-slate-400">Loading global data...</p></div></div>
                 </section>
 
             </div>
@@ -382,26 +343,54 @@
 
     <script>
         window.onerror = function(message, source, lineno) { console.error(message); return true; };
+        
         function toggleDarkMode() {
             const html = document.documentElement; html.classList.toggle('dark');
             const isDark = html.classList.contains('dark'); localStorage.setItem('theme', isDark ? 'dark' : 'light');
             document.getElementById('dark-icon').innerText = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
         }
+        
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) { document.documentElement.classList.add('dark'); document.getElementById('dark-icon').innerText = '☀️ Light Mode'; } 
         else { document.documentElement.classList.remove('dark'); document.getElementById('dark-icon').innerText = '🌙 Dark Mode'; }
 
-        function switchView(viewId) {
+        // --- NEW BROWSER HISTORY ROUTER ---
+        function switchView(viewId, pushHistory = true) {
             if(!window.currentUser && viewId !== 'home') { openAuthModal(); return; }
+            
+            // Clean up Workspace if leaving Dictation tab
+            if(viewId !== 'dictation' && document.getElementById('dictation-workspace')) {
+                document.getElementById('ws-audio').pause();
+                document.getElementById('dictation-workspace').style.display = 'none';
+                document.getElementById('dictation-main-view').style.display = 'block';
+            }
+
             document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active-view'));
             document.querySelectorAll('.nav-link, .nav-link-admin').forEach(l => l.classList.remove('active'));
             document.getElementById('view-' + viewId).classList.add('active-view');
             const link = document.querySelector(`button[onclick="switchView('${viewId}')"]`); if(link) link.classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Push state to browser history
+            if (pushHistory) { history.pushState({ view: viewId }, '', `#${viewId}`); }
         }
+
+        // Listen for the Back Arrow being clicked
+        window.addEventListener('popstate', (e) => {
+            let hash = window.location.hash.substring(1);
+            if (hash && document.getElementById('view-' + hash)) { switchView(hash, false); } 
+            else { switchView('home', false); }
+        });
+
+        // Set initial URL on load
+        window.addEventListener('DOMContentLoaded', () => {
+            let hash = window.location.hash.substring(1) || 'home';
+            history.replaceState({ view: hash }, '', `#${hash}`);
+        });
+
         function openAuthModal() { document.getElementById('auth-modal').classList.remove('hidden'); }
         function closeAuthModal() { document.getElementById('auth-modal').classList.add('hidden'); document.getElementById('auth-error').style.display='none'; document.getElementById('auth-success').style.display='none';}
         
-        // --- STENO ANALYZER LOGIC FOR SSC (WITH PARTIAL ANALYSER) ---
+        // --- STENO ANALYZER LOGIC FOR SSC ---
         function cleanStenoWord(w) { return !w ? "" : w.split('/').join(''); }
         function stripPunct(w) { if(!w) return ""; var c=['.',',','!','?',';',':','"','\'','(',')','-']; var r=w; for(var i=0;i<c.length;i++) r=r.split(c[i]).join(''); return r; }
         function wordToNumberStr(w) { var o={"zero":"0","one":"1","two":"2","three":"3","four":"4","five":"5","six":"6","seven":"7","eight":"8","nine":"9","ten":"10"}; return o[w] ? o[w] : w; }
@@ -489,15 +478,14 @@
             printWin.document.close(); printWin.focus(); setTimeout(function(){printWin.print();}, 500);
         }
 
-        // --- NEW DICTATION WORKSPACE LOGIC ---
+        // --- DICTATION WORKSPACE LOGIC ---
         function changeSpeed(id, target, base) { var a = document.getElementById(id); if(a) a.playbackRate = parseFloat(target)/parseFloat(base); }
         window.dictationData = {}; window.transcribeIntervals = {}; window.activeDictationCategory = "All"; window.currentDictationId = null; window.currentDictationBaseSpeed = 80;
 
         function toggleFullscreen(elemId) {
             let elem = document.getElementById(elemId);
-            if (!document.fullscreenElement) {
-                elem.requestFullscreen().catch(err => alert(`Error enabling full-screen mode: ${err.message}`));
-            } else { document.exitFullscreen(); }
+            if (!document.fullscreenElement) { elem.requestFullscreen().catch(err => alert(`Error enabling full-screen: ${err.message}`)); } 
+            else { document.exitFullscreen(); }
         }
 
         window.startWorkspaceTranscribe = function() {
@@ -519,31 +507,24 @@
             if (!orig.trim()) { alert("Admin didn't upload a transcript for this dictation."); return; }
             if (!typed.trim()) { alert("Please type something to analyze."); return; }
             
-            // Sync Partial Toggle to Analyzer Tab
-            document.getElementById('partial-analyzer-toggle').checked = document.getElementById('ws-partial-toggle').checked;
+            if (document.fullscreenElement) { document.exitFullscreen(); } // Exit fullscreen if they are in it
             
+            document.getElementById('partial-analyzer-toggle').checked = document.getElementById('ws-partial-toggle').checked;
             window.currentStenoMatter = d.title; if(window.transcribeStartTime) { window.currentStenoTimeSpent = Math.floor((Date.now() - window.transcribeStartTime) / 1000); }
             switchView('steno'); document.getElementById('steno-orig').value = orig; document.getElementById('steno-typed').value = typed; analyzeSteno();
         };
 
         window.openDictationWorkspace = function(id) {
             window.currentDictationId = id; const d = window.dictationData[id]; window.currentDictationBaseSpeed = d.baseSpeed || 80;
-            
-            document.getElementById('ws-title').innerText = d.title;
-            document.getElementById('ws-category').innerText = d.category;
-            document.getElementById('ws-base-speed').innerText = window.currentDictationBaseSpeed + ' WPM';
-            
+            document.getElementById('ws-title').innerText = d.title; document.getElementById('ws-category').innerText = d.category; document.getElementById('ws-base-speed').innerText = window.currentDictationBaseSpeed + ' WPM';
             const aud = document.getElementById('ws-audio'); aud.src = d.audioUrl; aud.playbackRate = 1.0;
-            
             let spds = [60,70,80,90,100,110,120]; let opt = ''; 
             spds.forEach(s => { opt += `<option value="${s}" ${s===parseInt(window.currentDictationBaseSpeed)?'selected':''}>${s} WPM</option>`; });
             document.getElementById('ws-speed-select').innerHTML = opt;
-            
             document.getElementById('ws-textarea').value = ''; document.getElementById('ws-textarea').disabled = true;
             document.getElementById('ws-timer-select').disabled = false; document.getElementById('ws-timer-display').innerText = document.getElementById('ws-timer-select').value + ":00";
             if(window.transcribeIntervals['ws']) clearInterval(window.transcribeIntervals['ws']);
             document.getElementById('ws-original-matter').classList.add('hidden');
-            
             document.getElementById('dictation-main-view').style.display = 'none'; document.getElementById('dictation-workspace').style.display = 'block';
         };
 
@@ -622,8 +603,14 @@
                 document.getElementById('desktop-nav').style.display = 'flex'; document.getElementById('logged-in-nav').style.display = 'flex';
                 document.getElementById('user-email-display').innerText = user.email; document.getElementById('app-workspace').style.display = 'block'; 
                 closeAuthModal();
+                
                 window.isAdminUser = user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
                 document.getElementById('admin-upload-panel').style.display = window.isAdminUser ? 'block' : 'none'; document.getElementById('typing-admin-panel').style.display = window.isAdminUser ? 'block' : 'none'; document.getElementById('notes-admin-panel').style.display = window.isAdminUser ? 'block' : 'none'; document.getElementById('nav-admin').style.display = window.isAdminUser ? 'block' : 'none';
+                
+                // Route checking based on URL hash
+                let hash = window.location.hash.substring(1) || 'home';
+                if(document.getElementById('view-' + hash)) { switchView(hash, false); }
+
                 window.fetchUserHistory(); window.fetchDictations(); window.fetchTypingTexts(); window.fetchNotes(); if(window.isAdminUser) window.fetchAllUsersHistory();
             } else {
                 window.isAdminUser = false; document.getElementById('logged-out-cta').style.display = 'block'; document.getElementById('logged-in-cta').style.display = 'none'; document.getElementById('logged-out-view').style.display = 'flex'; document.getElementById('logged-in-view').style.display = 'none'; document.getElementById('logged-in-nav').style.display = 'none'; document.getElementById('app-workspace').style.display = 'none'; switchView('home');
