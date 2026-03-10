@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stenogram | The Ultimate SSC Companion</title>
+    <title>Stenogram | The Ultimate Stenography Companion</title>
     <link rel="icon" type="image/jpeg" href="logo.jpg">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -31,6 +31,23 @@
 </head>
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 antialiased min-h-screen flex flex-col transition-colors duration-300">
 
+    <div id="telegram-modal" class="hidden fixed inset-0 bg-slate-900 bg-opacity-80 z-[100] flex justify-center items-center px-4 backdrop-blur-sm transition-opacity">
+        <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-2xl relative max-w-md w-full border border-slate-100 dark:border-slate-700 text-center transform transition-all">
+            <button onclick="document.getElementById('telegram-modal').classList.add('hidden')" class="absolute top-4 right-5 text-slate-400 hover:text-red-500 font-bold text-3xl transition">&times;</button>
+            <div class="w-20 h-20 bg-blue-50 dark:bg-blue-900/30 text-[#0088cc] rounded-full flex items-center justify-center mx-auto mb-5 shadow-inner border border-blue-100 dark:border-blue-800/50">
+                <svg class="w-10 h-10 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.21-1.12-.33-1.08-.7.02-.19.27-.39.75-.59 2.95-1.28 4.91-2.12 5.89-2.52 2.79-1.15 3.37-1.35 3.75-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .24z"/></svg>
+            </div>
+            <h2 class="text-2xl font-extrabold text-slate-800 dark:text-white mb-3">Support Stenogram!</h2>
+            <p class="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed font-medium">
+                We are working very hard to provide you with an accurate software that does not cost you a penny.<br><br>The least you could do to support us is join our Telegram channel and share our software with other aspirants!
+            </p>
+            <a href="https://t.me/Stenograam" target="_blank" onclick="document.getElementById('telegram-modal').classList.add('hidden')" class="block w-full bg-[#0088cc] hover:bg-[#0077b3] text-white font-extrabold py-4 rounded-xl shadow-lg transition duration-200 mb-4 text-lg">
+                Join Telegram Channel
+            </a>
+            <button onclick="document.getElementById('telegram-modal').classList.add('hidden')" class="text-sm text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold transition underline">I'll do it later</button>
+        </div>
+    </div>
+
     <div id="auth-modal" class="hidden fixed inset-0 bg-slate-900 bg-opacity-80 z-50 flex justify-center items-center px-4 backdrop-blur-sm transition-opacity">
         <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-2xl relative max-w-md w-full border border-slate-100 dark:border-slate-700 text-center">
             <button onclick="closeAuthModal()" class="absolute top-4 right-5 text-slate-400 hover:text-red-500 font-bold text-2xl transition">&times;</button>
@@ -41,8 +58,8 @@
                 Sign in with Google
             </button>
             <div class="flex items-center mb-5"><div class="flex-grow border-t border-slate-200 dark:border-slate-600"></div><span class="mx-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Or Email</span><div class="flex-grow border-t border-slate-200 dark:border-slate-600"></div></div>
-            <div class="mb-4 text-left"><input type="email" id="auth-email" placeholder="Email Address" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white rounded-xl p-3.5 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition"></div>
-            <div class="mb-2 text-left"><input type="password" id="auth-password" placeholder="Password (Min 6 chars)" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white rounded-xl p-3.5 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition"></div>
+            <div class="mb-4 text-left"><input type="email" id="auth-email" placeholder="Email Address" spellcheck="false" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white rounded-xl p-3.5 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition"></div>
+            <div class="mb-2 text-left"><input type="password" id="auth-password" placeholder="Password (Min 6 chars)" spellcheck="false" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white rounded-xl p-3.5 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition"></div>
             <div class="text-right mb-6"><button type="button" onclick="handleForgotPassword()" class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 font-semibold transition">Forgot Password?</button></div>
             <div class="flex gap-3">
                 <button type="button" id="login-btn" class="flex-1 py-3.5 bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 dark:hover:bg-slate-600 text-white font-bold rounded-xl transition duration-200 shadow-md">Log In</button>
@@ -121,8 +138,8 @@
                     
                     <div id="typing-admin-panel" class="hidden bg-slate-50 dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 mb-8">
                         <h3 class="font-bold text-slate-800 dark:text-white mb-3 flex items-center gap-2">🛠️ Admin: Upload Official Typing Matter</h3>
-                        <input type="text" id="type-admin-title" placeholder="Test Title (e.g. SSC CGL 2025 Tier II)" class="w-full mb-3 p-3 rounded-lg border border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white">
-                        <textarea id="type-admin-body" placeholder="Paste the official paragraph here..." class="w-full h-32 p-3 rounded-lg border border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white resize-y mb-3"></textarea>
+                        <input type="text" id="type-admin-title" placeholder="Test Title (e.g. SSC CGL 2025 Tier II)" spellcheck="false" class="w-full mb-3 p-3 rounded-lg border border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white outline-none">
+                        <textarea id="type-admin-body" placeholder="Paste the official paragraph here..." spellcheck="false" class="w-full h-32 p-3 rounded-lg border border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white resize-y mb-3 outline-none"></textarea>
                         <button id="type-admin-btn" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 transition">Save to Cloud Library</button>
                         <p id="type-admin-status" class="text-sm font-bold mt-2 hidden text-emerald-500"></p>
                         
@@ -154,7 +171,7 @@
                         </div>
                     </div>
                     
-                    <textarea id="custom-input-area" placeholder="Paste your custom material here..." class="hidden w-full h-32 p-4 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl mb-6 shadow-inner resize-y outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                    <textarea id="custom-input-area" placeholder="Paste your custom material here..." spellcheck="false" class="hidden w-full h-32 p-4 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl mb-6 shadow-inner resize-y outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                     
                     <div class="flex gap-4 mb-6">
                         <select id="typing-timer-select" class="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-xl p-4 font-bold text-slate-700 dark:text-slate-200 outline-none focus:ring-2 focus:ring-blue-500">
@@ -172,7 +189,7 @@
                         Select options and click Start above.
                     </div>
                     
-                    <textarea id="typing-area" placeholder="Start typing here..." class="w-full h-48 p-6 border-2 border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl text-lg leading-relaxed outline-none focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 transition shadow-sm resize-y" disabled oninput="handleTypingInput(this)"></textarea>
+                    <textarea id="typing-area" placeholder="Start typing here..." spellcheck="false" class="w-full h-48 p-6 border-2 border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl text-lg leading-relaxed outline-none focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 transition shadow-sm resize-y" disabled oninput="handleTypingInput(this)"></textarea>
                     
                     <button type="button" id="finish-btn" onclick="endTypingTest()" class="mt-5 w-full bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 dark:hover:bg-slate-600 text-white font-bold py-4 rounded-xl hidden shadow-lg transition">Finish Test Early</button>
                     
@@ -188,11 +205,11 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                         <div>
                             <label class="block font-extrabold text-slate-700 dark:text-slate-300 mb-3 text-lg">Original Answer Key</label>
-                            <textarea id="steno-orig" placeholder="Paste the correct transcription here..." class="w-full h-64 p-5 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-white rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 transition shadow-inner resize-y"></textarea>
+                            <textarea id="steno-orig" placeholder="Paste the correct transcription here..." spellcheck="false" class="w-full h-64 p-5 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-white rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 transition shadow-inner resize-y"></textarea>
                         </div>
                         <div>
                             <label class="block font-extrabold text-slate-700 dark:text-slate-300 mb-3 text-lg">Your Transcription</label>
-                            <textarea id="steno-typed" placeholder="Paste your typed version here..." class="w-full h-64 p-5 border-2 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 transition shadow-sm resize-y"></textarea>
+                            <textarea id="steno-typed" placeholder="Paste your typed version here..." spellcheck="false" class="w-full h-64 p-5 border-2 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 transition shadow-sm resize-y"></textarea>
                         </div>
                     </div>
                     
@@ -238,10 +255,10 @@
                         <h2 class="text-2xl font-extrabold text-emerald-800 dark:text-emerald-400 mb-6">Admin Upload Dashboard</h2>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
                             <div class="md:col-span-1"><label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Category</label><select id="upload-category" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-white rounded-xl p-3 outline-none focus:border-emerald-500"><option value="Kailash Chandra">Kailash Chandra</option><option value="Progressive February">Progressive February</option><option value="GD Bisht">GD Bisht</option><option value="General Matter">General Matter</option><option value="Legal Matter">Legal Matter</option><option value="Important Words">Important Words</option><option value="Most Important Matters">Most Important Matters</option></select></div>
-                            <div class="md:col-span-1"><label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Title</label><input type="text" id="upload-title" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-white rounded-xl p-3 outline-none"></div>
+                            <div class="md:col-span-1"><label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Title</label><input type="text" id="upload-title" spellcheck="false" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-white rounded-xl p-3 outline-none"></div>
                             <div class="md:col-span-1"><label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Base Speed</label><input type="number" id="upload-speed" value="80" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-white rounded-xl p-3 outline-none"></div>
                         </div>
-                        <div class="mb-5"><label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Answer Key (Optional Transcript)</label><textarea id="upload-transcript" class="w-full h-24 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-white rounded-xl p-3 outline-none resize-y"></textarea></div>
+                        <div class="mb-5"><label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Answer Key (Optional Transcript)</label><textarea id="upload-transcript" spellcheck="false" class="w-full h-24 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-white rounded-xl p-3 outline-none resize-y"></textarea></div>
                         <input type="file" id="upload-file" accept="audio/*" class="block w-full mb-5 border border-slate-300 dark:border-slate-600 rounded-xl p-2 bg-white dark:bg-slate-900 text-slate-500 file:bg-emerald-50 file:text-emerald-700 dark:file:bg-emerald-900/50 dark:file:text-emerald-400 cursor-pointer">
                         <button type="button" id="upload-submit-btn" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white text-lg font-bold rounded-xl shadow-md transition">Upload to Cloud</button>
                         <p id="upload-status" class="mt-4 text-center text-sm font-bold hidden"></p>
@@ -251,7 +268,7 @@
                         <div class="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
                             <h2 class="text-3xl font-extrabold text-slate-800 dark:text-white">Dictation Library</h2>
                             <div class="relative w-full md:w-72">
-                                <input type="text" id="dictation-search" placeholder="Search dictations..." oninput="renderDictationGrid()" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-white rounded-xl py-2.5 px-4 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 dark:focus:ring-emerald-900 transition shadow-sm font-medium">
+                                <input type="text" id="dictation-search" placeholder="Search dictations..." spellcheck="false" oninput="renderDictationGrid()" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-white rounded-xl py-2.5 px-4 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 dark:focus:ring-emerald-900 transition shadow-sm font-medium">
                                 <span class="absolute right-4 top-2.5 text-slate-400">🔍</span>
                             </div>
                         </div>
@@ -291,7 +308,7 @@
                                     </div>
                                 </div>
                                 
-                                <textarea id="ws-textarea" disabled placeholder="Hit Start Timer, expand to Fullscreen, and begin typing your shorthand translation here..." class="w-full h-64 p-5 border-2 border-slate-300 dark:border-slate-600 rounded-xl text-lg leading-relaxed outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 dark:focus:ring-emerald-900 transition resize-y mb-6 bg-white dark:bg-slate-800 disabled:bg-slate-100 dark:disabled:bg-slate-900 disabled:cursor-not-allowed text-slate-800 dark:text-white shadow-inner flex-grow"></textarea>
+                                <textarea id="ws-textarea" disabled spellcheck="false" placeholder="Hit Start Timer, expand to Fullscreen, and begin typing your shorthand translation here..." class="w-full h-64 p-5 border-2 border-slate-300 dark:border-slate-600 rounded-xl text-lg leading-relaxed outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 dark:focus:ring-emerald-900 transition resize-y mb-6 bg-white dark:bg-slate-800 disabled:bg-slate-100 dark:disabled:bg-slate-900 disabled:cursor-not-allowed text-slate-800 dark:text-white shadow-inner flex-grow"></textarea>
                                 
                                 <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 justify-between">
                                     <button onclick="viewWorkspaceMatter()" class="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-white px-6 py-3 rounded-xl font-bold transition shadow-sm border border-slate-300 dark:border-slate-600 w-full sm:w-auto">View Original Matter</button>
@@ -312,7 +329,7 @@
 
                 <section id="view-notes" class="app-view p-6 md:p-10 bg-slate-50 dark:bg-slate-900/50">
                     <h2 class="text-3xl font-extrabold text-slate-800 dark:text-white mb-8">Study Notes & PDFs</h2>
-                    <div id="notes-admin-panel" class="hidden bg-white dark:bg-slate-800 p-6 rounded-2xl border border-blue-200 dark:border-blue-800 shadow-sm mb-8 relative overflow-hidden"><div class="absolute top-0 left-0 w-full h-1 bg-blue-500"></div><h3 class="font-bold text-blue-800 dark:text-blue-400 mb-4">Upload New Note/PDF</h3><input type="text" id="note-title" placeholder="Document Title (e.g., Short Forms PDF)" class="w-full mb-3 p-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white"><input type="file" id="note-file" class="w-full mb-3 p-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-600 dark:text-slate-400"><button id="note-submit-btn" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold w-full shadow-sm hover:bg-blue-700">Upload File</button><p id="note-status" class="text-sm font-bold mt-2 hidden text-emerald-500"></p></div>
+                    <div id="notes-admin-panel" class="hidden bg-white dark:bg-slate-800 p-6 rounded-2xl border border-blue-200 dark:border-blue-800 shadow-sm mb-8 relative overflow-hidden"><div class="absolute top-0 left-0 w-full h-1 bg-blue-500"></div><h3 class="font-bold text-blue-800 dark:text-blue-400 mb-4">Upload New Note/PDF</h3><input type="text" id="note-title" placeholder="Document Title (e.g., Short Forms PDF)" spellcheck="false" class="w-full mb-3 p-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white"><input type="file" id="note-file" class="w-full mb-3 p-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-600 dark:text-slate-400"><button id="note-submit-btn" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold w-full shadow-sm hover:bg-blue-700">Upload File</button><p id="note-status" class="text-sm font-bold mt-2 hidden text-emerald-500"></p></div>
                     <div id="notes-list" class="grid grid-cols-1 md:grid-cols-2 gap-5"><p class="text-center py-12 text-slate-500 w-full col-span-2">Loading notes...</p></div>
                 </section>
 
@@ -369,6 +386,12 @@
                 document.getElementById('dictation-workspace').style.display = 'none';
                 document.getElementById('dictation-main-view').style.display = 'block';
             }
+            
+            // Telegram Popup Logic
+            if(viewId === 'home') {
+                setTimeout(() => { document.getElementById('telegram-modal').classList.remove('hidden'); }, 800);
+            }
+
             document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active-view'));
             document.querySelectorAll('.nav-link, .nav-link-admin').forEach(l => l.classList.remove('active'));
             document.getElementById('view-' + viewId).classList.add('active-view');
@@ -385,6 +408,9 @@
         window.addEventListener('DOMContentLoaded', () => {
             let hash = window.location.hash.substring(1) || 'home';
             history.replaceState({ view: hash }, '', `#${hash}`);
+            
+            // Trigger Telegram Modal on initial load
+            setTimeout(() => { document.getElementById('telegram-modal').classList.remove('hidden'); }, 1000);
         });
 
         function openAuthModal() { document.getElementById('auth-modal').classList.remove('hidden'); }
@@ -497,6 +523,7 @@
                     var tRow = document.createElement('tr'); 
                     var pText = "";
                     
+                    // Strict spelling check: always counts as half mistake now
                     if (r.ty === 'Spelling Mistake') {
                         hM++; pText = "1/2 Mistake";
                         tRow.className="border-b border-slate-100 dark:border-slate-700 bg-pink-50 dark:bg-pink-900/20";
@@ -634,9 +661,12 @@
         const app = initializeApp(firebaseConfig); const db = getFirestore(app); const storage = getStorage(app); const auth = getAuth(app);
         const googleProvider = new GoogleAuthProvider(); window.currentUser = null; const ADMIN_EMAIL = "saqueeb111@gmail.com"; 
 
-        window.signInWithGoogle = function() { signInWithPopup(auth, googleProvider).catch(err => alert("Google Sign-In Failed: " + err.message)); };
+        window.signInWithGoogle = function() { 
+            signInWithPopup(auth, googleProvider).then(() => {
+                localStorage.setItem('stenogramLoginTime', Date.now().toString());
+            }).catch(err => alert("Google Sign-In Failed: " + err.message)); 
+        };
 
-        // RESTORED AUTH EVENT LISTENERS
         window.handleForgotPassword = function() {
             const email = document.getElementById('auth-email').value.trim();
             const errBox = document.getElementById('auth-error'); const succBox = document.getElementById('auth-success');
@@ -649,14 +679,18 @@
             const e = document.getElementById('auth-email').value; const p = document.getElementById('auth-password').value;
             const errBox = document.getElementById('auth-error'); errBox.style.display = 'none';
             if(!e || !p) { errBox.innerText = "Please enter email and password."; errBox.style.display = 'block'; return; }
-            signInWithEmailAndPassword(auth, e, p).catch(err => { errBox.innerText = "Login Failed: " + err.message; errBox.style.display = 'block'; });
+            signInWithEmailAndPassword(auth, e, p).then(() => {
+                localStorage.setItem('stenogramLoginTime', Date.now().toString());
+            }).catch(err => { errBox.innerText = "Login Failed: " + err.message; errBox.style.display = 'block'; });
         });
 
         document.getElementById('signup-btn').addEventListener('click', () => {
             const e = document.getElementById('auth-email').value; const p = document.getElementById('auth-password').value;
             const errBox = document.getElementById('auth-error'); errBox.style.display = 'none';
             if(!e || !p) { errBox.innerText = "Please enter email and password."; errBox.style.display = 'block'; return; }
-            createUserWithEmailAndPassword(auth, e, p).catch(err => { errBox.innerText = err.message; errBox.style.display = 'block'; });
+            createUserWithEmailAndPassword(auth, e, p).then(() => {
+                localStorage.setItem('stenogramLoginTime', Date.now().toString());
+            }).catch(err => { errBox.innerText = err.message; errBox.style.display = 'block'; });
         });
 
         window.deleteDictation = async function(id, fileUrl) { if(!confirm("⚠️ WARNING: Delete this dictation permanently?")) return; try { await deleteDoc(doc(db, "dictations", id)); if(fileUrl && fileUrl !== 'undefined') await deleteObject(ref(storage, fileUrl)); alert("Deleted successfully."); window.fetchDictations(); } catch(e) { alert("Error: " + e.message); } };
@@ -671,6 +705,19 @@
         onAuthStateChanged(auth, (user) => {
             window.currentUser = user;
             if (user) {
+                // 24-HOUR AUTO LOGOUT CHECK
+                const now = Date.now();
+                const loginTime = localStorage.getItem('stenogramLoginTime');
+                if (loginTime && (now - parseInt(loginTime) > 24 * 60 * 60 * 1000)) {
+                    signOut(auth).then(() => {
+                        localStorage.removeItem('stenogramLoginTime');
+                        window.location.reload();
+                    });
+                    return;
+                } else if (!loginTime) {
+                    localStorage.setItem('stenogramLoginTime', now.toString());
+                }
+
                 document.getElementById('logged-out-cta').style.display = 'none'; document.getElementById('logged-in-cta').style.display = 'block';
                 document.getElementById('logged-out-view').style.display = 'none'; document.getElementById('logged-in-view').style.display = 'flex';
                 document.getElementById('desktop-nav').style.display = 'flex'; document.getElementById('logged-in-nav').style.display = 'flex';
@@ -689,7 +736,10 @@
             }
         });
 
-        document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            localStorage.removeItem('stenogramLoginTime');
+            signOut(auth);
+        });
 
         const CATEGORIES = ["All", "Kailash Chandra", "Progressive February", "GD Bisht", "General Matter", "Legal Matter", "Important Words", "Most Important Matters"];
         
