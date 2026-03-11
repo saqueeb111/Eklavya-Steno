@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stenogram | The Ultimate Stenography Companion</title>
+    <title>Stenogram | The Ultimate SSC Companion</title>
     <link rel="icon" type="image/jpeg" href="logo.jpg">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -68,6 +68,11 @@
             <p id="auth-error" class="mt-4 text-sm text-red-600 font-semibold hidden bg-red-50 dark:bg-red-900/30 p-3 rounded-lg border border-red-100 dark:border-red-800"></p>
             <p id="auth-success" class="mt-4 text-sm text-emerald-600 font-semibold hidden bg-emerald-50 dark:bg-emerald-900/30 p-3 rounded-lg border border-emerald-100 dark:border-emerald-800"></p>
         </div>
+    </div>
+
+    <div id="global-notification-bar" class="hidden bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-4 text-center shadow-md relative z-50">
+        <span class="font-extrabold tracking-wide uppercase text-xs bg-white text-blue-600 px-2 py-0.5 rounded mr-2">Update</span>
+        <span id="notification-text" class="font-medium text-sm md:text-base"></span>
     </div>
 
     <header class="bg-white dark:bg-slate-900 shadow-lg w-full sticky top-0 z-40 border-b border-slate-200 dark:border-slate-800 transition-colors duration-300">
@@ -349,6 +354,17 @@
 
                 <section id="view-admin" class="app-view p-6 md:p-10 bg-slate-50 dark:bg-slate-900/50">
                     <div class="flex items-center gap-5 mb-8"><div class="w-16 h-16 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-full flex items-center justify-center text-3xl shadow-sm border border-purple-200 dark:border-purple-800">👑</div><div><h2 class="text-3xl font-extrabold text-slate-800 dark:text-white">Master Performance Tracker</h2><p class="text-slate-500 dark:text-slate-400 font-medium mt-1">View all user transcriptions and scores globally.</p></div></div>
+                    
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 mb-8">
+                        <h3 class="font-bold text-slate-800 dark:text-white mb-3 flex items-center gap-2">📢 Broadcast Global Notification</h3>
+                        <textarea id="admin-notif-msg" placeholder="Type an announcement to display at the top of the website for all users..." spellcheck="false" class="w-full p-4 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-purple-500 mb-3 resize-y h-24"></textarea>
+                        <div class="flex flex-wrap gap-3">
+                            <button onclick="publishNotification()" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl font-bold shadow-md transition w-full sm:w-auto">Publish Announcement</button>
+                            <button onclick="clearNotification()" class="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 px-6 py-3 rounded-xl font-bold shadow-sm transition border border-slate-300 dark:border-slate-600 w-full sm:w-auto">Remove Active Announcement</button>
+                        </div>
+                        <p id="notif-status" class="mt-3 text-sm font-bold text-emerald-500 hidden"></p>
+                    </div>
+
                     <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden"><div class="p-5 border-b border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 font-bold text-slate-700 dark:text-slate-300 flex justify-between items-center"><span class="text-lg">Global Student Analytics</span><button onclick="fetchAllUsersHistory()" class="text-sm bg-white dark:bg-slate-800 px-4 py-1.5 rounded-lg border border-slate-300 dark:border-slate-600 text-purple-600 dark:text-purple-400 hover:bg-slate-50 dark:hover:bg-slate-700 transition shadow-sm">Refresh Global Data</button></div><div id="admin-history-list" class="p-4 bg-slate-50 dark:bg-slate-900"><p class="text-center py-12 text-slate-500 dark:text-slate-400">Loading global data...</p></div></div>
                 </section>
 
@@ -523,7 +539,6 @@
                     var tRow = document.createElement('tr'); 
                     var pText = "";
                     
-                    // Strict spelling check: always counts as half mistake now
                     if (r.ty === 'Spelling Mistake') {
                         hM++; pText = "1/2 Mistake";
                         tRow.className="border-b border-slate-100 dark:border-slate-700 bg-pink-50 dark:bg-pink-900/20";
@@ -693,30 +708,87 @@
             }).catch(err => { errBox.innerText = err.message; errBox.style.display = 'block'; });
         });
 
-        window.deleteDictation = async function(id, fileUrl) { if(!confirm("⚠️ WARNING: Delete this dictation permanently?")) return; try { await deleteDoc(doc(db, "dictations", id)); if(fileUrl && fileUrl !== 'undefined') await deleteObject(ref(storage, fileUrl)); alert("Deleted successfully."); window.fetchDictations(); } catch(e) { alert("Error: " + e.message); } };
-        window.deleteNote = async function(id, fileUrl) { if(!confirm("⚠️ WARNING: Delete this note permanently?")) return; try { await deleteDoc(doc(db, "notes", id)); if(fileUrl && fileUrl !== 'undefined') await deleteObject(ref(storage, fileUrl)); alert("Deleted successfully."); window.fetchNotes(); } catch(e) { alert("Error: " + e.message); } };
-        window.deleteTypingText = async function(id) { if(!confirm("⚠️ WARNING: Delete this typing text?")) return; try { await deleteDoc(doc(db, "typingTexts", id)); alert("Deleted successfully."); window.fetchTypingTexts(); } catch(e) { alert("Error: " + e.message); } };
+        // RE-ENGINEERED DELETE FUNCTIONS (FILE COMES FIRST)
+        window.deleteDictation = async function(id, fileUrl, storagePath) { 
+            if(!confirm("⚠️ WARNING: Delete this dictation permanently?")) return; 
+            try { 
+                if(storagePath && storagePath !== 'undefined') { await deleteObject(ref(storage, storagePath)); } 
+                else if(fileUrl && fileUrl !== 'undefined') { await deleteObject(ref(storage, fileUrl)); }
+                await deleteDoc(doc(db, "dictations", id)); 
+                alert("Deleted successfully from storage and database."); 
+                window.fetchDictations(); 
+            } catch(e) { alert("Error: " + e.message); } 
+        };
+        
+        window.deleteNote = async function(id, fileUrl, storagePath) { 
+            if(!confirm("⚠️ WARNING: Delete this note permanently?")) return; 
+            try { 
+                if(storagePath && storagePath !== 'undefined') { await deleteObject(ref(storage, storagePath)); } 
+                else if(fileUrl && fileUrl !== 'undefined') { await deleteObject(ref(storage, fileUrl)); }
+                await deleteDoc(doc(db, "notes", id)); 
+                alert("Deleted successfully from storage and database."); 
+                window.fetchNotes(); 
+            } catch(e) { alert("Error: " + e.message); } 
+        };
+        
+        window.deleteTypingText = async function(id) { 
+            if(!confirm("⚠️ WARNING: Delete this typing text?")) return; 
+            try { await deleteDoc(doc(db, "typingTexts", id)); alert("Deleted successfully."); window.fetchTypingTexts(); } 
+            catch(e) { alert("Error: " + e.message); } 
+        };
 
         window.editDictationTitle = async function(id, currentTitle) {
             const newTitle = prompt("Edit Dictation Title:", currentTitle);
             if (newTitle && newTitle.trim() !== "" && newTitle !== currentTitle) { try { await updateDoc(doc(db, "dictations", id), { title: newTitle.trim() }); window.fetchDictations(); } catch(e) { alert("Error updating title: " + e.message); } }
         };
 
+        // NEW: NOTIFICATION ENGINE 
+        window.publishNotification = async function() {
+            const msg = document.getElementById('admin-notif-msg').value.trim();
+            if(!msg) return;
+            document.getElementById('notif-status').innerText = "Publishing..."; document.getElementById('notif-status').style.display = "block";
+            try {
+                await addDoc(collection(db, "notifications"), { message: msg, timestamp: Date.now() });
+                document.getElementById('admin-notif-msg').value = ""; document.getElementById('notif-status').innerText = "Published successfully!";
+                window.fetchGlobalNotification();
+            } catch(e) { document.getElementById('notif-status').innerText = "Error: " + e.message; }
+        };
+
+        window.clearNotification = async function() {
+            if(!confirm("Remove the current active announcement for all users?")) return;
+            try {
+                const snap = await getDocs(collection(db, "notifications"));
+                snap.forEach(async (d) => { await deleteDoc(doc(db, "notifications", d.id)); });
+                document.getElementById('notif-status').innerText = "Cleared.";
+                window.fetchGlobalNotification();
+            } catch(e) {}
+        };
+
+        window.fetchGlobalNotification = async function() {
+            try {
+                const snap = await getDocs(collection(db, "notifications"));
+                let latest = null;
+                snap.forEach(d => { let data = d.data(); if(!latest || data.timestamp > latest.timestamp) latest = data; });
+                const bar = document.getElementById('global-notification-bar'); const text = document.getElementById('notification-text');
+                if(latest && latest.message) { text.innerText = latest.message; bar.classList.remove('hidden'); } 
+                else { bar.classList.add('hidden'); }
+            } catch(e) {}
+        };
+
         onAuthStateChanged(auth, (user) => {
             window.currentUser = user;
+            
+            // FETCH NOTIFICATIONS ON LOAD
+            window.fetchGlobalNotification();
+            
             if (user) {
                 // 24-HOUR AUTO LOGOUT CHECK
                 const now = Date.now();
                 const loginTime = localStorage.getItem('stenogramLoginTime');
                 if (loginTime && (now - parseInt(loginTime) > 24 * 60 * 60 * 1000)) {
-                    signOut(auth).then(() => {
-                        localStorage.removeItem('stenogramLoginTime');
-                        window.location.reload();
-                    });
+                    signOut(auth).then(() => { localStorage.removeItem('stenogramLoginTime'); window.location.reload(); });
                     return;
-                } else if (!loginTime) {
-                    localStorage.setItem('stenogramLoginTime', now.toString());
-                }
+                } else if (!loginTime) { localStorage.setItem('stenogramLoginTime', now.toString()); }
 
                 document.getElementById('logged-out-cta').style.display = 'none'; document.getElementById('logged-in-cta').style.display = 'block';
                 document.getElementById('logged-out-view').style.display = 'none'; document.getElementById('logged-in-view').style.display = 'flex';
@@ -786,7 +858,7 @@
                         ${window.isAdminUser ? `
                         <div class="absolute top-4 right-4 flex gap-2 z-10">
                             <button onclick="event.stopPropagation(); editDictationTitle('${d.id}', decodeURIComponent('${encodeURIComponent(d.title)}'))" class="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 p-2 rounded-lg text-xs font-bold hover:bg-blue-200 dark:hover:bg-blue-800 transition shadow-sm" title="Edit Title">✏️</button>
-                            <button onclick="event.stopPropagation(); deleteDictation('${d.id}', '${d.audioUrl}')" class="bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 p-2 rounded-lg text-xs font-bold hover:bg-red-200 dark:hover:bg-red-800 transition shadow-sm" title="Delete">🗑️</button>
+                            <button onclick="event.stopPropagation(); deleteDictation('${d.id}', '${d.audioUrl}', '${d.storagePath}')" class="bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 p-2 rounded-lg text-xs font-bold hover:bg-red-200 dark:hover:bg-red-800 transition shadow-sm" title="Delete">🗑️</button>
                         </div>` : ''}
                         <div>
                             <span class="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-md uppercase tracking-wide border border-blue-100 dark:border-blue-800/50">${cat}</span>
@@ -804,8 +876,10 @@
             if (!tit || !file) { alert("Missing fields."); return; }
             sts.style.display='block'; sts.innerText="Uploading..."; sts.className = "mt-4 text-center text-sm font-bold text-blue-500 animate-pulse";
             try {
-                const sRef = ref(storage, 'dictations/' + Date.now() + '_' + file.name); await uploadBytes(sRef, file); const url = await getDownloadURL(sRef);
-                await addDoc(collection(db, "dictations"), { category: cat, title: tit, baseSpeed: Number(spd), audioUrl: url, transcript: trans, timestamp: new Date().getTime() });
+                const filePath = 'dictations/' + Date.now() + '_' + file.name;
+                const sRef = ref(storage, filePath); 
+                await uploadBytes(sRef, file); const url = await getDownloadURL(sRef);
+                await addDoc(collection(db, "dictations"), { category: cat, title: tit, baseSpeed: Number(spd), audioUrl: url, storagePath: filePath, transcript: trans, timestamp: new Date().getTime() });
                 sts.innerText="Success!"; sts.className = "mt-4 text-center text-sm font-bold text-emerald-500"; document.getElementById('upload-title').value=''; document.getElementById('upload-transcript').value=''; window.fetchDictations();
             } catch(e) { sts.innerText="Error: " + e.message; sts.className = "mt-4 text-center text-sm font-bold text-red-500"; }
         });
@@ -830,7 +904,13 @@
         document.getElementById('note-submit-btn').addEventListener('click', async () => {
             const tit = document.getElementById('note-title').value.trim(); const file = document.getElementById('note-file').files[0]; const sts = document.getElementById('note-status');
             if(!tit || !file) return alert("Fill all fields."); sts.style.display='block'; sts.innerText="Uploading PDF...";
-            try { const sRef = ref(storage, 'notes/' + Date.now() + '_' + file.name); await uploadBytes(sRef, file); const url = await getDownloadURL(sRef); await addDoc(collection(db, "notes"), { title: tit, fileUrl: url, fileName: file.name, timestamp: new Date().getTime() }); sts.innerText = "Saved!"; document.getElementById('note-title').value=''; document.getElementById('note-file').value=''; window.fetchNotes(); } catch(e) { sts.innerText="Error."; }
+            try { 
+                const filePath = 'notes/' + Date.now() + '_' + file.name;
+                const sRef = ref(storage, filePath); 
+                await uploadBytes(sRef, file); const url = await getDownloadURL(sRef); 
+                await addDoc(collection(db, "notes"), { title: tit, fileUrl: url, storagePath: filePath, fileName: file.name, timestamp: new Date().getTime() }); 
+                sts.innerText = "Saved!"; document.getElementById('note-title').value=''; document.getElementById('note-file').value=''; window.fetchNotes(); 
+            } catch(e) { sts.innerText="Error."; }
         });
 
         window.fetchNotes = async function() {
@@ -838,7 +918,7 @@
             try {
                 const snap = await getDocs(query(collection(db, "notes"))); if (snap.empty) { list.innerHTML = '<p class="text-center py-12 col-span-2 text-slate-500 dark:text-slate-400">No notes uploaded yet.</p>'; return; }
                 let docs = []; snap.forEach(doc => docs.push(doc.data())); docs.sort((a,b) => b.timestamp - a.timestamp); let html = '';
-                docs.forEach(d => { html += `<div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition flex items-center justify-between"><div class="flex items-center gap-3"><div class="bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 p-3 rounded-lg border border-red-200 dark:border-red-800/50">📄</div><div><h3 class="font-bold text-slate-800 dark:text-white">${d.title}</h3><p class="text-xs text-slate-500 dark:text-slate-400">${new Date(d.timestamp).toLocaleDateString()}</p></div></div><div class="flex items-center gap-2"><a href="${d.fileUrl}" target="_blank" class="bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-white px-4 py-2 rounded-lg font-bold text-sm transition">Open</a>${window.isAdminUser ? `<button onclick="deleteNote('${d.id}', '${d.fileUrl}')" class="bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-red-200 dark:hover:bg-red-800 transition shadow-sm">🗑️ Delete</button>` : ''}</div></div>`; }); list.innerHTML = html;
+                docs.forEach(d => { html += `<div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition flex items-center justify-between"><div class="flex items-center gap-3"><div class="bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 p-3 rounded-lg border border-red-200 dark:border-red-800/50">📄</div><div><h3 class="font-bold text-slate-800 dark:text-white">${d.title}</h3><p class="text-xs text-slate-500 dark:text-slate-400">${new Date(d.timestamp).toLocaleDateString()}</p></div></div><div class="flex items-center gap-2"><a href="${d.fileUrl}" target="_blank" class="bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-white px-4 py-2 rounded-lg font-bold text-sm transition">Open</a>${window.isAdminUser ? `<button onclick="deleteNote('${d.id}', '${d.fileUrl}', '${d.storagePath}')" class="bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-red-200 dark:hover:bg-red-800 transition shadow-sm">🗑️ Delete</button>` : ''}</div></div>`; }); list.innerHTML = html;
             } catch(e) { list.innerHTML = '<p class="text-center py-12 col-span-2 text-red-500">Error loading notes.</p>'; }
         };
 
