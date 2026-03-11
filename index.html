@@ -91,7 +91,6 @@
                         <button onclick="switchView('dictation')" class="nav-link text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-1 py-2 font-semibold text-sm transition">Dictations</button>
                         <button onclick="switchView('notes')" class="nav-link text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-1 py-2 font-semibold text-sm transition">Notes</button>
                         <button onclick="switchView('dashboard')" class="nav-link text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 px-1 py-2 font-bold text-sm transition">Dashboard</button>
-                        <button onclick="switchView('help')" class="nav-link text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 px-1 py-2 font-bold text-sm transition">Guide & FAQ</button>
                         <button id="nav-admin" onclick="switchView('admin')" class="hidden nav-link-admin text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 px-1 py-2 font-bold text-sm transition">Admin</button>
                     </div>
                 </nav>
@@ -370,47 +369,82 @@
                 </section>
 
                 <section id="view-help" class="app-view p-6 md:p-10 bg-slate-50 dark:bg-slate-900/50">
-                    <div class="max-w-4xl mx-auto">
+                    <div class="max-w-5xl mx-auto">
                         
                         <div class="text-center mb-12">
                             <div class="w-20 h-20 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-sm border border-blue-200 dark:border-blue-800">📖</div>
                             <h2 class="text-4xl font-extrabold text-slate-800 dark:text-white mb-4">How to Use Stenogram</h2>
-                            <p class="text-lg text-slate-600 dark:text-slate-400">Master the ultimate SSC typing and transcription platform.</p>
+                            <p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">Master the ultimate platform designed to mirror official SSC, AIIMS, and DSSSB exam environments.</p>
                         </div>
 
                         <div class="space-y-12 mb-16">
                             
-                            <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700">
-                                <h3 class="text-2xl font-extrabold text-slate-800 dark:text-white mb-4 flex items-center gap-3"><span class="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">1</span> Taking a Dictation</h3>
-                                <p class="text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">Navigate to the <strong>Dictations</strong> tab. Use the search bar or category filters to find a passage. Click the card, and select your desired WPM speed from the audio player dropdown.</p>
-                                <div class="bg-slate-900 rounded-xl p-4 border border-slate-700 flex flex-col md:flex-row items-center justify-center gap-4 text-white shadow-inner">
-                                    <span class="text-2xl">🎧</span>
-                                    <div class="w-full md:w-64 h-2 bg-slate-700 rounded-full"><div class="w-1/3 h-full bg-emerald-500 rounded-full"></div></div>
-                                    <span class="bg-slate-800 border border-slate-600 px-3 py-1 rounded-lg text-sm font-bold text-emerald-400">80 WPM ▼</span>
+                            <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                                <div>
+                                    <h3 class="text-2xl font-extrabold text-slate-800 dark:text-white mb-4 flex items-center gap-3"><span class="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm shrink-0">1</span> The Dictation Library</h3>
+                                    <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">Navigate to the <strong>Dictations</strong> tab. Use the search bar or category tabs to find official Kailash Chandra, GD Bisht, or Legal matters.</p>
+                                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed font-bold">Speed Control on the Fly:</p>
+                                    <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">Click any dictation card to enter the workspace. Use the dropdown inside the audio player to dynamically slow down or speed up the dictation from 60 WPM to 120 WPM without distorting the voice.</p>
+                                </div>
+                                <div class="bg-slate-900 rounded-2xl p-6 border border-slate-700 shadow-inner">
+                                   <div class="flex items-center justify-between mb-6 border-b border-slate-700 pb-4">
+                                       <span class="text-blue-400 font-bold text-sm uppercase tracking-wider">Kailash Chandra</span>
+                                       <span class="bg-slate-800 text-emerald-400 px-3 py-1.5 rounded-lg text-sm font-bold border border-slate-700">80 WPM ▼</span>
+                                   </div>
+                                   <div class="flex items-center gap-4 mb-6">
+                                       <div class="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center text-white font-bold text-lg shrink-0 shadow-lg">▶</div>
+                                       <div class="h-3 flex-grow bg-slate-800 rounded-full overflow-hidden border border-slate-700"><div class="w-1/3 h-full bg-emerald-500 rounded-full"></div></div>
+                                   </div>
+                                   <button class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow">Start Timer & Fullscreen</button>
                                 </div>
                             </div>
 
-                            <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700">
-                                <h3 class="text-2xl font-extrabold text-slate-800 dark:text-white mb-4 flex items-center gap-3"><span class="bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">2</span> Focus with Fullscreen</h3>
-                                <p class="text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">Once you are ready to transcribe your shorthand notes, hit the <strong>Start Timer</strong> button. To remove all distractions, click the <strong>⛶ Fullscreen</strong> button to expand the typing pad across your entire monitor.</p>
-                                <div class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-6 text-center shadow-inner relative overflow-hidden">
-                                    <div class="absolute top-4 right-4 bg-slate-800 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow shadow-black/50">⛶ Exit Fullscreen</div>
-                                    <div class="text-3xl font-mono font-bold text-slate-800 dark:text-white mb-4">49:58</div>
-                                    <div class="w-full h-24 border-2 border-dashed border-emerald-300 dark:border-emerald-700/50 rounded-lg flex items-center justify-center text-slate-400 font-medium">Type your transcription here...</div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700">
-                                <h3 class="text-2xl font-extrabold text-slate-800 dark:text-white mb-4 flex items-center gap-3"><span class="bg-purple-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">3</span> Strict SSC Evaluation</h3>
-                                <p class="text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">Click <strong>Check Mistakes</strong>. Our software evaluates your text exactly like the SSC! It ignores formatting differences (like "2" vs "two"), marks typos as half-mistakes (Pink), and omissions as full-mistakes (Red).</p>
-                                <div class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-4 shadow-inner">
-                                    <div class="flex flex-wrap gap-2 text-sm font-bold justify-center">
-                                        <span class="color-match bg-green-100 dark:bg-green-900/30 px-2 py-1 rounded">Correct Word</span>
-                                        <span class="color-sub bg-red-100 dark:bg-red-900/30 px-2 py-1 rounded">[Substitution]</span>
-                                        <span class="color-spell-err bg-pink-100 dark:bg-pink-900/30 px-2 py-1 rounded">[Spelling Error]</span>
-                                        <span class="color-cap bg-purple-100 dark:bg-purple-900/30 px-2 py-1 rounded">[Capitalization]</span>
+                            <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                                <div class="order-2 lg:order-1">
+                                    <div class="bg-slate-900 rounded-2xl p-6 border border-slate-700 shadow-inner flex flex-col gap-4">
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div class="bg-slate-800 rounded-xl p-4 text-xs text-slate-400 border border-slate-700 h-32 flex flex-col"><span class="font-bold text-slate-300 mb-2">Original Answer Key</span><span class="opacity-50">Paste custom offline matter here...</span></div>
+                                            <div class="bg-slate-800 rounded-xl p-4 text-xs text-slate-400 border border-slate-700 h-32 flex flex-col"><span class="font-bold text-slate-300 mb-2">Your Transcription</span><span class="opacity-50">Paste your typed matter here...</span></div>
+                                        </div>
+                                        <div class="flex items-center gap-2 mb-2"><div class="w-4 h-4 rounded border border-emerald-500 bg-emerald-500/20 flex items-center justify-center text-emerald-500 text-xs">✓</div><span class="text-sm font-bold text-emerald-400">Partial Analyser</span></div>
+                                        <button class="w-full bg-emerald-600 text-white font-extrabold py-3 rounded-xl shadow flex flex-col items-center justify-center"><span class="text-lg">Run Analysis</span></button>
                                     </div>
                                 </div>
+                                <div class="order-1 lg:order-2">
+                                    <h3 class="text-2xl font-extrabold text-slate-800 dark:text-white mb-4 flex items-center gap-3"><span class="bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm shrink-0">2</span> The Steno Analyzer (Core)</h3>
+                                    <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">The heart of Stenogram. While it perfectly links with our online dictations, <strong>The Custom Matter Advantage</strong> allows you to use it for offline practice too!</p>
+                                    <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">Took a dictation at your coaching institute? Simply paste the original answer key in the left box, paste your typed text in the right box, and hit analyze for an instant SSC-grade evaluation.</p>
+                                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed font-bold">The Partial Analyser:</p>
+                                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed">Only managed to transcribe half the dictation? Check the <strong>Partial Analyser</strong> box. The system will intelligently find where you stopped and only evaluate the words you typed, saving you from massive omission penalties.</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                                <div>
+                                    <h3 class="text-2xl font-extrabold text-slate-800 dark:text-white mb-4 flex items-center gap-3"><span class="bg-purple-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm shrink-0">3</span> Pro Typing Test</h3>
+                                    <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">Preparing for LDC/Typing tests for SSC, AIIMS, DSSSB, or Supreme Court? Our typing tab provides an exact exam-like interface.</p>
+                                    <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed font-bold">Feedback Styles:</p>
+                                    <ul class="list-disc list-inside text-slate-600 dark:text-slate-400 leading-relaxed space-y-2">
+                                        <li><strong>Normal Mode:</strong> Strict exam style. No colors, no hints. You only see your WPM and Accuracy at the end.</li>
+                                        <li><strong>Live Colors Mode:</strong> Perfect for practice. The text turns <span class="text-emerald-600 font-bold">Green</span> when correct and <span class="text-red-600 font-bold">Red</span> when you make a typo, allowing you to fix finger memory mistakes instantly.</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-slate-900 rounded-2xl p-6 border border-slate-700 shadow-inner">
+                                    <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-3">
+                                        <span class="text-xs font-bold text-slate-400 bg-slate-800 px-2 py-1 rounded">Live Colors Mode</span>
+                                        <span class="text-sm font-mono font-bold text-white bg-black px-3 py-1 rounded-md border border-slate-700">09:45</span>
+                                    </div>
+                                    <div class="text-xl leading-relaxed font-medium font-mono p-2">
+                                        <span class="text-emerald-500">The supreme</span> <span class="bg-slate-700 text-white px-1 rounded shadow">court</span> <span class="text-red-500 underline decoration-wavy decoration-red-500">odered</span> <span class="text-slate-500">the committee to investigate...</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700 text-center">
+                                <h3 class="text-2xl font-extrabold text-slate-800 dark:text-white mb-4">Track & Learn</h3>
+                                <p class="text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                                    Don't forget to check the <strong>Dashboard</strong> to review your past performances. Clicking on any past test expands it to show a full visual markup of your exact mistakes. Need study materials? Visit the <strong>Notes</strong> tab to download essential PDFs and short forms directly to your device.
+                                </p>
                             </div>
 
                         </div>
@@ -423,37 +457,37 @@
                             
                             <div class="faq-item">
                                 <button onclick="document.getElementById('faq-1').classList.toggle('hidden')" class="w-full p-6 text-left hover:bg-slate-50 dark:hover:bg-slate-700/50 transition flex justify-between items-center font-bold text-slate-800 dark:text-white text-lg">
-                                    How are mistakes calculated? <span class="text-slate-400">▼</span>
+                                    Is Stenogram free to use? <span class="text-slate-400">▼</span>
                                 </button>
                                 <div id="faq-1" class="hidden px-6 pb-6 text-slate-600 dark:text-slate-400 leading-relaxed border-t border-slate-100 dark:border-slate-700 pt-4 bg-slate-50 dark:bg-slate-900/30">
-                                    Our math engine is a direct replica of the official SSC evaluation parameters. Omissions and substitutions are counted as 1 Full Mistake. Capitalization, singular/plural swaps, and spelling typos are counted as 1/2 (Half) Mistake.
+                                    Yes! The core platform, including the Dictation Library, the SSC Steno Analyzer, the Typing Test engine, and the Personal Dashboard, is 100% free for all aspirants. We only ask that you support us by joining our Telegram channel!
                                 </div>
                             </div>
 
                             <div class="faq-item">
                                 <button onclick="document.getElementById('faq-2').classList.toggle('hidden')" class="w-full p-6 text-left hover:bg-slate-50 dark:hover:bg-slate-700/50 transition flex justify-between items-center font-bold text-slate-800 dark:text-white text-lg">
-                                    What is the "Partial Analyser"? <span class="text-slate-400">▼</span>
+                                    Do I need to create an account? <span class="text-slate-400">▼</span>
                                 </button>
                                 <div id="faq-2" class="hidden px-6 pb-6 text-slate-600 dark:text-slate-400 leading-relaxed border-t border-slate-100 dark:border-slate-700 pt-4 bg-slate-50 dark:bg-slate-900/30">
-                                    If you take an 800-word dictation but only have time to type 400 words, check the "Partial Analyser" box before submitting. The software will instantly identify where you stopped and only evaluate the text you actually typed, preventing massive omission penalties!
+                                    Yes. Creating a free account (via Google or Email) allows the software to generate your private Dashboard. It securely saves your test scores, typing speeds, and visual mistake histories so you can track your improvement over time.
                                 </div>
                             </div>
 
                             <div class="faq-item">
                                 <button onclick="document.getElementById('faq-3').classList.toggle('hidden')" class="w-full p-6 text-left hover:bg-slate-50 dark:hover:bg-slate-700/50 transition flex justify-between items-center font-bold text-slate-800 dark:text-white text-lg">
-                                    Will I get penalized for writing "2" instead of "two"? <span class="text-slate-400">▼</span>
+                                    Can I use Stenogram on my mobile phone? <span class="text-slate-400">▼</span>
                                 </button>
                                 <div id="faq-3" class="hidden px-6 pb-6 text-slate-600 dark:text-slate-400 leading-relaxed border-t border-slate-100 dark:border-slate-700 pt-4 bg-slate-50 dark:bg-slate-900/30">
-                                    No! Stenogram uses a smart mapping engine. Whether you type "first" or "1st", "honourable" or "Hon'ble", the engine recognizes them as valid alternate forms and marks them correct, exactly like the real SSC exam.
+                                    The website is fully responsive and works perfectly on mobile phones for listening to dictations, downloading notes, or reviewing your dashboard. However, for actual transcription and typing tests, we highly recommend using a PC or laptop with a physical keyboard to simulate exam conditions.
                                 </div>
                             </div>
 
                             <div class="faq-item">
                                 <button onclick="document.getElementById('faq-4').classList.toggle('hidden')" class="w-full p-6 text-left hover:bg-slate-50 dark:hover:bg-slate-700/50 transition flex justify-between items-center font-bold text-slate-800 dark:text-white text-lg">
-                                    Why was I logged out automatically? <span class="text-slate-400">▼</span>
+                                    Why do I get automatically logged out? <span class="text-slate-400">▼</span>
                                 </button>
                                 <div id="faq-4" class="hidden px-6 pb-6 text-slate-600 dark:text-slate-400 leading-relaxed border-t border-slate-100 dark:border-slate-700 pt-4 bg-slate-50 dark:bg-slate-900/30">
-                                    For your security and privacy, Stenogram utilizes a strict 24-hour session token. Every 24 hours, the system will ask you to log back in to ensure your personal dashboard and history remain completely private.
+                                    For your security and privacy, Stenogram utilizes a strict 24-hour session token. Every 24 hours, the system will ask you to log back in to ensure your personal dashboard and history remain completely private, especially if you practice at public libraries or cyber cafes.
                                 </div>
                             </div>
 
@@ -472,7 +506,12 @@
             <div class="flex flex-wrap justify-center gap-4">
                 <a href="https://t.me/Stenograam" target="_blank" class="flex items-center gap-2 bg-[#0088cc] hover:bg-[#0077b3] text-white px-4 py-2 rounded-lg font-bold text-sm transition shadow-lg"><svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.21-1.12-.33-1.08-.7.02-.19.27-.39.75-.59 2.95-1.28 4.91-2.12 5.89-2.52 2.79-1.15 3.37-1.35 3.75-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .24z"/></svg> Telegram</a>
                 <a href="http://www.youtube.com/@Stenograam" target="_blank" class="flex items-center gap-2 bg-[#FF0000] hover:bg-[#cc0000] text-white px-4 py-2 rounded-lg font-bold text-sm transition shadow-lg"><svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M21.582 6.186a2.684 2.684 0 0 0-1.884-1.897C18.036 3.843 12 3.843 12 3.843s-6.036 0-7.698.446a2.684 2.684 0 0 0-1.884 1.897C2 7.848 2 12 2 12s0 4.152.418 5.814a2.684 2.684 0 0 0 1.884 1.897C6.036 20.157 12 20.157 12 20.157s6.036 0 7.698-.446a2.684 2.684 0 0 0 1.884-1.897C22 16.152 22 12 22 12s0-4.152-.418-5.814zM9.803 15.484V8.516L15.605 12l-5.792 3.484z"/></svg> YouTube</a>
-                <button onclick="toggleDarkMode()" class="flex items-center gap-2 bg-slate-800 border border-slate-700 hover:bg-slate-700 text-slate-300 px-4 py-2 rounded-lg font-bold text-sm transition shadow-lg ml-2 md:ml-6"><span id="dark-icon">🌙 Dark Mode</span></button>
+                
+                <button onclick="switchView('help')" class="flex items-center gap-2 bg-slate-800 border border-slate-700 hover:bg-slate-700 text-white px-4 py-2 rounded-lg font-bold text-sm transition shadow-lg ml-2 md:ml-6">
+                    <svg class="w-4 h-4 fill-current text-blue-400" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg> Guide & FAQ
+                </button>
+
+                <button onclick="toggleDarkMode()" class="flex items-center gap-2 bg-slate-800 border border-slate-700 hover:bg-slate-700 text-slate-300 px-4 py-2 rounded-lg font-bold text-sm transition shadow-lg ml-2"><span id="dark-icon">🌙 Dark Mode</span></button>
             </div>
         </div>
     </footer>
