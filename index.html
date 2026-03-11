@@ -403,10 +403,7 @@
                 document.getElementById('dictation-main-view').style.display = 'block';
             }
             
-            // Telegram Popup Logic
-            if(viewId === 'home') {
-                setTimeout(() => { document.getElementById('telegram-modal').classList.remove('hidden'); }, 800);
-            }
+            if(viewId === 'home') { setTimeout(() => { document.getElementById('telegram-modal').classList.remove('hidden'); }, 800); }
 
             document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active-view'));
             document.querySelectorAll('.nav-link, .nav-link-admin').forEach(l => l.classList.remove('active'));
@@ -424,8 +421,6 @@
         window.addEventListener('DOMContentLoaded', () => {
             let hash = window.location.hash.substring(1) || 'home';
             history.replaceState({ view: hash }, '', `#${hash}`);
-            
-            // Trigger Telegram Modal on initial load
             setTimeout(() => { document.getElementById('telegram-modal').classList.remove('hidden'); }, 1000);
         });
 
@@ -708,27 +703,33 @@
             }).catch(err => { errBox.innerText = err.message; errBox.style.display = 'block'; });
         });
 
-        // RE-ENGINEERED DELETE FUNCTIONS (FILE COMES FIRST)
+        // RE-ENGINEERED DELETE FUNCTIONS (SOFT FAIL ON STORAGE)
         window.deleteDictation = async function(id, fileUrl, storagePath) { 
             if(!confirm("⚠️ WARNING: Delete this dictation permanently?")) return; 
             try { 
-                if(storagePath && storagePath !== 'undefined') { await deleteObject(ref(storage, storagePath)); } 
-                else if(fileUrl && fileUrl !== 'undefined') { await deleteObject(ref(storage, fileUrl)); }
+                try {
+                    if(storagePath && storagePath !== 'undefined') { await deleteObject(ref(storage, storagePath)); } 
+                    else if(fileUrl && fileUrl !== 'undefined') { await deleteObject(ref(storage, fileUrl)); }
+                } catch(storageErr) { console.warn("Storage file already deleted or not found. Proceeding to delete db entry."); }
+                
                 await deleteDoc(doc(db, "dictations", id)); 
-                alert("Deleted successfully from storage and database."); 
+                alert("Deleted successfully."); 
                 window.fetchDictations(); 
-            } catch(e) { alert("Error: " + e.message); } 
+            } catch(e) { alert("Error deleting from database: " + e.message); } 
         };
         
         window.deleteNote = async function(id, fileUrl, storagePath) { 
             if(!confirm("⚠️ WARNING: Delete this note permanently?")) return; 
             try { 
-                if(storagePath && storagePath !== 'undefined') { await deleteObject(ref(storage, storagePath)); } 
-                else if(fileUrl && fileUrl !== 'undefined') { await deleteObject(ref(storage, fileUrl)); }
+                try {
+                    if(storagePath && storagePath !== 'undefined') { await deleteObject(ref(storage, storagePath)); } 
+                    else if(fileUrl && fileUrl !== 'undefined') { await deleteObject(ref(storage, fileUrl)); }
+                } catch(storageErr) { console.warn("Storage file already deleted or not found. Proceeding to delete db entry."); }
+                
                 await deleteDoc(doc(db, "notes", id)); 
-                alert("Deleted successfully from storage and database."); 
+                alert("Deleted successfully."); 
                 window.fetchNotes(); 
-            } catch(e) { alert("Error: " + e.message); } 
+            } catch(e) { alert("Error deleting from database: " + e.message); } 
         };
         
         window.deleteTypingText = async function(id) { 
@@ -742,7 +743,6 @@
             if (newTitle && newTitle.trim() !== "" && newTitle !== currentTitle) { try { await updateDoc(doc(db, "dictations", id), { title: newTitle.trim() }); window.fetchDictations(); } catch(e) { alert("Error updating title: " + e.message); } }
         };
 
-        // NEW: NOTIFICATION ENGINE 
         window.publishNotification = async function() {
             const msg = document.getElementById('admin-notif-msg').value.trim();
             if(!msg) return;
@@ -777,12 +777,8 @@
 
         onAuthStateChanged(auth, (user) => {
             window.currentUser = user;
-            
-            // FETCH NOTIFICATIONS ON LOAD
             window.fetchGlobalNotification();
-            
             if (user) {
-                // 24-HOUR AUTO LOGOUT CHECK
                 const now = Date.now();
                 const loginTime = localStorage.getItem('stenogramLoginTime');
                 if (loginTime && (now - parseInt(loginTime) > 24 * 60 * 60 * 1000)) {
