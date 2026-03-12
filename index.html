@@ -31,6 +31,11 @@
 </head>
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 antialiased min-h-screen flex flex-col transition-colors duration-300">
 
+    <div id="global-notification-bar" class="hidden bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-4 text-center shadow-md relative z-50">
+        <span class="font-extrabold tracking-wide uppercase text-xs bg-white text-blue-600 px-2 py-0.5 rounded mr-2">Update</span>
+        <span id="notification-text" class="font-medium text-sm md:text-base"></span>
+    </div>
+
     <div id="telegram-modal" class="hidden fixed inset-0 bg-slate-900 bg-opacity-80 z-[100] flex justify-center items-center px-4 backdrop-blur-sm transition-opacity">
         <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-2xl relative max-w-md w-full border border-slate-100 dark:border-slate-700 text-center transform transition-all">
             <button onclick="document.getElementById('telegram-modal').classList.add('hidden')" class="absolute top-4 right-5 text-slate-400 hover:text-red-500 font-bold text-3xl transition">&times;</button>
@@ -97,11 +102,6 @@
         </div>
     </div>
 
-    <div id="global-notification-bar" class="hidden bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-4 text-center shadow-md relative z-50">
-        <span class="font-extrabold tracking-wide uppercase text-xs bg-white text-blue-600 px-2 py-0.5 rounded mr-2">Update</span>
-        <span id="notification-text" class="font-medium text-sm md:text-base"></span>
-    </div>
-
     <header class="bg-white dark:bg-slate-900 shadow-lg w-full sticky top-0 z-40 border-b border-slate-200 dark:border-slate-800 transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
@@ -162,407 +162,415 @@
             </div>
         </section>
 
-        <div id="app-workspace" class="hidden w-full max-w-6xl mt-8 px-4 pb-16">
-            <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl overflow-hidden border border-slate-200 dark:border-slate-700 transition-colors duration-300">
+        <section id="view-typing" class="app-view p-4 md:p-6 w-full max-w-6xl mt-8">
+            <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl overflow-hidden border border-slate-200 dark:border-slate-700 p-6 md:p-10">
+                <h2 class="text-3xl font-extrabold text-slate-800 dark:text-white mb-6">Pro Typing Test</h2>
                 
-                <section id="view-typing" class="app-view p-6 md:p-10">
-                    <h2 class="text-3xl font-extrabold text-slate-800 dark:text-white mb-6">Pro Typing Test</h2>
+                <div id="typing-admin-panel" class="hidden bg-slate-50 dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 mb-8">
+                    <h3 class="font-bold text-slate-800 dark:text-white mb-3 flex items-center gap-2">🛠️ Admin: Upload Official Typing Matter</h3>
+                    <input type="text" id="type-admin-title" placeholder="Test Title (e.g. SSC CGL 2025 Tier II)" spellcheck="false" class="w-full mb-3 p-3 rounded-lg border border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white outline-none">
+                    <textarea id="type-admin-body" placeholder="Paste the official paragraph here..." spellcheck="false" class="w-full h-32 p-3 rounded-lg border border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white resize-y mb-3 outline-none"></textarea>
+                    <button id="type-admin-btn" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 transition">Save to Cloud Library</button>
+                    <p id="type-admin-status" class="text-sm font-bold mt-2 hidden text-emerald-500"></p>
                     
-                    <div id="typing-admin-panel" class="hidden bg-slate-50 dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 mb-8">
-                        <h3 class="font-bold text-slate-800 dark:text-white mb-3 flex items-center gap-2">🛠️ Admin: Upload Official Typing Matter</h3>
-                        <input type="text" id="type-admin-title" placeholder="Test Title (e.g. SSC CGL 2025 Tier II)" spellcheck="false" class="w-full mb-3 p-3 rounded-lg border border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white outline-none">
-                        <textarea id="type-admin-body" placeholder="Paste the official paragraph here..." spellcheck="false" class="w-full h-32 p-3 rounded-lg border border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-white resize-y mb-3 outline-none"></textarea>
-                        <button id="type-admin-btn" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 transition">Save to Cloud Library</button>
-                        <p id="type-admin-status" class="text-sm font-bold mt-2 hidden text-emerald-500"></p>
-                        
-                        <div class="mt-5 border-t border-slate-200 dark:border-slate-700 pt-4"><h4 class="font-bold text-sm text-slate-600 dark:text-slate-400 mb-2">Manage Uploaded Texts:</h4><div id="admin-typing-list" class="max-h-40 overflow-y-auto pr-2"></div></div>
-                    </div>
+                    <div class="mt-5 border-t border-slate-200 dark:border-slate-700 pt-4"><h4 class="font-bold text-sm text-slate-600 dark:text-slate-400 mb-2">Manage Uploaded Texts:</h4><div id="admin-typing-list" class="max-h-40 overflow-y-auto pr-2"></div></div>
+                </div>
 
-                    <div class="bg-slate-50 dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 mb-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">Text Source</label>
-                            <select id="source-select" onchange="handleSourceChange()" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-xl p-3 font-semibold text-slate-700 dark:text-slate-200 outline-none focus:ring-2 focus:ring-blue-500">
-                                <option value="random">Random 500+ Word Exam Essay</option>
-                                <option value="custom">Self Matter (Paste your own)</option>
-                                <option value="official" id="official-opt-group" disabled>--- Official Uploaded Matter ---</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">Feedback Style</label>
-                            <select id="style-select" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-xl p-3 font-semibold text-slate-700 dark:text-slate-200 outline-none focus:ring-2 focus:ring-blue-500">
-                                <option value="normal">Normal (Exam Style - Strict)</option>
-                                <option value="live">Live Colors (Practice Mode)</option>
-                            </select>
-                        </div>
-                        <div class="md:col-span-2 flex items-center justify-between bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
-                            <div class="flex items-center gap-3">
-                                <input type="checkbox" id="autoscroll-toggle" checked class="w-5 h-5 text-blue-600 rounded focus:ring-blue-500 cursor-pointer">
-                                <label for="autoscroll-toggle" class="font-bold text-slate-700 dark:text-slate-300 cursor-pointer">Enable Auto-Scroll</label>
-                            </div>
-                            <span class="text-xs text-slate-400 font-medium">Automatically scrolls the original text as you type.</span>
-                        </div>
-                    </div>
-                    
-                    <textarea id="custom-input-area" placeholder="Paste your custom material here..." spellcheck="false" class="hidden w-full h-32 p-4 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl mb-6 shadow-inner resize-y outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-                    
-                    <div class="flex gap-4 mb-6">
-                        <select id="typing-timer-select" class="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-xl p-4 font-bold text-slate-700 dark:text-slate-200 outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="1">1 Min (Sprint) ⚡</option><option value="2">2 Min (Short) 🏃</option><option value="5">5 Min (Medium)</option><option value="10" selected>10 Min (Standard Exam) ⏱️</option>
+                <div class="bg-slate-50 dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 mb-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">Text Source</label>
+                        <select id="source-select" onchange="handleSourceChange()" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-xl p-3 font-semibold text-slate-700 dark:text-slate-200 outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="random">Random 500+ Word Exam Essay</option>
+                            <option value="custom">Self Matter (Paste your own)</option>
+                            <option value="official" id="official-opt-group" disabled>--- Official Uploaded Matter ---</option>
                         </select>
-                        <button onclick="loadTypingTest()" class="flex-grow w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-xl font-bold shadow-md transition duration-200 text-lg tracking-wide">Load Settings & Start Timer</button>
                     </div>
-
-                    <div class="flex justify-between items-center font-bold text-lg mb-3">
-                        <span id="status-message" class="text-slate-500 dark:text-slate-400 flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-slate-300 dark:bg-slate-600"></span> Ready</span>
-                        <span id="timer-display" class="bg-slate-800 dark:bg-black text-white px-4 py-1.5 rounded-lg font-mono text-2xl shadow-inner">10:00</span>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">Feedback Style</label>
+                        <select id="style-select" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-xl p-3 font-semibold text-slate-700 dark:text-slate-200 outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="normal">Normal (Exam Style - Strict)</option>
+                            <option value="live">Live Colors (Practice Mode)</option>
+                        </select>
                     </div>
-                    
-                    <div id="original-text" class="bg-slate-50 dark:bg-slate-900 p-6 rounded-xl mb-5 h-64 overflow-y-auto border border-slate-200 dark:border-slate-700 text-lg leading-relaxed text-slate-700 dark:text-slate-300 shadow-inner select-none transition-colors duration-300 relative scroll-smooth">
-                        Select options and click Start above.
+                    <div class="md:col-span-2 flex items-center justify-between bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" id="autoscroll-toggle" checked class="w-5 h-5 text-blue-600 rounded focus:ring-blue-500 cursor-pointer">
+                            <label for="autoscroll-toggle" class="font-bold text-slate-700 dark:text-slate-300 cursor-pointer">Enable Auto-Scroll</label>
+                        </div>
+                        <span class="text-xs text-slate-400 font-medium">Automatically scrolls the original text as you type.</span>
                     </div>
-                    
-                    <textarea id="typing-area" placeholder="Start typing here..." spellcheck="false" class="w-full h-48 p-6 border-2 border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl text-lg leading-relaxed outline-none focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 transition shadow-sm resize-y" disabled oninput="handleTypingInput(this)"></textarea>
-                    
-                    <button type="button" id="finish-btn" onclick="endTypingTest()" class="mt-5 w-full bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 dark:hover:bg-slate-600 text-white font-bold py-4 rounded-xl hidden shadow-lg transition">Finish Test Early</button>
-                    
-                    <div id="typing-results" class="hidden mt-6 p-8 bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 rounded-2xl text-center shadow-sm">
-                        <h3 class="text-xl font-bold text-blue-800 dark:text-blue-300 mb-4">Performance Results</h3>
-                        <p class="text-slate-700 dark:text-slate-200">Speed: <span id="wpm-result" class="text-blue-600 dark:text-blue-400 text-4xl font-extrabold mx-2">0</span> WPM <span class="mx-6 text-slate-300 dark:text-slate-600">|</span> Accuracy: <span id="acc-result" class="text-emerald-500 text-4xl font-extrabold mx-2">0</span>%</p>
-                    </div>
-                </section>
+                </div>
+                
+                <textarea id="custom-input-area" placeholder="Paste your custom material here..." spellcheck="false" class="hidden w-full h-32 p-4 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl mb-6 shadow-inner resize-y outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                
+                <div class="flex gap-4 mb-6">
+                    <select id="typing-timer-select" class="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-xl p-4 font-bold text-slate-700 dark:text-slate-200 outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="1">1 Min (Sprint) ⚡</option><option value="2">2 Min (Short) 🏃</option><option value="5">5 Min (Medium)</option><option value="10" selected>10 Min (Standard Exam) ⏱️</option>
+                    </select>
+                    <button onclick="loadTypingTest()" class="flex-grow w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-xl font-bold shadow-md transition duration-200 text-lg tracking-wide">Load Settings & Start Timer</button>
+                </div>
 
-                <section id="view-steno" class="app-view p-6 md:p-10">
-                    <h2 class="text-3xl font-extrabold text-slate-800 dark:text-white mb-6">Steno Transcription Analyzer</h2>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                        <div>
-                            <label class="block font-extrabold text-slate-700 dark:text-slate-300 mb-3 text-lg">Original Answer Key</label>
-                            <textarea id="steno-orig" placeholder="Paste the correct transcription here..." spellcheck="false" class="w-full h-64 p-5 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-white rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 transition shadow-inner resize-y"></textarea>
-                        </div>
-                        <div>
-                            <label class="block font-extrabold text-slate-700 dark:text-slate-300 mb-3 text-lg">Your Transcription</label>
-                            <textarea id="steno-typed" placeholder="Paste your typed version here..." spellcheck="false" class="w-full h-64 p-5 border-2 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 transition shadow-sm resize-y"></textarea>
-                        </div>
-                    </div>
-                    
-                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-4">
-                        <div class="flex items-center gap-3 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 px-5 py-4 rounded-xl shadow-sm sm:w-auto shrink-0 transition hover:bg-emerald-100 dark:hover:bg-emerald-900/40">
-                            <input type="checkbox" id="partial-analyzer-toggle" class="w-6 h-6 text-emerald-600 rounded cursor-pointer">
-                            <label for="partial-analyzer-toggle" class="font-extrabold text-emerald-800 dark:text-emerald-400 cursor-pointer select-none">Partial Analyser <span class="block text-xs font-normal opacity-80">(Grade only what I typed)</span></label>
-                        </div>
-                        <button type="button" onclick="analyzeSteno()" class="flex-grow w-full py-4 sm:py-0 h-[75px] bg-emerald-600 hover:bg-emerald-700 text-white text-xl font-extrabold rounded-xl shadow-lg transition duration-200 transform hover:-translate-y-1 tracking-wide">Run Analysis & Save</button>
-                    </div>
-                    <p id="save-status" class="text-center mt-2 text-sm font-bold text-emerald-600 hidden"></p>
-
-                    <div id="steno-results-area" class="hidden mt-10">
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 text-center">
-                            <div class="bg-slate-50 dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm"><span class="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">Words Evaluated</span><br><span id="steno-total-words" class="text-4xl font-extrabold text-slate-800 dark:text-white">0</span></div>
-                            <div class="bg-emerald-50 dark:bg-emerald-900/20 p-5 rounded-xl border border-emerald-200 dark:border-emerald-800 shadow-sm"><span class="text-xs text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider">Accuracy</span><br><span class="text-4xl font-extrabold text-emerald-600"><span id="steno-accuracy">0</span>%</span></div>
-                            <div class="bg-red-50 dark:bg-red-900/20 p-5 rounded-xl border border-red-200 dark:border-red-800 shadow-sm"><span class="text-xs text-red-500 dark:text-red-400 font-bold uppercase tracking-wider">Full Mistakes</span><br><span id="steno-full" class="text-4xl font-extrabold text-red-600">0</span></div>
-                            <div class="bg-orange-50 dark:bg-orange-900/20 p-5 rounded-xl border border-orange-200 dark:border-orange-800 shadow-sm"><span class="text-xs text-orange-600 dark:text-orange-400 font-bold uppercase tracking-wider">Half Mistakes</span><br><span id="steno-half" class="text-4xl font-extrabold text-orange-600">0</span></div>
-                        </div>
-                        
-                        <div class="bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl mb-8 shadow-sm overflow-hidden">
-                            <div class="p-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 font-bold flex justify-between items-center text-slate-700 dark:text-slate-300">Visual Markup <button onclick="printVisualPassage()" class="bg-slate-800 dark:bg-slate-700 text-white px-4 py-1.5 rounded-lg text-sm hover:bg-slate-900 dark:hover:bg-slate-600 transition shadow">Save PDF</button></div>
-                            <div class="px-6 py-3 border-b border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm z-10 relative">
-                                <div class="flex flex-wrap gap-4 text-xs"><span class="color-match">Green: Correct</span><span class="color-cap">Purple: Capitalization</span><span class="color-spell">Blue: Singular/Plural</span><span class="color-spell-err">Pink: Spelling Mistake</span><span class="color-num">Teal: Numbers</span><span class="color-sub">Red: Wrong/Missing/Extra</span></div>
-                            </div>
-                            <div id="steno-visual-passage" class="p-6 text-lg leading-loose min-h-[120px] bg-slate-50/50 dark:bg-slate-900/50 text-slate-800 dark:text-slate-200"></div>
-                        </div>
-                        
-                        <h3 class="font-extrabold text-xl mb-4 text-slate-800 dark:text-white flex items-center gap-2">Mistakes Breakdown</h3>
-                        <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
-                            <table class="w-full text-left text-sm">
-                                <thead class="bg-slate-800 dark:bg-slate-900 text-white"><tr><th class="px-5 py-4">Correct Answer</th><th class="px-5 py-4">What You Typed</th><th class="px-5 py-4">SSC Penalty</th><th class="px-5 py-4">Mistake Type</th></tr></thead>
-                                <tbody id="steno-table-body" class="divide-y divide-slate-200 dark:divide-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="view-dictation" class="app-view p-6 md:p-10 bg-slate-50 dark:bg-slate-900/50">
-                    
-                    <div id="admin-upload-panel" class="hidden bg-white dark:bg-slate-800 p-8 rounded-2xl border border-emerald-200 dark:border-emerald-800 shadow-lg mb-10 relative overflow-hidden">
-                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500"></div>
-                        <h2 class="text-2xl font-extrabold text-emerald-800 dark:text-emerald-400 mb-6">Admin Upload Dashboard</h2>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
-                            <div class="md:col-span-1"><label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Category</label><select id="upload-category" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-white rounded-xl p-3 outline-none focus:border-emerald-500"><option value="Kailash Chandra">Kailash Chandra</option><option value="Progressive February">Progressive February</option><option value="GD Bisht">GD Bisht</option><option value="General Matter">General Matter</option><option value="Legal Matter">Legal Matter</option><option value="Important Words">Important Words</option><option value="Most Important Matters">Most Important Matters</option></select></div>
-                            <div class="md:col-span-1"><label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Title</label><input type="text" id="upload-title" spellcheck="false" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-white rounded-xl p-3 outline-none"></div>
-                            <div class="md:col-span-1"><label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Base Speed</label><input type="number" id="upload-speed" value="80" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-white rounded-xl p-3 outline-none"></div>
-                        </div>
-                        <div class="mb-5"><label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Answer Key (Optional Transcript)</label><textarea id="upload-transcript" spellcheck="false" class="w-full h-24 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-white rounded-xl p-3 outline-none resize-y"></textarea></div>
-                        <input type="file" id="upload-file" accept="audio/*" class="block w-full mb-5 border border-slate-300 dark:border-slate-600 rounded-xl p-2 bg-white dark:bg-slate-900 text-slate-500 file:bg-emerald-50 file:text-emerald-700 dark:file:bg-emerald-900/50 dark:file:text-emerald-400 cursor-pointer">
-                        <button type="button" id="upload-submit-btn" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white text-lg font-bold rounded-xl shadow-md transition">Upload to Cloud</button>
-                        <p id="upload-status" class="mt-4 text-center text-sm font-bold hidden"></p>
-                    </div>
-
-                    <div id="dictation-main-view">
-                        <div class="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
-                            <h2 class="text-3xl font-extrabold text-slate-800 dark:text-white">Dictation Library</h2>
-                            <div class="relative w-full md:w-72">
-                                <input type="text" id="dictation-search" placeholder="Search dictations..." spellcheck="false" oninput="renderDictationGrid()" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-white rounded-xl py-2.5 px-4 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 dark:focus:ring-emerald-900 transition shadow-sm font-medium">
-                                <span class="absolute right-4 top-2.5 text-slate-400">🔍</span>
-                            </div>
-                        </div>
-
-                        <div id="category-tabs" class="flex overflow-x-auto gap-3 pb-4 mb-6 hide-scrollbar border-b border-slate-200 dark:border-slate-700"></div>
-                        
-                        <div id="dictations-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <p class="text-center py-12 text-slate-500 col-span-full">Loading dictations...</p>
-                        </div>
-                    </div>
-
-                    <div id="dictation-workspace" class="hidden">
-                        <button onclick="closeDictationWorkspace()" class="mb-6 flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white font-bold transition"><span>←</span> Back to Library</button>
-                        <div class="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-3xl shadow-lg border border-slate-200 dark:border-slate-700">
-                            <div class="flex justify-between items-start mb-6">
-                                <div><span id="ws-category" class="text-xs font-bold text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-md uppercase tracking-wide border border-blue-100 dark:border-blue-800/50">Category</span><h2 id="ws-title" class="text-3xl font-extrabold text-slate-800 dark:text-white mt-2">Dictation Title</h2></div>
-                            </div>
-
-                            <div class="bg-slate-900 dark:bg-black p-4 rounded-2xl shadow-inner flex flex-col md:flex-row gap-4 items-center mb-8 border border-slate-800">
-                                <div class="flex items-center justify-center bg-emerald-500 text-white w-12 h-12 rounded-full shadow-lg shrink-0 text-xl font-bold">🎧</div>
-                                <audio id="ws-audio" controls class="w-full h-12 outline-none dark:opacity-90"></audio>
-                                <div class="flex items-center gap-2 shrink-0">
-                                    <span class="text-slate-400 text-xs font-bold uppercase tracking-wider">Speed</span>
-                                    <select id="ws-speed-select" onchange="changeSpeed('ws-audio', this.value, window.currentDictationBaseSpeed)" class="bg-slate-800 text-white border border-slate-700 rounded-lg p-2 text-sm font-bold outline-none cursor-pointer focus:ring-2 focus:ring-emerald-500"></select>
-                                </div>
-                            </div>
-
-                            <div id="ws-transcribe-container" class="bg-slate-50 dark:bg-slate-900/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 transition-all duration-300 flex flex-col h-full">
-                                <div class="flex flex-wrap gap-4 mb-4 items-center justify-between">
-                                    <div class="flex items-center gap-3">
-                                        <select id="ws-timer-select" class="border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-800 dark:text-white rounded-lg p-2.5 text-sm font-bold outline-none shadow-sm"><option value="30">30 Min</option><option value="40">40 Min</option><option value="50" selected>50 Min</option><option value="60">60 Min</option></select>
-                                        <button onclick="startWorkspaceTranscribe()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg text-sm font-bold shadow transition">Start Timer</button>
-                                    </div>
-                                    <div class="flex items-center gap-4">
-                                        <div id="ws-timer-display" class="text-2xl font-mono font-extrabold text-slate-800 dark:text-white bg-white dark:bg-slate-800 px-5 py-2 rounded-xl border border-slate-200 dark:border-slate-600 shadow-sm">50:00</div>
-                                        <button onclick="toggleFullscreen('ws-transcribe-container')" class="bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 dark:hover:bg-slate-600 text-white px-4 py-2.5 rounded-lg text-sm font-bold shadow transition flex items-center gap-2">⛶ <span class="hidden sm:inline">Fullscreen</span></button>
-                                    </div>
-                                </div>
-                                
-                                <textarea id="ws-textarea" disabled spellcheck="false" placeholder="Hit Start Timer, expand to Fullscreen, and begin typing your shorthand translation here..." class="w-full h-64 p-5 border-2 border-slate-300 dark:border-slate-600 rounded-xl text-lg leading-relaxed outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 dark:focus:ring-emerald-900 transition resize-y mb-6 bg-white dark:bg-slate-800 disabled:bg-slate-100 dark:disabled:bg-slate-900 disabled:cursor-not-allowed text-slate-800 dark:text-white shadow-inner flex-grow"></textarea>
-                                
-                                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 justify-between">
-                                    <button onclick="viewWorkspaceMatter()" class="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-white px-6 py-3 rounded-xl font-bold transition shadow-sm border border-slate-300 dark:border-slate-600 w-full sm:w-auto">View Original Matter</button>
-                                    
-                                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
-                                        <div class="flex items-center gap-2 bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 px-4 py-3 rounded-xl shadow-sm justify-center">
-                                            <input type="checkbox" id="ws-partial-toggle" class="w-5 h-5 text-emerald-600 rounded cursor-pointer">
-                                            <label for="ws-partial-toggle" class="font-bold text-sm text-emerald-800 dark:text-emerald-400 cursor-pointer">Partial Analyser</label>
-                                        </div>
-                                        <button onclick="submitWorkspaceAnalyzer()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-xl font-extrabold shadow-lg transition transform hover:-translate-y-1 text-lg w-full sm:w-auto">Check Mistakes</button>
-                                    </div>
-                                </div>
-                                <div id="ws-original-matter" class="hidden mt-6 p-6 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/50 rounded-xl text-slate-800 dark:text-amber-100 leading-loose whitespace-pre-wrap font-medium shadow-inner text-lg"></div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="view-notes" class="app-view p-6 md:p-10 bg-slate-50 dark:bg-slate-900/50">
-                    <h2 class="text-3xl font-extrabold text-slate-800 dark:text-white mb-8">Study Notes & Transcriptions</h2>
-                    
-                    <div id="notes-admin-panel" class="hidden bg-white dark:bg-slate-800 p-8 rounded-3xl border border-blue-200 dark:border-blue-800 shadow-lg mb-10 relative overflow-hidden">
-                        <div class="absolute top-0 left-0 w-full h-1 bg-blue-500"></div>
-                        
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
-                            <div>
-                                <h3 class="font-bold text-blue-800 dark:text-blue-400 mb-4 text-lg">📄 Upload PDF Note</h3>
-                                <input type="text" id="note-title" placeholder="Document Title (e.g., Short Forms PDF)" spellcheck="false" class="w-full mb-3 p-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white outline-none">
-                                <input type="file" id="note-file" class="w-full mb-4 p-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-xl text-slate-600 dark:text-slate-400 cursor-pointer">
-                                <button id="note-submit-btn" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold w-full shadow-sm hover:bg-blue-700 transition">Upload PDF</button>
-                                <p id="note-status" class="text-sm font-bold mt-2 hidden text-emerald-500"></p>
-                            </div>
-
-                            <div class="border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-700 pt-6 lg:pt-0 lg:pl-10">
-                                <h3 class="font-bold text-purple-700 dark:text-purple-400 mb-4 text-lg">📚 Create Transcription Volume</h3>
-                                <input type="text" id="volume-title" placeholder="Volume Title (e.g., KC Vol 1)" spellcheck="false" class="w-full mb-4 p-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-purple-500">
-                                
-                                <div id="volume-passages-container" class="max-h-64 overflow-y-auto pr-2 mb-4 space-y-4">
-                                    </div>
-                                
-                                <div class="flex gap-3">
-                                    <button onclick="addPassageField()" class="flex-1 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-white py-3 rounded-xl font-bold transition border border-slate-300 dark:border-slate-600">+ Add Passage</button>
-                                    <button onclick="publishVolume()" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-xl font-bold transition shadow-md">Publish Volume</button>
-                                </div>
-                                <p id="volume-status" class="text-sm font-bold mt-2 hidden text-emerald-500"></p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mb-12">
-                        <h3 class="text-2xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">📚 Transcription Volumes (In Text Format)</h3>
-                        <div id="volumes-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                            <p class="text-center py-8 text-slate-500 col-span-full">Loading volumes...</p>
-                        </div>
-                    </div>
-
-                    <div class="border-t border-slate-200 dark:border-slate-700 pt-10">
-                        <h3 class="text-2xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">📄 Study PDFs</h3>
-                        <div id="notes-list" class="grid grid-cols-1 md:grid-cols-2 gap-5"><p class="text-center py-8 text-slate-500 w-full col-span-2">Loading PDFs...</p></div>
-                    </div>
-                </section>
-
-                <section id="view-dashboard" class="app-view p-6 md:p-10 bg-slate-50 dark:bg-slate-900/50">
-                    <div class="flex items-center gap-5 mb-8"><div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center text-3xl shadow-sm border border-emerald-200 dark:border-emerald-800">👤</div><div><h2 class="text-3xl font-extrabold text-slate-800 dark:text-white">My Dashboard</h2><p class="text-slate-500 dark:text-slate-400 font-medium mt-1">Review your past performance & visual mistakes.</p></div></div>
-                    
-                    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-                        <div class="p-5 border-b border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 font-bold text-slate-700 dark:text-slate-300 flex justify-between items-center">
-                            <span class="text-lg">History Log</span>
-                            <button onclick="fetchUserHistory()" class="text-sm bg-white dark:bg-slate-800 px-4 py-1.5 rounded-lg border border-slate-300 dark:border-slate-600 text-blue-600 dark:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700 transition shadow-sm">Refresh Data</button>
-                        </div>
-                        <div id="history-list" class="bg-transparent p-4">
-                            <p class="text-center py-12 text-slate-500 dark:text-slate-400">Take a test in the Analyzer tab to see your history here.</p>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="view-admin" class="app-view p-6 md:p-10 bg-slate-50 dark:bg-slate-900/50">
-                    <div class="flex items-center gap-5 mb-8"><div class="w-16 h-16 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-full flex items-center justify-center text-3xl shadow-sm border border-purple-200 dark:border-purple-800">👑</div><div><h2 class="text-3xl font-extrabold text-slate-800 dark:text-white">Master Performance Tracker</h2><p class="text-slate-500 dark:text-slate-400 font-medium mt-1">View all user transcriptions and scores globally.</p></div></div>
-                    
-                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 mb-8">
-                        <h3 class="font-bold text-slate-800 dark:text-white mb-3 flex items-center gap-2">📢 Broadcast Global Notification</h3>
-                        <textarea id="admin-notif-msg" placeholder="Type an announcement to display at the top of the website for all users..." spellcheck="false" class="w-full p-4 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-purple-500 mb-3 resize-y h-24"></textarea>
-                        <div class="flex flex-wrap gap-3">
-                            <button onclick="publishNotification()" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl font-bold shadow-md transition w-full sm:w-auto">Publish Announcement</button>
-                            <button onclick="clearNotification()" class="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 px-6 py-3 rounded-xl font-bold shadow-sm transition border border-slate-300 dark:border-slate-600 w-full sm:w-auto">Remove Active Announcement</button>
-                        </div>
-                        <p id="notif-status" class="mt-3 text-sm font-bold text-emerald-500 hidden"></p>
-                    </div>
-
-                    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden"><div class="p-5 border-b border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 font-bold text-slate-700 dark:text-slate-300 flex justify-between items-center"><span class="text-lg">Global Student Analytics</span><button onclick="fetchAllUsersHistory()" class="text-sm bg-white dark:bg-slate-800 px-4 py-1.5 rounded-lg border border-slate-300 dark:border-slate-600 text-purple-600 dark:text-purple-400 hover:bg-slate-50 dark:hover:bg-slate-700 transition shadow-sm">Refresh Global Data</button></div><div id="admin-history-list" class="p-4 bg-slate-50 dark:bg-slate-900"><p class="text-center py-12 text-slate-500 dark:text-slate-400">Loading global data...</p></div></div>
-                </section>
-
-                <section id="view-help" class="app-view p-6 md:p-10 bg-slate-50 dark:bg-slate-900/50">
-                    <div class="max-w-5xl mx-auto">
-                        
-                        <div class="text-center mb-12">
-                            <div class="w-20 h-20 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-sm border border-blue-200 dark:border-blue-800">📖</div>
-                            <h2 class="text-4xl font-extrabold text-slate-800 dark:text-white mb-4">How to Use Stenogram</h2>
-                            <p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">Master the ultimate platform designed to mirror official SSC, AIIMS, and DSSSB exam environments.</p>
-                        </div>
-
-                        <div class="space-y-12 mb-16">
-                            
-                            <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                                <div>
-                                    <h3 class="text-2xl font-extrabold text-slate-800 dark:text-white mb-4 flex items-center gap-3"><span class="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm shrink-0">1</span> The Dictation Library</h3>
-                                    <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">Navigate to the <strong>Dictations</strong> tab. Use the search bar or category tabs to find official Kailash Chandra, GD Bisht, or Legal matters.</p>
-                                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed font-bold">Speed Control on the Fly:</p>
-                                    <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">Click any dictation card to enter the workspace. Use the dropdown inside the audio player to dynamically slow down or speed up the dictation from 60 WPM to 120 WPM without distorting the voice.</p>
-                                </div>
-                                <div class="bg-slate-900 rounded-2xl p-6 border border-slate-700 shadow-inner">
-                                   <div class="flex items-center justify-between mb-6 border-b border-slate-700 pb-4">
-                                       <span class="text-blue-400 font-bold text-sm uppercase tracking-wider">Kailash Chandra</span>
-                                       <span class="bg-slate-800 text-emerald-400 px-3 py-1.5 rounded-lg text-sm font-bold border border-slate-700">80 WPM ▼</span>
-                                   </div>
-                                   <div class="flex items-center gap-4 mb-6">
-                                       <div class="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center text-white font-bold text-lg shrink-0 shadow-lg">▶</div>
-                                       <div class="h-3 flex-grow bg-slate-800 rounded-full overflow-hidden border border-slate-700"><div class="w-1/3 h-full bg-emerald-500 rounded-full"></div></div>
-                                   </div>
-                                   <button class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow">Start Timer & Fullscreen</button>
-                                </div>
-                            </div>
-
-                            <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                                <div class="order-2 lg:order-1">
-                                    <div class="bg-slate-900 rounded-2xl p-6 border border-slate-700 shadow-inner flex flex-col gap-4">
-                                        <div class="grid grid-cols-2 gap-4">
-                                            <div class="bg-slate-800 rounded-xl p-4 text-xs text-slate-400 border border-slate-700 h-32 flex flex-col"><span class="font-bold text-slate-300 mb-2">Original Answer Key</span><span class="opacity-50">Paste custom offline matter here...</span></div>
-                                            <div class="bg-slate-800 rounded-xl p-4 text-xs text-slate-400 border border-slate-700 h-32 flex flex-col"><span class="font-bold text-slate-300 mb-2">Your Transcription</span><span class="opacity-50">Paste your typed matter here...</span></div>
-                                        </div>
-                                        <div class="flex items-center gap-2 mb-2"><div class="w-4 h-4 rounded border border-emerald-500 bg-emerald-500/20 flex items-center justify-center text-emerald-500 text-xs">✓</div><span class="text-sm font-bold text-emerald-400">Partial Analyser</span></div>
-                                        <button class="w-full bg-emerald-600 text-white font-extrabold py-3 rounded-xl shadow flex flex-col items-center justify-center"><span class="text-lg">Run Analysis</span></button>
-                                    </div>
-                                </div>
-                                <div class="order-1 lg:order-2">
-                                    <h3 class="text-2xl font-extrabold text-slate-800 dark:text-white mb-4 flex items-center gap-3"><span class="bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm shrink-0">2</span> The Steno Analyzer (Core)</h3>
-                                    <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">The heart of Stenogram. While it perfectly links with our online dictations, <strong>The Custom Matter Advantage</strong> allows you to use it for offline practice too!</p>
-                                    <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">Took a dictation at your coaching institute? Simply paste the original answer key in the left box, paste your typed text in the right box, and hit analyze for an instant SSC-grade evaluation.</p>
-                                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed font-bold">The Partial Analyser:</p>
-                                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed">Only managed to transcribe half the dictation? Check the <strong>Partial Analyser</strong> box. The system will intelligently find where you stopped and only evaluate the words you typed, saving you from massive omission penalties.</p>
-                                </div>
-                            </div>
-
-                            <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                                <div>
-                                    <h3 class="text-2xl font-extrabold text-slate-800 dark:text-white mb-4 flex items-center gap-3"><span class="bg-purple-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm shrink-0">3</span> Pro Typing Test</h3>
-                                    <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">Preparing for LDC/Typing tests for SSC, AIIMS, DSSSB, or Supreme Court? Our typing tab provides an exact exam-like interface.</p>
-                                    <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed font-bold">Feedback Styles:</p>
-                                    <ul class="list-disc list-inside text-slate-600 dark:text-slate-400 leading-relaxed space-y-2">
-                                        <li><strong>Normal Mode:</strong> Strict exam style. No colors, no hints. You only see your WPM and Accuracy at the end.</li>
-                                        <li><strong>Live Colors Mode:</strong> Perfect for practice. The text turns <span class="text-emerald-600 font-bold">Green</span> when correct and <span class="text-red-600 font-bold">Red</span> when you make a typo, allowing you to fix finger memory mistakes instantly.</li>
-                                    </ul>
-                                </div>
-                                <div class="bg-slate-900 rounded-2xl p-6 border border-slate-700 shadow-inner">
-                                    <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-3">
-                                        <span class="text-xs font-bold text-slate-400 bg-slate-800 px-2 py-1 rounded">Live Colors Mode</span>
-                                        <span class="text-sm font-mono font-bold text-white bg-black px-3 py-1 rounded-md border border-slate-700">09:45</span>
-                                    </div>
-                                    <div class="text-xl leading-relaxed font-medium font-mono p-2">
-                                        <span class="text-emerald-500">The supreme</span> <span class="bg-slate-700 text-white px-1 rounded shadow">court</span> <span class="text-red-500 underline decoration-wavy decoration-red-500">odered</span> <span class="text-slate-500">the committee to investigate...</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700 text-center">
-                                <h3 class="text-2xl font-extrabold text-slate-800 dark:text-white mb-4">Track & Learn</h3>
-                                <p class="text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">
-                                    Don't forget to check the <strong>Dashboard</strong> to review your past performances. Clicking on any past test expands it to show a full visual markup of your exact mistakes. Need study materials? Visit the <strong>Notes</strong> tab to download essential PDFs and Transcription Volumes directly to your device.
-                                </p>
-                            </div>
-
-                        </div>
-
-                        <div class="text-center mb-8">
-                            <h2 class="text-3xl font-extrabold text-slate-800 dark:text-white mb-2">Frequently Asked Questions</h2>
-                        </div>
-                        
-                        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden divide-y divide-slate-100 dark:divide-slate-700">
-                            
-                            <div class="faq-item">
-                                <button onclick="document.getElementById('faq-1').classList.toggle('hidden')" class="w-full p-6 text-left hover:bg-slate-50 dark:hover:bg-slate-700/50 transition flex justify-between items-center font-bold text-slate-800 dark:text-white text-lg">
-                                    Is Stenogram free to use? <span class="text-slate-400">▼</span>
-                                </button>
-                                <div id="faq-1" class="hidden px-6 pb-6 text-slate-600 dark:text-slate-400 leading-relaxed border-t border-slate-100 dark:border-slate-700 pt-4 bg-slate-50 dark:bg-slate-900/30">
-                                    Yes! The core platform, including the Dictation Library, the SSC Steno Analyzer, the Typing Test engine, and the Personal Dashboard, is 100% free for all aspirants. We only ask that you support us by joining our Telegram channel!
-                                </div>
-                            </div>
-
-                            <div class="faq-item">
-                                <button onclick="document.getElementById('faq-2').classList.toggle('hidden')" class="w-full p-6 text-left hover:bg-slate-50 dark:hover:bg-slate-700/50 transition flex justify-between items-center font-bold text-slate-800 dark:text-white text-lg">
-                                    Do I need to create an account? <span class="text-slate-400">▼</span>
-                                </button>
-                                <div id="faq-2" class="hidden px-6 pb-6 text-slate-600 dark:text-slate-400 leading-relaxed border-t border-slate-100 dark:border-slate-700 pt-4 bg-slate-50 dark:bg-slate-900/30">
-                                    Yes. Creating a free account (via Google or Email) allows the software to generate your private Dashboard. It securely saves your test scores, typing speeds, and visual mistake histories so you can track your improvement over time.
-                                </div>
-                            </div>
-
-                            <div class="faq-item">
-                                <button onclick="document.getElementById('faq-3').classList.toggle('hidden')" class="w-full p-6 text-left hover:bg-slate-50 dark:hover:bg-slate-700/50 transition flex justify-between items-center font-bold text-slate-800 dark:text-white text-lg">
-                                    Can I use Stenogram on my mobile phone? <span class="text-slate-400">▼</span>
-                                </button>
-                                <div id="faq-3" class="hidden px-6 pb-6 text-slate-600 dark:text-slate-400 leading-relaxed border-t border-slate-100 dark:border-slate-700 pt-4 bg-slate-50 dark:bg-slate-900/30">
-                                    The website is fully responsive and works perfectly on mobile phones for listening to dictations, downloading notes, or reviewing your dashboard. However, for actual transcription and typing tests, we highly recommend using a PC or laptop with a physical keyboard to simulate exam conditions.
-                                </div>
-                            </div>
-
-                            <div class="faq-item">
-                                <button onclick="document.getElementById('faq-4').classList.toggle('hidden')" class="w-full p-6 text-left hover:bg-slate-50 dark:hover:bg-slate-700/50 transition flex justify-between items-center font-bold text-slate-800 dark:text-white text-lg">
-                                    Why do I get automatically logged out? <span class="text-slate-400">▼</span>
-                                </button>
-                                <div id="faq-4" class="hidden px-6 pb-6 text-slate-600 dark:text-slate-400 leading-relaxed border-t border-slate-100 dark:border-slate-700 pt-4 bg-slate-50 dark:bg-slate-900/30">
-                                    For your security and privacy, Stenogram utilizes a strict 24-hour session token. Every 24 hours, the system will ask you to log back in to ensure your personal dashboard and history remain completely private, especially if you practice at public libraries or cyber cafes.
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </section>
-
+                <div class="flex justify-between items-center font-bold text-lg mb-3">
+                    <span id="status-message" class="text-slate-500 dark:text-slate-400 flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-slate-300 dark:bg-slate-600"></span> Ready</span>
+                    <span id="timer-display" class="bg-slate-800 dark:bg-black text-white px-4 py-1.5 rounded-lg font-mono text-2xl shadow-inner">10:00</span>
+                </div>
+                
+                <div id="original-text" class="bg-slate-50 dark:bg-slate-900 p-6 rounded-xl mb-5 h-64 overflow-y-auto border border-slate-200 dark:border-slate-700 text-lg leading-relaxed text-slate-700 dark:text-slate-300 shadow-inner select-none transition-colors duration-300 relative scroll-smooth">
+                    Select options and click Start above.
+                </div>
+                
+                <textarea id="typing-area" placeholder="Start typing here..." spellcheck="false" class="w-full h-48 p-6 border-2 border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl text-lg leading-relaxed outline-none focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 transition shadow-sm resize-y" disabled oninput="handleTypingInput(this)"></textarea>
+                
+                <button type="button" id="finish-btn" onclick="endTypingTest()" class="mt-5 w-full bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 dark:hover:bg-slate-600 text-white font-bold py-4 rounded-xl hidden shadow-lg transition">Finish Test Early</button>
+                
+                <div id="typing-results" class="hidden mt-6 p-8 bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 rounded-2xl text-center shadow-sm">
+                    <h3 class="text-xl font-bold text-blue-800 dark:text-blue-300 mb-4">Performance Results</h3>
+                    <p class="text-slate-700 dark:text-slate-200">Speed: <span id="wpm-result" class="text-blue-600 dark:text-blue-400 text-4xl font-extrabold mx-2">0</span> WPM <span class="mx-6 text-slate-300 dark:text-slate-600">|</span> Accuracy: <span id="acc-result" class="text-emerald-500 text-4xl font-extrabold mx-2">0</span>%</p>
+                </div>
             </div>
-        </div>
-        
+        </section>
+
+        <section id="view-steno" class="app-view p-4 md:p-6 w-full max-w-6xl mt-8">
+            <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl overflow-hidden border border-slate-200 dark:border-slate-700 p-6 md:p-10">
+                <h2 class="text-3xl font-extrabold text-slate-800 dark:text-white mb-6">Steno Transcription Analyzer</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <div>
+                        <label class="block font-extrabold text-slate-700 dark:text-slate-300 mb-3 text-lg">Original Answer Key</label>
+                        <textarea id="steno-orig" placeholder="Paste the correct transcription here..." spellcheck="false" class="w-full h-64 p-5 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-white rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 transition shadow-inner resize-y"></textarea>
+                    </div>
+                    <div>
+                        <label class="block font-extrabold text-slate-700 dark:text-slate-300 mb-3 text-lg">Your Transcription</label>
+                        <textarea id="steno-typed" placeholder="Paste your typed version here..." spellcheck="false" class="w-full h-64 p-5 border-2 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-white rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 transition shadow-sm resize-y"></textarea>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-4">
+                    <div class="flex items-center gap-3 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 px-5 py-4 rounded-xl shadow-sm sm:w-auto shrink-0 transition hover:bg-emerald-100 dark:hover:bg-emerald-900/40">
+                        <input type="checkbox" id="partial-analyzer-toggle" class="w-6 h-6 text-emerald-600 rounded cursor-pointer">
+                        <label for="partial-analyzer-toggle" class="font-extrabold text-emerald-800 dark:text-emerald-400 cursor-pointer select-none">Partial Analyser <span class="block text-xs font-normal opacity-80">(Grade only what I typed)</span></label>
+                    </div>
+                    <button type="button" onclick="analyzeSteno()" class="flex-grow w-full py-4 sm:py-0 h-[75px] bg-emerald-600 hover:bg-emerald-700 text-white text-xl font-extrabold rounded-xl shadow-lg transition duration-200 transform hover:-translate-y-1 tracking-wide">Run Analysis & Save</button>
+                </div>
+                <p id="save-status" class="text-center mt-2 text-sm font-bold text-emerald-600 hidden"></p>
+
+                <div id="steno-results-area" class="hidden mt-10">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 text-center">
+                        <div class="bg-slate-50 dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm"><span class="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">Words Evaluated</span><br><span id="steno-total-words" class="text-4xl font-extrabold text-slate-800 dark:text-white">0</span></div>
+                        <div class="bg-emerald-50 dark:bg-emerald-900/20 p-5 rounded-xl border border-emerald-200 dark:border-emerald-800 shadow-sm"><span class="text-xs text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider">Accuracy</span><br><span class="text-4xl font-extrabold text-emerald-600"><span id="steno-accuracy">0</span>%</span></div>
+                        <div class="bg-red-50 dark:bg-red-900/20 p-5 rounded-xl border border-red-200 dark:border-red-800 shadow-sm"><span class="text-xs text-red-500 dark:text-red-400 font-bold uppercase tracking-wider">Full Mistakes</span><br><span id="steno-full" class="text-4xl font-extrabold text-red-600">0</span></div>
+                        <div class="bg-orange-50 dark:bg-orange-900/20 p-5 rounded-xl border border-orange-200 dark:border-orange-800 shadow-sm"><span class="text-xs text-orange-600 dark:text-orange-400 font-bold uppercase tracking-wider">Half Mistakes</span><br><span id="steno-half" class="text-4xl font-extrabold text-orange-600">0</span></div>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl mb-8 shadow-sm overflow-hidden">
+                        <div class="p-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 font-bold flex justify-between items-center text-slate-700 dark:text-slate-300">Visual Markup <button onclick="printVisualPassage()" class="bg-slate-800 dark:bg-slate-700 text-white px-4 py-1.5 rounded-lg text-sm hover:bg-slate-900 dark:hover:bg-slate-600 transition shadow">Save PDF</button></div>
+                        <div class="px-6 py-3 border-b border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm z-10 relative">
+                            <div class="flex flex-wrap gap-4 text-xs"><span class="color-match">Green: Correct</span><span class="color-cap">Purple: Capitalization</span><span class="color-spell">Blue: Singular/Plural</span><span class="color-spell-err">Pink: Spelling Mistake</span><span class="color-num">Teal: Numbers</span><span class="color-sub">Red: Wrong/Missing/Extra</span></div>
+                        </div>
+                        <div id="steno-visual-passage" class="p-6 text-lg leading-loose min-h-[120px] bg-slate-50/50 dark:bg-slate-900/50 text-slate-800 dark:text-slate-200"></div>
+                    </div>
+                    
+                    <h3 class="font-extrabold text-xl mb-4 text-slate-800 dark:text-white flex items-center gap-2">Mistakes Breakdown</h3>
+                    <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-slate-800 dark:bg-slate-900 text-white"><tr><th class="px-5 py-4">Correct Answer</th><th class="px-5 py-4">What You Typed</th><th class="px-5 py-4">SSC Penalty</th><th class="px-5 py-4">Mistake Type</th></tr></thead>
+                            <tbody id="steno-table-body" class="divide-y divide-slate-200 dark:divide-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-dictation" class="app-view p-4 md:p-6 w-full max-w-6xl mt-8">
+            <div class="bg-slate-50 dark:bg-slate-900/50 rounded-3xl p-6 md:p-10 border border-slate-200 dark:border-slate-800 shadow-inner">
+                
+                <div id="admin-upload-panel" class="hidden bg-white dark:bg-slate-800 p-8 rounded-2xl border border-emerald-200 dark:border-emerald-800 shadow-lg mb-10 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500"></div>
+                    <h2 class="text-2xl font-extrabold text-emerald-800 dark:text-emerald-400 mb-6">Admin Upload Dashboard</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
+                        <div class="md:col-span-1"><label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Category</label><select id="upload-category" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-white rounded-xl p-3 outline-none focus:border-emerald-500"><option value="Kailash Chandra">Kailash Chandra</option><option value="Progressive February">Progressive February</option><option value="GD Bisht">GD Bisht</option><option value="General Matter">General Matter</option><option value="Legal Matter">Legal Matter</option><option value="Important Words">Important Words</option><option value="Most Important Matters">Most Important Matters</option></select></div>
+                        <div class="md:col-span-1"><label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Title</label><input type="text" id="upload-title" spellcheck="false" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-white rounded-xl p-3 outline-none"></div>
+                        <div class="md:col-span-1"><label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Base Speed</label><input type="number" id="upload-speed" value="80" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-white rounded-xl p-3 outline-none"></div>
+                    </div>
+                    <div class="mb-5"><label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Answer Key (Optional Transcript)</label><textarea id="upload-transcript" spellcheck="false" class="w-full h-24 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-white rounded-xl p-3 outline-none resize-y"></textarea></div>
+                    <input type="file" id="upload-file" accept="audio/*" class="block w-full mb-5 border border-slate-300 dark:border-slate-600 rounded-xl p-2 bg-white dark:bg-slate-900 text-slate-500 file:bg-emerald-50 file:text-emerald-700 dark:file:bg-emerald-900/50 dark:file:text-emerald-400 cursor-pointer">
+                    <button type="button" id="upload-submit-btn" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white text-lg font-bold rounded-xl shadow-md transition">Upload to Cloud</button>
+                    <p id="upload-status" class="mt-4 text-center text-sm font-bold hidden"></p>
+                </div>
+
+                <div id="dictation-main-view">
+                    <div class="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
+                        <h2 class="text-3xl font-extrabold text-slate-800 dark:text-white">Dictation Library</h2>
+                        <div class="relative w-full md:w-72">
+                            <input type="text" id="dictation-search" placeholder="Search dictations..." spellcheck="false" oninput="renderDictationGrid()" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-white rounded-xl py-2.5 px-4 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 dark:focus:ring-emerald-900 transition shadow-sm font-medium">
+                            <span class="absolute right-4 top-2.5 text-slate-400">🔍</span>
+                        </div>
+                    </div>
+
+                    <div id="category-tabs" class="flex overflow-x-auto gap-3 pb-4 mb-6 hide-scrollbar border-b border-slate-200 dark:border-slate-700"></div>
+                    
+                    <div id="dictations-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <p class="text-center py-12 text-slate-500 col-span-full">Loading dictations...</p>
+                    </div>
+                </div>
+
+                <div id="dictation-workspace" class="hidden">
+                    <button onclick="closeDictationWorkspace()" class="mb-6 flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white font-bold transition"><span>←</span> Back to Library</button>
+                    <div class="bg-white dark:bg-slate-800 p-6 md:p-8 rounded-3xl shadow-lg border border-slate-200 dark:border-slate-700">
+                        <div class="flex justify-between items-start mb-6">
+                            <div><span id="ws-category" class="text-xs font-bold text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-md uppercase tracking-wide border border-blue-100 dark:border-blue-800/50">Category</span><h2 id="ws-title" class="text-3xl font-extrabold text-slate-800 dark:text-white mt-2">Dictation Title</h2></div>
+                        </div>
+
+                        <div class="bg-slate-900 dark:bg-black p-4 rounded-2xl shadow-inner flex flex-col md:flex-row gap-4 items-center mb-8 border border-slate-800">
+                            <div class="flex items-center justify-center bg-emerald-500 text-white w-12 h-12 rounded-full shadow-lg shrink-0 text-xl font-bold">🎧</div>
+                            <audio id="ws-audio" controls class="w-full h-12 outline-none dark:opacity-90"></audio>
+                            <div class="flex items-center gap-2 shrink-0">
+                                <span class="text-slate-400 text-xs font-bold uppercase tracking-wider">Speed</span>
+                                <select id="ws-speed-select" onchange="changeSpeed('ws-audio', this.value, window.currentDictationBaseSpeed)" class="bg-slate-800 text-white border border-slate-700 rounded-lg p-2 text-sm font-bold outline-none cursor-pointer focus:ring-2 focus:ring-emerald-500"></select>
+                            </div>
+                        </div>
+
+                        <div id="ws-transcribe-container" class="bg-slate-50 dark:bg-slate-900/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 transition-all duration-300 flex flex-col h-full">
+                            <div class="flex flex-wrap gap-4 mb-4 items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <select id="ws-timer-select" class="border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-800 dark:text-white rounded-lg p-2.5 text-sm font-bold outline-none shadow-sm"><option value="30">30 Min</option><option value="40">40 Min</option><option value="50" selected>50 Min</option><option value="60">60 Min</option></select>
+                                    <button onclick="startWorkspaceTranscribe()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg text-sm font-bold shadow transition">Start Timer</button>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div id="ws-timer-display" class="text-2xl font-mono font-extrabold text-slate-800 dark:text-white bg-white dark:bg-slate-800 px-5 py-2 rounded-xl border border-slate-200 dark:border-slate-600 shadow-sm">50:00</div>
+                                    <button onclick="toggleFullscreen('ws-transcribe-container')" class="bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 dark:hover:bg-slate-600 text-white px-4 py-2.5 rounded-lg text-sm font-bold shadow transition flex items-center gap-2">⛶ <span class="hidden sm:inline">Fullscreen</span></button>
+                                </div>
+                            </div>
+                            
+                            <textarea id="ws-textarea" disabled spellcheck="false" placeholder="Hit Start Timer, expand to Fullscreen, and begin typing your shorthand translation here..." class="w-full h-64 p-5 border-2 border-slate-300 dark:border-slate-600 rounded-xl text-lg leading-relaxed outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 dark:focus:ring-emerald-900 transition resize-y mb-6 bg-white dark:bg-slate-800 disabled:bg-slate-100 dark:disabled:bg-slate-900 disabled:cursor-not-allowed text-slate-800 dark:text-white shadow-inner flex-grow"></textarea>
+                            
+                            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 justify-between">
+                                <button onclick="viewWorkspaceMatter()" class="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-white px-6 py-3 rounded-xl font-bold transition shadow-sm border border-slate-300 dark:border-slate-600 w-full sm:w-auto">View Original Matter</button>
+                                
+                                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
+                                    <div class="flex items-center gap-2 bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 px-4 py-3 rounded-xl shadow-sm justify-center">
+                                        <input type="checkbox" id="ws-partial-toggle" class="w-5 h-5 text-emerald-600 rounded cursor-pointer">
+                                        <label for="ws-partial-toggle" class="font-bold text-sm text-emerald-800 dark:text-emerald-400 cursor-pointer">Partial Analyser</label>
+                                    </div>
+                                    <button onclick="submitWorkspaceAnalyzer()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-xl font-extrabold shadow-lg transition transform hover:-translate-y-1 text-lg w-full sm:w-auto">Check Mistakes</button>
+                                </div>
+                            </div>
+                            <div id="ws-original-matter" class="hidden mt-6 p-6 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/50 rounded-xl text-slate-800 dark:text-amber-100 leading-loose whitespace-pre-wrap font-medium shadow-inner text-lg"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-notes" class="app-view p-4 md:p-6 w-full max-w-6xl mt-8">
+            <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl overflow-hidden border border-slate-200 dark:border-slate-700 p-6 md:p-10">
+                <h2 class="text-3xl font-extrabold text-slate-800 dark:text-white mb-8">Study Notes & Transcriptions</h2>
+                
+                <div id="notes-admin-panel" class="hidden bg-white dark:bg-slate-800 p-8 rounded-3xl border border-blue-200 dark:border-blue-800 shadow-lg mb-10 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-blue-500"></div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                        <div>
+                            <h3 class="font-bold text-blue-800 dark:text-blue-400 mb-4 text-lg">📄 Upload PDF Note</h3>
+                            <input type="text" id="note-title" placeholder="Document Title (e.g., Short Forms PDF)" spellcheck="false" class="w-full mb-3 p-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white outline-none">
+                            <input type="file" id="note-file" class="w-full mb-4 p-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-xl text-slate-600 dark:text-slate-400 cursor-pointer">
+                            <button id="note-submit-btn" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold w-full shadow-sm hover:bg-blue-700 transition">Upload PDF</button>
+                            <p id="note-status" class="text-sm font-bold mt-2 hidden text-emerald-500"></p>
+                        </div>
+
+                        <div class="border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-700 pt-6 lg:pt-0 lg:pl-10">
+                            <h3 class="font-bold text-purple-700 dark:text-purple-400 mb-4 text-lg">📚 Create Transcription Volume</h3>
+                            <input type="text" id="volume-title" placeholder="Volume Title (e.g., KC Vol 1)" spellcheck="false" class="w-full mb-4 p-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-purple-500">
+                            
+                            <div id="volume-passages-container" class="max-h-64 overflow-y-auto pr-2 mb-4 space-y-4">
+                                </div>
+                            
+                            <div class="flex gap-3">
+                                <button onclick="addPassageField()" class="flex-1 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-white py-3 rounded-xl font-bold transition border border-slate-300 dark:border-slate-600">+ Add Passage</button>
+                                <button onclick="publishVolume()" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-xl font-bold transition shadow-md">Publish Volume</button>
+                            </div>
+                            <p id="volume-status" class="text-sm font-bold mt-2 hidden text-emerald-500"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-12">
+                    <h3 class="text-2xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">📚 Transcription Volumes (In Text Format)</h3>
+                    <div id="volumes-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        <p class="text-center py-8 text-slate-500 col-span-full">Loading volumes...</p>
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-200 dark:border-slate-700 pt-10">
+                    <h3 class="text-2xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">📄 Study PDFs</h3>
+                    <div id="notes-list" class="grid grid-cols-1 md:grid-cols-2 gap-5"><p class="text-center py-8 text-slate-500 w-full col-span-2">Loading PDFs...</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-dashboard" class="app-view p-4 md:p-6 w-full max-w-6xl mt-8">
+            <div class="bg-slate-50 dark:bg-slate-900/50 rounded-3xl p-6 md:p-10 border border-slate-200 dark:border-slate-800 shadow-inner">
+                <div class="flex items-center gap-5 mb-8"><div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center text-3xl shadow-sm border border-emerald-200 dark:border-emerald-800">👤</div><div><h2 class="text-3xl font-extrabold text-slate-800 dark:text-white">My Dashboard</h2><p class="text-slate-500 dark:text-slate-400 font-medium mt-1">Review your past performance & visual mistakes.</p></div></div>
+                
+                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+                    <div class="p-5 border-b border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 font-bold text-slate-700 dark:text-slate-300 flex justify-between items-center">
+                        <span class="text-lg">History Log</span>
+                        <button onclick="fetchUserHistory()" class="text-sm bg-white dark:bg-slate-800 px-4 py-1.5 rounded-lg border border-slate-300 dark:border-slate-600 text-blue-600 dark:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700 transition shadow-sm">Refresh Data</button>
+                    </div>
+                    <div id="history-list" class="bg-transparent p-4">
+                        <p class="text-center py-12 text-slate-500 dark:text-slate-400">Take a test in the Analyzer tab to see your history here.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-admin" class="app-view p-4 md:p-6 w-full max-w-6xl mt-8">
+            <div class="bg-slate-50 dark:bg-slate-900/50 rounded-3xl p-6 md:p-10 border border-slate-200 dark:border-slate-800 shadow-inner">
+                <div class="flex items-center gap-5 mb-8"><div class="w-16 h-16 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-full flex items-center justify-center text-3xl shadow-sm border border-purple-200 dark:border-purple-800">👑</div><div><h2 class="text-3xl font-extrabold text-slate-800 dark:text-white">Master Performance Tracker</h2><p class="text-slate-500 dark:text-slate-400 font-medium mt-1">View all user transcriptions and scores globally.</p></div></div>
+                
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 mb-8">
+                    <h3 class="font-bold text-slate-800 dark:text-white mb-3 flex items-center gap-2">📢 Broadcast Global Notification</h3>
+                    <textarea id="admin-notif-msg" placeholder="Type an announcement to display at the top of the website for all users..." spellcheck="false" class="w-full p-4 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-purple-500 mb-3 resize-y h-24"></textarea>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="publishNotification()" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl font-bold shadow-md transition w-full sm:w-auto">Publish Announcement</button>
+                        <button onclick="clearNotification()" class="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 px-6 py-3 rounded-xl font-bold shadow-sm transition border border-slate-300 dark:border-slate-600 w-full sm:w-auto">Remove Active Announcement</button>
+                    </div>
+                    <p id="notif-status" class="mt-3 text-sm font-bold text-emerald-500 hidden"></p>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden"><div class="p-5 border-b border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 font-bold text-slate-700 dark:text-slate-300 flex justify-between items-center"><span class="text-lg">Global Student Analytics</span><button onclick="fetchAllUsersHistory()" class="text-sm bg-white dark:bg-slate-800 px-4 py-1.5 rounded-lg border border-slate-300 dark:border-slate-600 text-purple-600 dark:text-purple-400 hover:bg-slate-50 dark:hover:bg-slate-700 transition shadow-sm">Refresh Global Data</button></div><div id="admin-history-list" class="p-4 bg-slate-50 dark:bg-slate-900"><p class="text-center py-12 text-slate-500 dark:text-slate-400">Loading global data...</p></div></div>
+            </div>
+        </section>
+
+        <section id="view-help" class="app-view p-4 md:p-6 w-full max-w-6xl mt-8">
+            <div class="bg-slate-50 dark:bg-slate-900/50 rounded-3xl p-6 md:p-10 border border-slate-200 dark:border-slate-800 shadow-inner">
+                <div class="max-w-5xl mx-auto">
+                    
+                    <div class="text-center mb-12">
+                        <div class="w-20 h-20 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-sm border border-blue-200 dark:border-blue-800">📖</div>
+                        <h2 class="text-4xl font-extrabold text-slate-800 dark:text-white mb-4">How to Use Stenogram</h2>
+                        <p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">Master the ultimate platform designed to mirror official SSC, AIIMS, and DSSSB exam environments.</p>
+                    </div>
+
+                    <div class="space-y-12 mb-16">
+                        
+                        <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                            <div>
+                                <h3 class="text-2xl font-extrabold text-slate-800 dark:text-white mb-4 flex items-center gap-3"><span class="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm shrink-0">1</span> The Dictation Library</h3>
+                                <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">Navigate to the <strong>Dictations</strong> tab. Use the search bar or category tabs to find official Kailash Chandra, GD Bisht, or Legal matters.</p>
+                                <p class="text-slate-600 dark:text-slate-400 leading-relaxed font-bold">Speed Control on the Fly:</p>
+                                <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">Click any dictation card to enter the workspace. Use the dropdown inside the audio player to dynamically slow down or speed up the dictation from 60 WPM to 120 WPM without distorting the voice.</p>
+                            </div>
+                            <div class="bg-slate-900 rounded-2xl p-6 border border-slate-700 shadow-inner">
+                               <div class="flex items-center justify-between mb-6 border-b border-slate-700 pb-4">
+                                   <span class="text-blue-400 font-bold text-sm uppercase tracking-wider">Kailash Chandra</span>
+                                   <span class="bg-slate-800 text-emerald-400 px-3 py-1.5 rounded-lg text-sm font-bold border border-slate-700">80 WPM ▼</span>
+                               </div>
+                               <div class="flex items-center gap-4 mb-6">
+                                   <div class="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center text-white font-bold text-lg shrink-0 shadow-lg">▶</div>
+                                   <div class="h-3 flex-grow bg-slate-800 rounded-full overflow-hidden border border-slate-700"><div class="w-1/3 h-full bg-emerald-500 rounded-full"></div></div>
+                               </div>
+                               <button class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow">Start Timer & Fullscreen</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                            <div class="order-2 lg:order-1">
+                                <div class="bg-slate-900 rounded-2xl p-6 border border-slate-700 shadow-inner flex flex-col gap-4">
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="bg-slate-800 rounded-xl p-4 text-xs text-slate-400 border border-slate-700 h-32 flex flex-col"><span class="font-bold text-slate-300 mb-2">Original Answer Key</span><span class="opacity-50">Paste custom offline matter here...</span></div>
+                                        <div class="bg-slate-800 rounded-xl p-4 text-xs text-slate-400 border border-slate-700 h-32 flex flex-col"><span class="font-bold text-slate-300 mb-2">Your Transcription</span><span class="opacity-50">Paste your typed matter here...</span></div>
+                                    </div>
+                                    <div class="flex items-center gap-2 mb-2"><div class="w-4 h-4 rounded border border-emerald-500 bg-emerald-500/20 flex items-center justify-center text-emerald-500 text-xs">✓</div><span class="text-sm font-bold text-emerald-400">Partial Analyser</span></div>
+                                    <button class="w-full bg-emerald-600 text-white font-extrabold py-3 rounded-xl shadow flex flex-col items-center justify-center"><span class="text-lg">Run Analysis</span></button>
+                                </div>
+                            </div>
+                            <div class="order-1 lg:order-2">
+                                <h3 class="text-2xl font-extrabold text-slate-800 dark:text-white mb-4 flex items-center gap-3"><span class="bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm shrink-0">2</span> The Steno Analyzer (Core)</h3>
+                                <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">The heart of Stenogram. While it perfectly links with our online dictations, <strong>The Custom Matter Advantage</strong> allows you to use it for offline practice too!</p>
+                                <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">Took a dictation at your coaching institute? Simply paste the original answer key in the left box, paste your typed text in the right box, and hit analyze for an instant SSC-grade evaluation.</p>
+                                <p class="text-slate-600 dark:text-slate-400 leading-relaxed font-bold">The Partial Analyser:</p>
+                                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">Only managed to transcribe half the dictation? Check the <strong>Partial Analyser</strong> box. The system will intelligently find where you stopped and only evaluate the words you typed, saving you from massive omission penalties.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                            <div>
+                                <h3 class="text-2xl font-extrabold text-slate-800 dark:text-white mb-4 flex items-center gap-3"><span class="bg-purple-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm shrink-0">3</span> Pro Typing Test</h3>
+                                <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">Preparing for LDC/Typing tests for SSC, AIIMS, DSSSB, or Supreme Court? Our typing tab provides an exact exam-like interface.</p>
+                                <p class="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed font-bold">Feedback Styles:</p>
+                                <ul class="list-disc list-inside text-slate-600 dark:text-slate-400 leading-relaxed space-y-2">
+                                    <li><strong>Normal Mode:</strong> Strict exam style. No colors, no hints. You only see your WPM and Accuracy at the end.</li>
+                                    <li><strong>Live Colors Mode:</strong> Perfect for practice. The text turns <span class="text-emerald-600 font-bold">Green</span> when correct and <span class="text-red-600 font-bold">Red</span> when you make a typo, allowing you to fix finger memory mistakes instantly.</li>
+                                </ul>
+                            </div>
+                            <div class="bg-slate-900 rounded-2xl p-6 border border-slate-700 shadow-inner">
+                                <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-3">
+                                    <span class="text-xs font-bold text-slate-400 bg-slate-800 px-2 py-1 rounded">Live Colors Mode</span>
+                                    <span class="text-sm font-mono font-bold text-white bg-black px-3 py-1 rounded-md border border-slate-700">09:45</span>
+                                </div>
+                                <div class="text-xl leading-relaxed font-medium font-mono p-2">
+                                    <span class="text-emerald-500">The supreme</span> <span class="bg-slate-700 text-white px-1 rounded shadow">court</span> <span class="text-red-500 underline decoration-wavy decoration-red-500">odered</span> <span class="text-slate-500">the committee to investigate...</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-700 text-center">
+                            <h3 class="text-2xl font-extrabold text-slate-800 dark:text-white mb-4">Track & Learn</h3>
+                            <p class="text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                                Don't forget to check the <strong>Dashboard</strong> to review your past performances. Clicking on any past test expands it to show a full visual markup of your exact mistakes. Need study materials? Visit the <strong>Notes</strong> tab to download essential PDFs and Transcription Volumes directly to your device.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl font-extrabold text-slate-800 dark:text-white mb-2">Frequently Asked Questions</h2>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden divide-y divide-slate-100 dark:divide-slate-700">
+                        
+                        <div class="faq-item">
+                            <button onclick="document.getElementById('faq-1').classList.toggle('hidden')" class="w-full p-6 text-left hover:bg-slate-50 dark:hover:bg-slate-700/50 transition flex justify-between items-center font-bold text-slate-800 dark:text-white text-lg">
+                                Is Stenogram free to use? <span class="text-slate-400">▼</span>
+                            </button>
+                            <div id="faq-1" class="hidden px-6 pb-6 text-slate-600 dark:text-slate-400 leading-relaxed border-t border-slate-100 dark:border-slate-700 pt-4 bg-slate-50 dark:bg-slate-900/30">
+                                Yes! The core platform, including the Dictation Library, the SSC Steno Analyzer, the Typing Test engine, and the Personal Dashboard, is 100% free for all aspirants. We only ask that you support us by joining our Telegram channel!
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button onclick="document.getElementById('faq-2').classList.toggle('hidden')" class="w-full p-6 text-left hover:bg-slate-50 dark:hover:bg-slate-700/50 transition flex justify-between items-center font-bold text-slate-800 dark:text-white text-lg">
+                                Do I need to create an account? <span class="text-slate-400">▼</span>
+                            </button>
+                            <div id="faq-2" class="hidden px-6 pb-6 text-slate-600 dark:text-slate-400 leading-relaxed border-t border-slate-100 dark:border-slate-700 pt-4 bg-slate-50 dark:bg-slate-900/30">
+                                Yes. Creating a free account (via Google or Email) allows the software to generate your private Dashboard. It securely saves your test scores, typing speeds, and visual mistake histories so you can track your improvement over time.
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button onclick="document.getElementById('faq-3').classList.toggle('hidden')" class="w-full p-6 text-left hover:bg-slate-50 dark:hover:bg-slate-700/50 transition flex justify-between items-center font-bold text-slate-800 dark:text-white text-lg">
+                                Can I use Stenogram on my mobile phone? <span class="text-slate-400">▼</span>
+                            </button>
+                            <div id="faq-3" class="hidden px-6 pb-6 text-slate-600 dark:text-slate-400 leading-relaxed border-t border-slate-100 dark:border-slate-700 pt-4 bg-slate-50 dark:bg-slate-900/30">
+                                The website is fully responsive and works perfectly on mobile phones for listening to dictations, downloading notes, or reviewing your dashboard. However, for actual transcription and typing tests, we highly recommend using a PC or laptop with a physical keyboard to simulate exam conditions.
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <button onclick="document.getElementById('faq-4').classList.toggle('hidden')" class="w-full p-6 text-left hover:bg-slate-50 dark:hover:bg-slate-700/50 transition flex justify-between items-center font-bold text-slate-800 dark:text-white text-lg">
+                                Why do I get automatically logged out? <span class="text-slate-400">▼</span>
+                            </button>
+                            <div id="faq-4" class="hidden px-6 pb-6 text-slate-600 dark:text-slate-400 leading-relaxed border-t border-slate-100 dark:border-slate-700 pt-4 bg-slate-50 dark:bg-slate-900/30">
+                                For your security and privacy, Stenogram utilizes a strict 24-hour session token. Every 24 hours, the system will ask you to log back in to ensure your personal dashboard and history remain completely private, especially if you practice at public libraries or cyber cafes.
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
     
     <footer class="w-full bg-slate-900 border-t border-slate-800 py-8 mt-auto z-40 relative">
@@ -582,8 +590,6 @@
     </footer>
 
     <script>
-        window.onerror = function(message, source, lineno) { console.error(message); return true; };
-        
         function toggleDarkMode() {
             const html = document.documentElement; html.classList.toggle('dark');
             const isDark = html.classList.contains('dark'); localStorage.setItem('theme', isDark ? 'dark' : 'light');
@@ -604,7 +610,9 @@
 
             document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active-view'));
             document.querySelectorAll('.nav-link, .nav-link-admin').forEach(l => l.classList.remove('active'));
-            document.getElementById('view-' + viewId).classList.add('active-view');
+            const viewEl = document.getElementById('view-' + viewId);
+            if(viewEl) { viewEl.classList.add('active-view'); }
+            
             const link = document.querySelector(`button[onclick="switchView('${viewId}')"]`); if(link) link.classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
             if (pushHistory) { history.pushState({ view: viewId }, '', `#${viewId}`); }
@@ -676,10 +684,10 @@
             return { cost: 1, penalty: 1, type: 'Substitution' };
         }
 
-        function analyzeSteno() {
+        window.analyzeSteno = function() {
             var oR = document.getElementById('steno-orig').value.trim(); var tR = document.getElementById('steno-typed').value.trim();
             if(!oR || !tR) { alert("Please paste both texts."); return; }
-            var oW = oR.split(' ').filter(w=>w.length>0); var tW = tR.split(' ').filter(w=>w.length>0);
+            var oW = oR.split(/\s+/).filter(w=>w.length>0); var tW = tR.split(/\s+/).filter(w=>w.length>0);
             var dp = []; var tr = [];
             for (var i=0; i<=oW.length; i++) { dp[i]=[]; tr[i]=[]; for (var j=0; j<=tW.length; j++) { dp[i][j]=0; tr[i][j]=null; } }
             for (var i=0; i<=oW.length; i++) dp[i][0]=i; for (var j=0; j<=tW.length; j++) dp[0][j]=j;
@@ -755,16 +763,16 @@
             window.dispatchEvent(new Event('stenoAnalysisComplete'));
         }
         
-        function printVisualPassage() {
+        window.printVisualPassage = function() {
             var content = document.getElementById("steno-visual-passage").innerHTML; var printWin = window.open('', '', 'width=800,height=800');
             printWin.document.write('<html><head><title>Stenogram Review</title><style>body{font-family:sans-serif;line-height:2;font-size:16px;padding:20px;color:#333;}.color-match{color:#16a34a;}.color-num{color:#0d9488;font-weight:bold;background:#ccfbf1;padding:2px 4px;border-radius:4px;}.color-cap{color:#9333ea;font-weight:bold;background:#f3e8ff;padding:2px 4px;border-radius:4px;}.color-spell{color:#2563eb;font-weight:bold;background:#dbeafe;padding:2px 4px;border-radius:4px;}.color-spell-err{color:#db2777;font-weight:bold;background:#fce7f3;padding:2px 4px;border-radius:4px;}.color-sub{color:#dc2626;font-weight:bold;background:#fee2e2;padding:2px 4px;border-radius:4px;}.color-omit{color:#dc2626;font-weight:bold;text-decoration:underline;background:#fee2e2;padding:2px 4px;border-radius:4px;}.color-add{color:#dc2626;font-weight:bold;text-decoration:line-through;background:#fee2e2;padding:2px 4px;border-radius:4px;}</style></head><body><h2>Stenogram Analysis</h2><div>' + content + '</div></body></html>');
             printWin.document.close(); printWin.focus(); setTimeout(function(){printWin.print();}, 500);
         }
 
-        function changeSpeed(id, target, base) { var a = document.getElementById(id); if(a) a.playbackRate = parseFloat(target)/parseFloat(base); }
+        window.changeSpeed = function(id, target, base) { var a = document.getElementById(id); if(a) a.playbackRate = parseFloat(target)/parseFloat(base); }
         window.dictationData = {}; window.allDictations = []; window.transcribeIntervals = {}; window.activeDictationCategory = "All"; window.currentDictationId = null; window.currentDictationBaseSpeed = 80;
 
-        function toggleFullscreen(elemId) {
+        window.toggleFullscreen = function(elemId) {
             let elem = document.getElementById(elemId);
             if (!document.fullscreenElement) { elem.requestFullscreen().catch(err => alert(`Error enabling full-screen: ${err.message}`)); } 
             else { document.exitFullscreen(); }
@@ -818,7 +826,7 @@
             "A strong public health infrastructure is the absolute foundation of any secure and developing nation. Recent global health events have drastically highlighted the critical, undeniable need for well-equipped local hospitals, rapid response medical teams, and widespread, affordable accessibility to essential life-saving medicines. Directed investments in advanced medical research and the rapid construction of primary healthcare centers in remote rural areas are definitive steps in the right direction. Additionally, actively generating public awareness regarding proper sanitation, balanced nutrition, and routine preventive care can drastically reduce the overwhelming burden placed on tertiary care facilities. As India continues to progress rapidly, ensuring perfectly equitable healthcare access for every single citizen, completely regardless of their socio-economic status, will be paramount to achieving long-term social stability."
         ];
 
-        function generateRandom500Words() { let text = ""; let shuffled = [...essayParagraphs].sort(() => 0.5 - Math.random()); let i = 0; while (text.split(' ').filter(w=>w.length>0).length < 550) { text += shuffled[i % shuffled.length] + " "; i++; } return text.trim(); }
+        window.generateRandom500Words = function() { let text = ""; let shuffled = [...essayParagraphs].sort(() => 0.5 - Math.random()); let i = 0; while (text.split(' ').filter(w=>w.length>0).length < 550) { text += shuffled[i % shuffled.length] + " "; i++; } return text.trim(); }
         window.handleSourceChange = function() { const val = document.getElementById('source-select').value; document.getElementById('custom-input-area').classList.add('hidden'); if(val === 'custom') { document.getElementById('custom-input-area').classList.remove('hidden'); } }
 
         var typingTimeLimit = 10 * 60; var typingTimer; var typingTimeRemaining = typingTimeLimit; var isTestStarted = false; var originalWordsArr = [];
@@ -829,15 +837,15 @@
             const area = document.getElementById("typing-area"); area.value = ""; area.disabled = false; area.focus();
             document.getElementById("finish-btn").style.display = "block"; document.getElementById("typing-results").style.display = "none";
             const src = document.getElementById("source-select").value; let origText = "";
-            if(src === 'random') { origText = generateRandom500Words(); } else if (src === 'custom') { origText = document.getElementById('custom-input-area').value.trim(); if(!origText) { alert("Paste text first."); return; } } else if (src.startsWith('admin_')) { const docId = src.split('_')[1]; const selectedDoc = window.typingData.find(d => d.id === docId); origText = selectedDoc ? selectedDoc.body : "Error loading text."; }
-            originalWordsArr = origText.split(' ').filter(w => w.length > 0);
+            if(src === 'random') { origText = window.generateRandom500Words(); } else if (src === 'custom') { origText = document.getElementById('custom-input-area').value.trim(); if(!origText) { alert("Paste text first."); return; } } else if (src.startsWith('admin_')) { const docId = src.split('_')[1]; const selectedDoc = window.typingData.find(d => d.id === docId); origText = selectedDoc ? selectedDoc.body : "Error loading text."; }
+            originalWordsArr = origText.split(/\s+/).filter(w => w.length > 0);
             let spanHtml = ""; for(let i=0; i<originalWordsArr.length; i++) spanHtml += `<span id='word-${i}'>${originalWordsArr[i]}</span> `;
             document.getElementById("original-text").innerHTML = spanHtml; document.getElementById("status-message").innerHTML = '<span class="w-3 h-3 rounded-full bg-blue-500 animate-pulse"></span> Test Ready'; document.getElementById("original-text").scrollTop = 0;
         }
 
         window.handleTypingInput = function(area) {
-            if(!isTestStarted) { isTestStarted = true; typingTimer = setInterval(() => { typingTimeRemaining--; let m = Math.floor(typingTimeRemaining / 60); let s = typingTimeRemaining % 60; document.getElementById("timer-display").innerText = `${m}:${s < 10 ? '0' : ''}${s}`; if(typingTimeRemaining <= 0) endTypingTest(); }, 1000); }
-            const typedArr = area.value.split(' ').filter(w => w.length > 0 || area.value.endsWith(' ')); const currentIndex = Math.max(0, typedArr.length - 1);
+            if(!isTestStarted) { isTestStarted = true; typingTimer = setInterval(() => { typingTimeRemaining--; let m = Math.floor(typingTimeRemaining / 60); let s = typingTimeRemaining % 60; document.getElementById("timer-display").innerText = `${m}:${s < 10 ? '0' : ''}${s}`; if(typingTimeRemaining <= 0) window.endTypingTest(); }, 1000); }
+            const typedArr = area.value.split(/\s+/).filter(w => w.length > 0 || area.value.endsWith(' ')); const currentIndex = Math.max(0, typedArr.length - 1);
             if(document.getElementById('autoscroll-toggle').checked) { let currentSpan = document.getElementById('word-' + currentIndex); if(currentSpan) { currentSpan.scrollIntoView({ behavior: 'smooth', block: 'center' }); } }
             if(document.getElementById('style-select').value === 'live') {
                 for(let i=0; i<originalWordsArr.length; i++) {
@@ -850,7 +858,7 @@
         window.endTypingTest = function() {
             clearInterval(typingTimer); document.getElementById("typing-area").disabled = true; document.getElementById("finish-btn").style.display = "none";
             const typedText = document.getElementById("typing-area").value.trim(); const minutesElapsed = (typingTimeLimit - typingTimeRemaining) / 60;
-            const wpm = minutesElapsed > 0 ? (typedText.length / 5) / minutesElapsed : 0; const typedArr = typedText.split(' ').filter(w=>w.length>0); let errs = 0;
+            const wpm = minutesElapsed > 0 ? (typedText.length / 5) / minutesElapsed : 0; const typedArr = typedText.split(/\s+/).filter(w=>w.length>0); let errs = 0;
             for(let i=0; i<typedArr.length; i++) { if(typedArr[i] !== originalWordsArr[i]) errs++; }
             const acc = typedArr.length > 0 ? ((typedArr.length - errs)/typedArr.length)*100 : 0;
             document.getElementById("wpm-result").innerText = wpm.toFixed(2); document.getElementById("acc-result").innerText = acc.toFixed(2); document.getElementById("typing-results").style.display = "block"; document.getElementById("status-message").innerHTML = 'Test Complete';
@@ -1005,11 +1013,11 @@
         window.deletePassageFromVolume = async function(volId, pIdx) {
             if(!confirm("⚠️ Delete this specific transcription from the volume?")) return;
             const vol = window.volumesData[volId];
+            if (!vol || !vol.passages) return;
             vol.passages.splice(pIdx, 1);
             try {
                 await updateDoc(doc(db, "volumes", volId), { passages: vol.passages });
                 window.fetchVolumes();
-                // Re-open the modal to show the updated list
                 setTimeout(() => { window.openVolumeModal(volId); }, 300);
             } catch(e) { alert("Error deleting transcription: " + e.message); }
         }
@@ -1018,6 +1026,7 @@
         window.volumesData = {};
         window.fetchVolumes = async function() {
             const grid = document.getElementById('volumes-grid');
+            if(!grid) return;
             grid.innerHTML = '<p class="text-center py-8 text-slate-500 col-span-full">Loading volumes...</p>';
             try {
                 const snap = await getDocs(query(collection(db, "volumes")));
@@ -1027,34 +1036,37 @@
                 let html = ''; window.volumesData = {};
                 docs.forEach((d) => {
                     window.volumesData[d.id] = d;
+                    const pLen = d.passages ? d.passages.length : 0;
                     html += `
                         <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm hover:shadow-xl transition border border-slate-200 dark:border-slate-700 flex flex-col items-center text-center cursor-pointer group relative transform hover:-translate-y-1" onclick="openVolumeModal('${d.id}')">
                             ${window.isAdminUser ? `<button onclick="event.stopPropagation(); deleteVolume('${d.id}')" class="absolute top-3 right-3 text-red-500 hover:text-red-700 bg-red-50 dark:bg-red-900/30 p-2 rounded-lg text-xs font-bold transition shadow-sm border border-red-100 dark:border-red-800/50" title="Delete Volume">🗑️</button>` : ''}
                             <div class="w-20 h-20 bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-2xl flex items-center justify-center text-4xl mb-4 group-hover:scale-110 transition transform shadow-sm border border-purple-100 dark:border-purple-800/50">📚</div>
-                            <h3 class="font-extrabold text-lg text-slate-800 dark:text-white line-clamp-2">${d.title}</h3>
-                            <p class="text-sm font-bold text-slate-500 dark:text-slate-400 mt-2 bg-slate-50 dark:bg-slate-900 px-3 py-1 rounded-lg border border-slate-100 dark:border-slate-700">${d.passages.length} Transcriptions</p>
+                            <h3 class="font-extrabold text-lg text-slate-800 dark:text-white line-clamp-2">${d.title || 'Untitled'}</h3>
+                            <p class="text-sm font-bold text-slate-500 dark:text-slate-400 mt-2 bg-slate-50 dark:bg-slate-900 px-3 py-1 rounded-lg border border-slate-100 dark:border-slate-700">${pLen} Transcriptions</p>
                         </div>`;
                 }); grid.innerHTML = html;
-            } catch(e) { grid.innerHTML = '<p class="text-center py-6 text-red-500 col-span-full">Error loading volumes.</p>'; }
+            } catch(e) { console.error(e); grid.innerHTML = '<p class="text-center py-6 text-red-500 col-span-full">Error loading volumes.</p>'; }
         };
 
         // INTERACTIVE VOLUME FOLDER MODAL
         window.openVolumeModal = function(volId) {
             const vol = window.volumesData[volId];
             if(!vol) return;
-            document.getElementById('volume-modal-title').innerText = vol.title;
+            document.getElementById('volume-modal-title').innerText = vol.title || 'Volume';
             let html = '';
-            if(vol.passages.length === 0) { html = `<p class="text-slate-500 p-4">No transcriptions inside this volume.</p>`; }
-            vol.passages.forEach((p, pIdx) => {
-                html += `
-                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-700 gap-3">
-                    <span class="font-bold text-slate-700 dark:text-slate-300 text-lg">${p.title}</span>
-                    <div class="flex gap-2 w-full sm:w-auto">
-                        <button onclick="openPassageModal('${volId}', ${pIdx})" class="flex-1 sm:flex-none bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-400 px-4 py-2.5 rounded-lg font-bold text-sm transition shadow-sm border border-blue-200 dark:border-blue-800/50">View & Copy</button>
-                        ${window.isAdminUser ? `<button onclick="deletePassageFromVolume('${volId}', ${pIdx})" class="bg-red-100 dark:bg-red-900/30 hover:bg-red-200 dark:hover:bg-red-900/50 text-red-600 dark:text-red-400 px-4 py-2.5 rounded-lg font-bold text-sm transition shadow-sm border border-red-200 dark:border-red-800/50" title="Delete Transcription">🗑️</button>` : ''}
-                    </div>
-                </div>`;
-            });
+            if(!vol.passages || vol.passages.length === 0) { html = `<p class="text-slate-500 p-4">No transcriptions inside this volume.</p>`; }
+            else {
+                vol.passages.forEach((p, pIdx) => {
+                    html += `
+                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-700 gap-3">
+                        <span class="font-bold text-slate-700 dark:text-slate-300 text-lg">${p.title}</span>
+                        <div class="flex gap-2 w-full sm:w-auto">
+                            <button onclick="openPassageModal('${volId}', ${pIdx})" class="flex-1 sm:flex-none bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-400 px-4 py-2.5 rounded-lg font-bold text-sm transition shadow-sm border border-blue-200 dark:border-blue-800/50">View & Copy</button>
+                            ${window.isAdminUser ? `<button onclick="deletePassageFromVolume('${volId}', ${pIdx})" class="bg-red-100 dark:bg-red-900/30 hover:bg-red-200 dark:hover:bg-red-900/50 text-red-600 dark:text-red-400 px-4 py-2.5 rounded-lg font-bold text-sm transition shadow-sm border border-red-200 dark:border-red-800/50" title="Delete Transcription">🗑️</button>` : ''}
+                        </div>
+                    </div>`;
+                });
+            }
             document.getElementById('volume-passages-list').innerHTML = html;
             document.getElementById('volume-details-modal').classList.remove('hidden');
         };
@@ -1067,7 +1079,7 @@
         window.currentPassageText = "";
         window.openPassageModal = function(volId, passageIdx) {
             const vol = window.volumesData[volId];
-            if(!vol || !vol.passages[passageIdx]) return;
+            if(!vol || !vol.passages || !vol.passages[passageIdx]) return;
             const p = vol.passages[passageIdx];
             window.currentPassageText = p.text;
             document.getElementById('passage-modal-title').innerText = p.title;
