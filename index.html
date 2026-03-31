@@ -99,18 +99,23 @@
             <button onclick="window.closeAuthModal()" class="absolute top-4 right-5 text-slate-400 hover:text-red-500 font-bold text-2xl transition">&times;</button>
             <h2 class="text-3xl font-extrabold text-slate-800 dark:text-white mb-2">Account Access</h2>
             <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Log in to unlock Stenogram tools.</p>
+            
             <button onclick="window.triggerGoogleSignIn()" class="w-full mb-5 flex items-center justify-center gap-3 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-600 text-slate-700 dark:text-white font-bold py-3.5 rounded-xl shadow-sm transition duration-200">
                 <svg class="w-5 h-5" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
                 Sign in with Google
             </button>
+            
             <div class="flex items-center mb-5"><div class="flex-grow border-t border-slate-200 dark:border-slate-600"></div><span class="mx-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Or Email</span><div class="flex-grow border-t border-slate-200 dark:border-slate-600"></div></div>
+            
             <div class="mb-4 text-left"><input type="email" id="auth-email" placeholder="Email Address" spellcheck="false" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white rounded-xl p-3.5 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition"></div>
             <div class="mb-2 text-left"><input type="password" id="auth-password" placeholder="Password (Min 6 chars)" spellcheck="false" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-white rounded-xl p-3.5 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition"></div>
             <div class="text-right mb-6"><button type="button" onclick="window.triggerForgotPassword()" class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 font-semibold transition">Forgot Password?</button></div>
+            
             <div class="flex gap-3">
-                <button type="button" id="login-btn" class="flex-1 py-3.5 bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 dark:hover:bg-slate-600 text-white font-bold rounded-xl transition duration-200 shadow-md">Log In</button>
-                <button type="button" id="signup-btn" class="flex-1 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition duration-200 shadow-md">Sign Up</button>
+                <button type="button" onclick="window.triggerLogin()" class="flex-1 py-3.5 bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 dark:hover:bg-slate-600 text-white font-bold rounded-xl transition duration-200 shadow-md">Log In</button>
+                <button type="button" onclick="window.triggerSignup()" class="flex-1 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition duration-200 shadow-md">Sign Up</button>
             </div>
+            
             <p id="auth-error" class="mt-4 text-sm text-red-600 font-semibold hidden bg-red-50 dark:bg-red-900/30 p-3 rounded-lg border border-red-100 dark:border-red-800"></p>
             <p id="auth-success" class="mt-4 text-sm text-emerald-600 font-semibold hidden bg-emerald-50 dark:bg-emerald-900/30 p-3 rounded-lg border border-emerald-100 dark:border-emerald-800"></p>
         </div>
@@ -142,7 +147,7 @@
                 </nav>
                 <div class="flex items-center">
                     <span id="logged-out-view" class="flex gap-2"><button onclick="window.openAuthModal()" class="bg-gradient-to-r from-blue-600 to-emerald-500 hover:from-blue-500 hover:to-emerald-400 text-white px-5 py-2.5 rounded-xl shadow-lg font-bold transition text-sm">Sign In / Register</button></span>
-                    <span id="logged-in-view" class="hidden flex items-center gap-4"><span id="user-email-display" class="hidden lg:inline bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 px-3 py-1.5 rounded-lg shadow-inner font-bold text-xs"></span><button id="logout-btn" class="text-emerald-600 dark:text-emerald-400 hover:underline transition font-bold text-sm bg-slate-100 dark:bg-slate-800 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700">Sign Out</button></span>
+                    <span id="logged-in-view" class="hidden flex items-center gap-4"><span id="user-email-display" class="hidden lg:inline bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 px-3 py-1.5 rounded-lg shadow-inner font-bold text-xs"></span><button onclick="window.triggerLogout()" class="text-emerald-600 dark:text-emerald-400 hover:underline transition font-bold text-sm bg-slate-100 dark:bg-slate-800 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700">Sign Out</button></span>
                 </div>
             </div>
         </div>
@@ -1034,6 +1039,9 @@
                 window.isMaintenanceActive = docSnap.data().active;
                 window.applyMaintenanceUI();
             }
+        }, (error) => {
+            // Failsafe: if rules block read for logged-out user, default to off.
+            console.log("Maintenance check restricted.");
         });
 
         window.toggleMaintenance = async function() {
@@ -1220,48 +1228,6 @@
             } catch(e) { console.error(e); grid.innerHTML = '<p class="text-center py-6 text-red-500 col-span-full">Error loading volumes.</p>'; }
         };
 
-        window.openVolumeModal = function(volId) {
-            const vol = window.volumesData[volId];
-            if(!vol) return;
-            document.getElementById('volume-modal-title').innerText = vol.title || 'Volume';
-            let html = '';
-            if(!vol.passages || vol.passages.length === 0) { html = `<p class="text-slate-500 p-4">No transcriptions inside this volume.</p>`; }
-            else {
-                vol.passages.forEach((p, pIdx) => {
-                    html += `
-                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-700 gap-3">
-                        <span class="font-bold text-slate-700 dark:text-slate-300 text-lg">${p.title}</span>
-                        <div class="flex gap-2 w-full sm:w-auto">
-                            <button onclick="window.openPassageModal('${volId}', ${pIdx})" class="flex-1 sm:flex-none bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-400 px-4 py-2.5 rounded-lg font-bold text-sm transition shadow-sm border border-blue-200 dark:border-blue-800/50">View & Copy</button>
-                            ${window.isAdminUser ? `<button onclick="window.deletePassageFromVolume('${volId}', ${pIdx})" class="bg-red-100 dark:bg-red-900/30 hover:bg-red-200 dark:hover:bg-red-900/50 text-red-600 dark:text-red-400 px-4 py-2.5 rounded-lg font-bold text-sm transition shadow-sm border border-red-200 dark:border-red-800/50" title="Delete Transcription">🗑️</button>` : ''}
-                        </div>
-                    </div>`;
-                });
-            }
-            document.getElementById('volume-passages-list').innerHTML = html;
-            document.getElementById('volume-details-modal').classList.remove('hidden');
-        };
-
-        window.currentPassageText = "";
-        window.openPassageModal = function(volId, passageIdx) {
-            const vol = window.volumesData[volId];
-            if(!vol || !vol.passages || !vol.passages[passageIdx]) return;
-            const p = vol.passages[passageIdx];
-            window.currentPassageText = p.text;
-            document.getElementById('passage-modal-title').innerText = p.title;
-            document.getElementById('passage-modal-text').innerText = p.text;
-            document.getElementById('passage-modal').classList.remove('hidden');
-            document.getElementById('copy-status').classList.add('hidden');
-        };
-
-        window.copyPassageText = function() {
-            navigator.clipboard.writeText(window.currentPassageText).then(() => {
-                const status = document.getElementById('copy-status');
-                status.classList.remove('hidden');
-                setTimeout(() => { status.classList.add('hidden'); }, 3000);
-            }).catch(err => { alert("Failed to copy text automatically. Please select and copy manually."); });
-        };
-
         window.fetchNotes = async function() {
             const list = document.getElementById('notes-list'); 
             if(!list) return;
@@ -1284,40 +1250,6 @@
             } catch(e) { console.error("Error fetching typing texts"); }
         };
 
-        window.renderDictationGrid = function() {
-            const list = document.getElementById('dictations-grid');
-            if(!list) return;
-            const searchQuery = (document.getElementById('dictation-search') ? document.getElementById('dictation-search').value.toLowerCase() : '');
-            
-            let filteredDocs = window.allDictations.filter(d => {
-                let matchCat = (window.activeDictationCategory === "All" || d.category === window.activeDictationCategory);
-                let matchSearch = d.title.toLowerCase().includes(searchQuery);
-                return matchCat && matchSearch;
-            });
-
-            if (filteredDocs.length === 0) { list.innerHTML = '<p class="text-center py-12 text-slate-500 dark:text-slate-400 font-medium text-lg col-span-full">No dictations found.</p>'; return; }
-
-            let html = '';
-            filteredDocs.forEach((d) => {
-                window.dictationData[d.id] = d; const cat = d.category || "General";
-                html += `
-                    <div class="relative bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm hover:shadow-2xl hover:-translate-y-1 transition duration-300 border border-slate-100 dark:border-slate-700 flex flex-col justify-between group cursor-pointer" onclick="window.openDictationWorkspace('${d.id}')">
-                        ${window.isAdminUser ? `
-                        <div class="absolute top-4 right-4 flex gap-2 z-10">
-                            <button onclick="event.stopPropagation(); window.editDictationTitle('${d.id}', decodeURIComponent('${encodeURIComponent(d.title)}'))" class="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 p-2 rounded-lg text-xs font-bold hover:bg-blue-200 dark:hover:bg-blue-800 transition shadow-sm" title="Edit Title">✏️</button>
-                            <button onclick="event.stopPropagation(); window.deleteDictation('${d.id}', '${d.audioUrl}', '${d.storagePath}')" class="bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 p-2 rounded-lg text-xs font-bold hover:bg-red-200 dark:hover:bg-red-800 transition shadow-sm" title="Delete">🗑️</button>
-                        </div>` : ''}
-                        <div>
-                            <span class="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-md uppercase tracking-wide border border-blue-100 dark:border-blue-800/50">${cat}</span>
-                            <h3 class="font-extrabold text-xl mt-4 text-slate-800 dark:text-white line-clamp-2">${d.title}</h3>
-                        </div>
-                        <div class="mt-6 flex justify-end items-center text-sm font-bold text-slate-500 dark:text-slate-400 border-t border-slate-100 dark:border-slate-700 pt-4">
-                            <span class="text-emerald-500 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition flex items-center gap-1">Practice ➔</span>
-                        </div>
-                    </div>`;
-            }); list.innerHTML = html;
-        };
-
         window.fetchDictations = async function() {
             if(window.renderCategoryTabs) window.renderCategoryTabs();
             const list = document.getElementById('dictations-grid');
@@ -1330,19 +1262,6 @@
                 if(window.renderDictationGrid) window.renderDictationGrid();
             } catch (e) { list.innerHTML = `<p class="text-red-500 text-center py-12 col-span-full">Error loading dictations.</p>`; }
         };
-
-        window.addEventListener('stenoAnalysisComplete', async () => {
-            if(!window.currentUser) return;
-            try {
-                await addDoc(collection(db, "userHistory"), { userId: window.currentUser.uid, email: window.currentUser.email, testType: 'Steno', matter: window.currentStenoMatter || 'Manual Paste', timeSpentSeconds: window.currentStenoTimeSpent || 2400, accuracy: window.lastAnalysisAccuracy, mistakes: window.lastMistakeArray.slice(0, 50), visualMarkup: window.lastVisualMarkup, date: new Date().toLocaleDateString(), timestamp: new Date().getTime() });
-                document.getElementById('save-status').innerText = "Score & Mistakes Saved Successfully!"; document.getElementById('save-status').style.display = 'block'; window.fetchUserHistory(); if(window.isAdminUser) window.fetchAllUsersHistory();
-            } catch(e) { }
-        });
-        
-        window.addEventListener('typingTestComplete', async () => {
-            if(!window.currentUser) return;
-            try { await addDoc(collection(db, "userHistory"), { userId: window.currentUser.uid, email: window.currentUser.email, testType: 'Typing', matter: window.currentTypingMatter || 'Typing Practice', timeSpentSeconds: window.currentTypingTime || 0, wpm: window.currentTypingWpm || 0, accuracy: window.currentTypingAcc || 0, date: new Date().toLocaleDateString(), timestamp: new Date().getTime() }); window.fetchUserHistory(); if(window.isAdminUser) window.fetchAllUsersHistory(); } catch(e) { }
-        });
 
         window.fetchUserHistory = async function() {
             if(!window.currentUser) return; const hl = document.getElementById('history-list');
