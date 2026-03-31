@@ -1295,6 +1295,19 @@
             } catch (e) { list.innerHTML = `<p class="text-red-500 text-center py-12 col-span-full">Error loading dictations.</p>`; }
         };
 
+        window.addEventListener('stenoAnalysisComplete', async () => {
+            if(!window.currentUser) return;
+            try {
+                await addDoc(collection(db, "userHistory"), { userId: window.currentUser.uid, email: window.currentUser.email, testType: 'Steno', matter: window.currentStenoMatter || 'Manual Paste', timeSpentSeconds: window.currentStenoTimeSpent || 2400, accuracy: window.lastAnalysisAccuracy, mistakes: window.lastMistakeArray.slice(0, 50), visualMarkup: window.lastVisualMarkup, date: new Date().toLocaleDateString(), timestamp: new Date().getTime() });
+                document.getElementById('save-status').innerText = "Score & Mistakes Saved Successfully!"; document.getElementById('save-status').style.display = 'block'; window.fetchUserHistory(); if(window.isAdminUser) window.fetchAllUsersHistory();
+            } catch(e) { }
+        });
+        
+        window.addEventListener('typingTestComplete', async () => {
+            if(!window.currentUser) return;
+            try { await addDoc(collection(db, "userHistory"), { userId: window.currentUser.uid, email: window.currentUser.email, testType: 'Typing', matter: window.currentTypingMatter || 'Typing Practice', timeSpentSeconds: window.currentTypingTime || 0, wpm: window.currentTypingWpm || 0, accuracy: window.currentTypingAcc || 0, date: new Date().toLocaleDateString(), timestamp: new Date().getTime() }); window.fetchUserHistory(); if(window.isAdminUser) window.fetchAllUsersHistory(); } catch(e) { }
+        });
+
         window.fetchUserHistory = async function() {
             if(!window.currentUser) return; const hl = document.getElementById('history-list');
             if(!hl) return;
@@ -1420,7 +1433,7 @@
                 const elNotesAdmin = document.getElementById('notes-admin-panel'); if(elNotesAdmin) elNotesAdmin.style.display = window.isAdminUser ? 'block' : 'none'; 
                 const elNavAdmin = document.getElementById('nav-admin'); if(elNavAdmin) elNavAdmin.style.display = window.isAdminUser ? 'block' : 'none';
                 
-                if(window.applyMaintenanceUI) window.applyMaintenanceUI(); 
+                if(window.applyMaintenanceUI) window.applyMaintenanceUI(); // Check lock status immediately
                 
                 let hash = window.location.hash.substring(1) || 'home';
                 if(document.getElementById('view-' + hash)) { window.switchView(hash, false); }
@@ -1441,7 +1454,7 @@
                 if(elLoggedInNav) elLoggedInNav.style.display = 'none'; 
                 if(elWorkspace) elWorkspace.style.display = 'none'; 
                 
-                if(window.applyMaintenanceUI) window.applyMaintenanceUI(); 
+                if(window.applyMaintenanceUI) window.applyMaintenanceUI(); // Lock if needed for logged out users
                 if(window.switchView) window.switchView('home', false);
             }
         });
